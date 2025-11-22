@@ -22,20 +22,25 @@ Gradle couldn't determine which variant to use, causing the build to fail.
 
 ## Solution
 
-Added `missingDimensionStrategy` to `android/app/build.gradle`:
+The correct solution for Expo/EAS builds is to use the **react-native-iap config plugin**.
 
+1. Added `react-native-iap` to `plugins` in `app.json`:
+
+```json
+"plugins": [
+  "expo-router",
+  "react-native-iap", // This plugin handles the build variant configuration automatically
+  ...
+]
+```
+
+2. Ran `npx expo prebuild` to apply the changes to native files.
+
+3. Verified that `android/app/build.gradle` now contains:
 ```gradle
 defaultConfig {
-    applicationId 'com.protimeworld.cdlprep'
-    minSdkVersion rootProject.ext.minSdkVersion
-    targetSdkVersion rootProject.ext.targetSdkVersion
-    versionCode 1
-    versionName "1.0.0"
-
-    buildConfigField "String", "REACT_NATIVE_RELEASE_LEVEL", "\"${findProperty('reactNativeReleaseLevel') ?: 'stable'}\""
-    
-    // Specify that we want the Play Store variant for react-native-iap
-    missingDimensionStrategy 'store', 'play'
+    missingDimensionStrategy "store", "play"
+    ...
 }
 ```
 

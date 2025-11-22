@@ -47,7 +47,6 @@
               "../../node_modules/react-native/android"
             ],
             "unstable_networkInspector": true,
-            "kotlinVersion": "1.8.10",
             "packagingOptions": {
               "pickFirst": [
                 "lib/x86/libc++_shared.so",
