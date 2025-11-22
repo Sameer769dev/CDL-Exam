@@ -120,37 +120,6 @@ Ad unit ID: ca-app-pub-XXXXXXXXXXXXXXXX/XXXXXXXXXX (copy this)
        "react-native-google-mobile-ads",
        {
          "androidAppId": "ca-app-pub-YOUR_ACTUAL_APP_ID~XXXXXXXXXX",
-         "iosAppId": "ca-app-pub-YOUR_ACTUAL_APP_ID~XXXXXXXXXX"
-       }
-     ]
-   ]
-   ```
-
-3. **Update Ad Unit IDs**
-   - Open `src/utils/ads.ts`
-   - Replace the placeholder ad unit IDs:
-
-   ```typescript
-   const AD_UNITS = {
-     BANNER: __DEV__
-       ? TestIds.BANNER
-       : 'ca-app-pub-XXXXXXXXXXXXXXXX/XXXXXXXXXX', // Your banner ad unit ID
-     
-     INTERSTITIAL: __DEV__
-       ? TestIds.INTERSTITIAL
-       : 'ca-app-pub-XXXXXXXXXXXXXXXX/XXXXXXXXXX', // Your interstitial ad unit ID
-     
-     REWARDED: __DEV__
-       ? TestIds.REWARDED
-       : 'ca-app-pub-XXXXXXXXXXXXXXXX/XXXXXXXXXX', // Your rewarded ad unit ID
-   };
-   ```
-
-### Step 4: Configure GDPR Compliance (EU Users)
-
-1. **Create Consent Form**
-   - In AdMob, go to **Privacy & messaging**
-   - Create a consent message for EU users
    - Follow Google's UMP (User Messaging Platform) guidelines
 
 2. **Test Consent Form**

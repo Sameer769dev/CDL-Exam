@@ -10,25 +10,22 @@ import mobileAds, {
 import { Platform } from 'react-native';
 
 // Ad Unit IDs - Replace with your actual AdMob ad unit IDs
-// These are test IDs for development
 const AD_UNITS = {
-    BANNER: __DEV__
-        ? TestIds.BANNER
-        : Platform.OS === 'android'
-            ? 'ca-app-pub-XXXXXXXXXXXXXXXX/XXXXXXXXXX' // Replace with your banner ad unit ID
-            : 'ca-app-pub-XXXXXXXXXXXXXXXX/XXXXXXXXXX',
-
-    INTERSTITIAL: __DEV__
-        ? TestIds.INTERSTITIAL
-        : Platform.OS === 'android'
-            ? 'ca-app-pub-XXXXXXXXXXXXXXXX/XXXXXXXXXX' // Replace with your interstitial ad unit ID
-            : 'ca-app-pub-XXXXXXXXXXXXXXXX/XXXXXXXXXX',
-
-    REWARDED: __DEV__
-        ? TestIds.REWARDED
-        : Platform.OS === 'android'
-            ? 'ca-app-pub-XXXXXXXXXXXXXXXX/XXXXXXXXXX' // Replace with your rewarded ad unit ID
-            : 'ca-app-pub-XXXXXXXXXXXXXXXX/XXXXXXXXXX',
+    BANNER: Platform.select({
+        android: 'ca-app-pub-5397047296907599/3691898228',
+        ios: 'ca-app-pub-5397047296907599/3691898228',
+        default: 'ca-app-pub-5397047296907599/3691898228',
+    }),
+    INTERSTITIAL: Platform.select({
+        android: 'ca-app-pub-5397047296907599/5343164894',
+        ios: 'ca-app-pub-5397047296907599/5343164894',
+        default: 'ca-app-pub-5397047296907599/5343164894',
+    }),
+    REWARDED: Platform.select({
+        android: 'ca-app-pub-5397047296907599/2717001554',
+        ios: 'ca-app-pub-5397047296907599/2717001554',
+        default: 'ca-app-pub-5397047296907599/2717001554',
+    }),
 };
 
 let interstitialAd: InterstitialAd | null = null;
