@@ -45,7 +45,7 @@ export default function MistakeBankScreen() {
                 </View>
 
                 {categoriesWithMistakes.length === 0 ? (
-                    <View className="items-center justify-center py-12 bg-white rounded-3xl shadow-sm border border-slate-100">
+                    <View className="items-center justify-center py-12 bg-white dark:bg-slate-800 rounded-3xl shadow-sm border border-slate-100 dark:border-slate-700">
                         <View className="bg-green-100 p-6 rounded-full mb-6">
                             <CheckCircle2 size={48} color="#16a34a" />
                         </View>
@@ -74,7 +74,7 @@ export default function MistakeBankScreen() {
                                 <TouchableOpacity
                                     key={catId}
                                     onPress={() => handleReview(catId)}
-                                    className="bg-white p-5 rounded-2xl mb-4 border-2 border-slate-100 flex-row items-center justify-between active:bg-slate-50"
+                                    className="bg-white dark:bg-slate-800 p-5 rounded-2xl mb-4 border-2 border-slate-100 dark:border-slate-700 flex-row items-center justify-between active:bg-slate-50 dark:active:bg-slate-700"
                                 >
                                     <View className="flex-row items-center flex-1">
                                         <View

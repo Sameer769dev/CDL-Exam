@@ -12,7 +12,7 @@ export default function ExamIntroScreen() {
     };
 
     return (
-        <SafeAreaView className="flex-1 bg-slate-50" edges={['bottom', 'left', 'right']}>
+        <SafeAreaView className="flex-1 bg-slate-50 dark:bg-slate-900" edges={['bottom', 'left', 'right']}>
             <Stack.Screen options={{ title: 'Exam Simulator' }} />
 
             <ScrollView className="flex-1 p-6" showsVerticalScrollIndicator={false}>
@@ -28,7 +28,7 @@ export default function ExamIntroScreen() {
                     </Text>
                 </View>
 
-                <View className="bg-white rounded-2xl p-6 shadow-sm border border-slate-100 mb-8">
+                <View className="bg-white dark:bg-slate-800 rounded-2xl p-6 shadow-sm border border-slate-100 dark:border-slate-700 mb-8">
                     <Text className="text-xl font-bold text-slate-900 mb-6">
                         Exam Rules
                     </Text>

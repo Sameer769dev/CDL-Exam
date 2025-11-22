@@ -2,18 +2,19 @@ import React, { useState, useEffect, useRef } from "react";
 import { View, Text, ScrollView, TouchableOpacity, ActivityIndicator } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Stack, useRouter, useLocalSearchParams } from "expo-router";
-import { MoveRight, Lightbulb, BadgeCheck, CircleX } from "lucide-react-native";
+import { MoveRight, Lightbulb, X } from "lucide-react-native";
 import Animated, {
     useSharedValue,
     useAnimatedStyle,
     withTiming,
     withSequence,
-    withSpring,
     SlideInRight,
     SlideOutLeft,
-    FadeIn
+    FadeIn,
+    runOnJS
 } from "react-native-reanimated";
-import { ProgressBar } from "../src/components/ProgressBar";
+import * as Haptics from 'expo-haptics';
+import { CircularProgress } from "../src/components/CircularProgress";
 import { OptionButton } from "../src/components/OptionButton";
 import { BookmarkButton } from "../src/components/BookmarkButton";
 import { getQuestionsByCategory, getCategoryById, getQuestionsByIds, getAllQuestions } from "../src/utils/dataLoader";
@@ -92,12 +93,14 @@ export default function QuizScreen() {
 
         if (isCorrect) {
             setScore((prev) => prev + 1);
+            Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
 
             // Remove from mistake bank if in review mode
             if (mode === 'mistake_bank') {
                 await removeFromMistakeBank(categoryId, currentQuestion.id);
             }
         } else {
+            Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);
             // Add to mistake bank if not already there
             await addToMistakeBank(categoryId, currentQuestion.id);
 
@@ -165,7 +168,7 @@ export default function QuizScreen() {
     if (loading) {
         return (
             <View className="flex-1 items-center justify-center bg-slate-50 dark:bg-slate-900">
-                <ActivityIndicator size="large" color="#2563eb" />
+                <ActivityIndicator size="large" color="#3b82f6" />
             </View>
         );
     }
@@ -173,7 +176,7 @@ export default function QuizScreen() {
     if (questions.length === 0) {
         return (
             <SafeAreaView className="flex-1 bg-slate-50 dark:bg-slate-900 items-center justify-center p-6">
-                <Stack.Screen options={{ title: "Quiz" }} />
+                <Stack.Screen options={{ headerShown: false }} />
                 <Text className="text-xl font-bold text-slate-900 dark:text-white text-center mb-4">
                     {mode === 'mistake_bank' ? "No mistakes to review!" : mode === 'bookmarks' ? "No saved questions!" : "No questions available yet."}
                 </Text>
@@ -190,24 +193,29 @@ export default function QuizScreen() {
         );
     }
 
-    const categoryName = categoryId === 'all' ? 'All Categories' : (getCategoryById(categoryId)?.name || "Quiz");
-    const title = mode === 'mistake_bank' ? `Review: ${categoryName}` : mode === 'bookmarks' ? `Saved: ${categoryName}` : categoryName;
-
     return (
-        <SafeAreaView className="flex-1 bg-slate-50 dark:bg-slate-900" edges={['bottom', 'left', 'right']}>
-            <Stack.Screen options={{
-                title: title,
-                headerRight: () => (
-                    <BookmarkButton
-                        questionId={currentQuestion.id}
-                        size={24}
-                        color={isDark ? "#94a3b8" : "#475569"}
-                    />
-                )
-            }} />
+        <SafeAreaView className="flex-1 bg-slate-50 dark:bg-slate-900" edges={['top', 'bottom']}>
+            <Stack.Screen options={{ headerShown: false }} />
+
+            {/* Header */}
+            <View className="flex-row justify-between items-center px-6 py-2">
+                <TouchableOpacity
+                    onPress={() => router.back()}
+                    className="p-2 -ml-2 rounded-full active:bg-slate-100 dark:active:bg-slate-800"
+                >
+                    <X size={24} color={isDark ? "#94a3b8" : "#475569"} />
+                </TouchableOpacity>
+
+                <BookmarkButton
+                    questionId={currentQuestion.id}
+                    size={24}
+                    color={isDark ? "#94a3b8" : "#475569"}
+                />
+            </View>
 
             <View className="p-6 flex-1">
-                <ProgressBar current={currentQuestionIndex + 1} total={totalQuestions} />
+                {/* Circular Progress */}
+                <CircularProgress current={currentQuestionIndex + 1} total={totalQuestions} />
 
                 <ScrollView className="flex-1" showsVerticalScrollIndicator={false}>
                     <Animated.View
@@ -216,7 +224,7 @@ export default function QuizScreen() {
                         exiting={SlideOutLeft.duration(200)}
                         style={shakeStyle}
                     >
-                        <Text className="text-2xl font-bold text-slate-900 dark:text-white mb-8 leading-snug tracking-tight">
+                        <Text className="text-[22px] font-bold text-slate-900 dark:text-white mb-8 leading-relaxed tracking-tight text-center">
                             {currentQuestion.question}
                         </Text>
 
@@ -235,13 +243,13 @@ export default function QuizScreen() {
                     {isAnswered && (
                         <Animated.View
                             entering={FadeIn.duration(400)}
-                            className="bg-blue-50 dark:bg-blue-900/20 p-4 rounded-xl border border-blue-100 dark:border-blue-800 mb-24"
+                            className="bg-blue-50 dark:bg-blue-900/20 p-5 rounded-2xl border border-blue-100 dark:border-blue-800 mb-24"
                         >
                             <View className="flex-row items-center mb-2">
                                 <Lightbulb size={20} color="#2563eb" className="mr-2" />
                                 <Text className="text-blue-800 dark:text-blue-300 font-bold">Explanation</Text>
                             </View>
-                            <Text className="text-slate-700 dark:text-slate-300 leading-relaxed font-normal">
+                            <Text className="text-slate-700 dark:text-slate-300 leading-relaxed font-normal text-base">
                                 {currentQuestion.explanation}
                             </Text>
                         </Animated.View>
@@ -252,14 +260,14 @@ export default function QuizScreen() {
                     <View className="absolute bottom-6 left-6 right-6">
                         <TouchableOpacity
                             onPress={handleNext}
-                            className="bg-blue-600 py-4 rounded-xl flex-row items-center justify-center shadow-lg shadow-blue-200 dark:shadow-none active:bg-blue-700"
+                            className="bg-blue-600 py-4 rounded-2xl flex-row items-center justify-center shadow-lg shadow-blue-500/30 active:bg-blue-700 active:scale-95 transition-all"
                         >
-                            <Text className="text-white font-semibold text-lg mr-2">
+                            <Text className="text-white font-bold text-lg mr-2">
                                 {currentQuestionIndex < totalQuestions - 1
                                     ? "Next Question"
                                     : "See Results"}
                             </Text>
-                            <MoveRight size={24} color="white" strokeWidth={2} />
+                            <MoveRight size={24} color="white" strokeWidth={2.5} />
                         </TouchableOpacity>
                     </View>
                 )}

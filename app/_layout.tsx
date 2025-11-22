@@ -5,6 +5,7 @@ import { initBilling } from "../src/utils/billing";
 import { initAds } from "../src/utils/ads";
 import { useEffect, useState } from "react";
 import { getHasCompletedOnboarding } from "../src/utils/storage";
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 import "../global.css";
 
@@ -20,11 +21,13 @@ export default function Layout() {
     }, []);
 
     return (
-        <ThemeProvider>
-            <UserProvider>
-                <OnboardingCheck />
-            </UserProvider>
-        </ThemeProvider>
+        <GestureHandlerRootView style={{ flex: 1 }}>
+            <ThemeProvider>
+                <UserProvider>
+                    <OnboardingCheck />
+                </UserProvider>
+            </ThemeProvider>
+        </GestureHandlerRootView>
     );
 }
 

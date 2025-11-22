@@ -22,7 +22,7 @@ export default function ExamResultsScreen() {
     };
 
     return (
-        <SafeAreaView className="flex-1 bg-slate-50" edges={['bottom', 'left', 'right']}>
+        <SafeAreaView className="flex-1 bg-slate-50 dark:bg-slate-900" edges={['bottom', 'left', 'right']}>
             <Stack.Screen options={{ headerShown: false }} />
 
             <ScrollView className="flex-1 p-6" contentContainerStyle={{ alignItems: 'center', justifyContent: 'center', minHeight: '100%' }}>
@@ -42,7 +42,7 @@ export default function ExamResultsScreen() {
                     </Text>
                 </View>
 
-                <View className="bg-white w-full rounded-2xl p-6 shadow-sm border border-slate-100 mb-8">
+                <View className="bg-white dark:bg-slate-800 w-full rounded-2xl p-6 shadow-sm border border-slate-100 dark:border-slate-700 mb-8">
                     <View className="flex-row justify-between items-center mb-4 pb-4 border-b border-slate-100">
                         <Text className="text-slate-500 text-lg">Score</Text>
                         <Text className="text-2xl font-bold text-slate-900">{percentage}%</Text>

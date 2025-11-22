@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, Dimensions } from 'react-native';
+import { View, Text, TouchableOpacity, Dimensions, StyleSheet } from 'react-native';
+import { LinearGradient } from 'expo-linear-gradient';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Stack, useRouter } from 'expo-router';
 import {
@@ -14,7 +15,8 @@ import Animated, {
     useAnimatedScrollHandler,
     useAnimatedStyle,
     interpolate,
-    FadeIn
+    FadeIn,
+    SlideInDown
 } from 'react-native-reanimated';
 import { OnboardingSlide } from '../src/components/OnboardingSlide';
 import { PaginationDots } from '../src/components/PaginationDots';
@@ -80,63 +82,86 @@ export default function OnboardingScreen() {
     };
 
     return (
-        <SafeAreaView className="flex-1 bg-slate-50 dark:bg-slate-900" edges={['top', 'bottom']}>
-            <Stack.Screen options={{ headerShown: false }} />
+        <LinearGradient
+            colors={['#0F172A', '#020617']}
+            style={styles.gradient}
+        >
+            <SafeAreaView className="flex-1" edges={['top', 'bottom']}>
+                <Stack.Screen options={{ headerShown: false }} />
 
-            {/* Skip Button */}
-            {currentIndex < slides.length - 1 && (
-                <Animated.View
-                    entering={FadeIn}
-                    className="absolute top-4 right-6 z-10"
-                >
-                    <TouchableOpacity onPress={handleSkip}>
-                        <Text className="text-blue-600 dark:text-blue-400 font-semibold text-lg">
-                            Skip
-                        </Text>
-                    </TouchableOpacity>
-                </Animated.View>
-            )}
-
-            {/* Slides */}
-            <Animated.ScrollView
-                horizontal
-                pagingEnabled
-                showsHorizontalScrollIndicator={false}
-                onScroll={scrollHandler}
-                onMomentumScrollEnd={handleScroll}
-                scrollEventThrottle={16}
-                className="flex-1"
-            >
-                {slides.map((slide, index) => (
-                    <View key={index} style={{ width: SCREEN_WIDTH }}>
-                        <OnboardingSlide
-                            icon={slide.icon}
-                            title={slide.title}
-                            description={slide.description}
-                        />
-                    </View>
-                ))}
-            </Animated.ScrollView>
-
-            {/* Pagination & Button */}
-            <View className="pb-8 px-6">
-                <View className="mb-8">
-                    <PaginationDots total={slides.length} currentIndex={currentIndex} />
-                </View>
-
-                {currentIndex === slides.length - 1 ? (
-                    <TouchableOpacity
-                        onPress={handleGetStarted}
-                        className="bg-blue-600 py-4 rounded-xl items-center shadow-lg shadow-blue-200 dark:shadow-none"
+                {/* Skip Button */}
+                {currentIndex < slides.length - 1 && (
+                    <Animated.View
+                        entering={FadeIn}
+                        className="absolute top-4 right-6 z-10"
                     >
-                        <Text className="text-white font-bold text-lg">
-                            Get Started
-                        </Text>
-                    </TouchableOpacity>
-                ) : (
-                    <View className="h-14" />
+                        <TouchableOpacity onPress={handleSkip}>
+                            <Text className="text-slate-400 font-medium text-lg">
+                                Skip
+                            </Text>
+                        </TouchableOpacity>
+                    </Animated.View>
                 )}
-            </View>
-        </SafeAreaView>
+
+                {/* Slides */}
+                <Animated.ScrollView
+                    horizontal
+                    pagingEnabled
+                    showsHorizontalScrollIndicator={false}
+                    onScroll={scrollHandler}
+                    onMomentumScrollEnd={handleScroll}
+                    scrollEventThrottle={16}
+                    className="flex-1"
+                >
+                    {slides.map((slide, index) => (
+                        <View key={index} style={{ width: SCREEN_WIDTH }}>
+                            <OnboardingSlide
+                                icon={slide.icon}
+                                imageSource={index === 0 ? require('../assets/truck_3d.png') : undefined}
+                                title={slide.title}
+                                description={slide.description}
+                                isFirstSlide={index === 0}
+                            />
+                        </View>
+                    ))}
+                </Animated.ScrollView>
+
+                {/* Pagination & Button */}
+                <View className="pb-8 px-6">
+                    <View className="mb-8 items-center">
+                        <PaginationDots total={slides.length} currentIndex={currentIndex} />
+                    </View>
+
+                    {currentIndex === slides.length - 1 ? (
+                        <Animated.View entering={SlideInDown.delay(700).springify().damping(15)}>
+                            <TouchableOpacity
+                                onPress={handleGetStarted}
+                                className="bg-blue-600 py-5 rounded-3xl items-center"
+                                style={styles.button}
+                            >
+                                <Text className="text-white font-bold text-xl">
+                                    Get Started
+                                </Text>
+                            </TouchableOpacity>
+                        </Animated.View>
+                    ) : (
+                        <View className="h-[68px]" />
+                    )}
+                </View>
+            </SafeAreaView>
+        </LinearGradient>
     );
 }
+
+const styles = StyleSheet.create({
+    gradient: {
+        flex: 1,
+    },
+    button: {
+        shadowColor: '#3B82F6',
+        shadowOffset: { width: 0, height: 0 },
+        shadowOpacity: 0.5,
+        shadowRadius: 15,
+        elevation: 8,
+    },
+});
