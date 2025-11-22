@@ -1,19 +1,3 @@
-# Build Fix Summary
-
-## Problem
-
-The EAS build was failing with this error:
-
-```
-Could not resolve project :react-native-iap.
-> The consumer was configured to find a library for use during runtime...
-  However we cannot choose between the following variants:
-    - amazonReleaseRuntimeElements
-    - playReleaseRuntimeElements
-```
-
-## Root Cause
-
 The `react-native-iap` library supports multiple app stores:
 - **Google Play Store** (play variant)
 - **Amazon App Store** (amazon variant)
