@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "cdl-prep",
-    "slug": "cdl-prep",
+    "name": "CDL Hazmat & Brakes 2025",
+    "slug": "cdl-hazmat-brakes",
     "version": "1.0.0",
     "platforms": [
       "ios",
@@ -26,7 +26,11 @@
         "backgroundColor": "#ffffff"
       },
       "edgeToEdgeEnabled": true,
-      "predictiveBackGestureEnabled": false
+      "predictiveBackGestureEnabled": false,
+      "package": "com.protimeworld.cdlprep",
+      "permissions": [
+        "com.android.vending.BILLING"
+      ]
     },
     "scheme": "cdlprep",
     "web": {
@@ -34,6 +38,12 @@
     },
     "plugins": [
       "expo-router"
-    ]
+    ],
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "ed223e68-e969-4d40-b9b9-9f26d9ab5d95"
+      }
+    }
   }
 }

@@ -21,8 +21,8 @@ import {
     saveReminderSettings,
     ReminderSettings
 } from '../utils/storage';
-import { getCustomerInfo, purchasePackage, restorePurchases } from '../utils/purchases';
-import { PurchasesPackage } from 'react-native-purchases';
+import { checkPurchaseStatus, purchasePremium, restorePurchases as restoreBillingPurchases } from '../utils/billing';
+import { setUserPremiumStatus } from '../utils/analytics';
 import { registerForPushNotificationsAsync, scheduleDailyReminder, cancelAllNotifications } from '../utils/notifications';
 
 interface UserContextType {
@@ -31,7 +31,8 @@ interface UserContextType {
     highScores: HighScores;
     mistakeBank: WrongAnswers;
     isLoading: boolean;
-    unlockPremium: (pack?: PurchasesPackage) => Promise<void>;
+    unlockPremium: () => Promise<void>;
+    restorePurchases: () => Promise<boolean>;
     updateProgress: (categoryId: string, attempted: number, correct: number) => Promise<void>;
     saveScore: (categoryId: string, score: number, total: number) => Promise<void>;
     addToMistakeBank: (categoryId: string, questionId: number) => Promise<void>;
@@ -66,9 +67,8 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
     const loadData = async () => {
         setIsLoading(true);
         try {
-            // Check RevenueCat status first
-            const customerInfo = await getCustomerInfo();
-            const isRevenueCatPremium = customerInfo?.entitlements.active['premium'] !== undefined;
+            // Check Google Play Billing status
+            const hasPurchasedPremium = await checkPurchaseStatus();
 
             const [
                 localPremium,
@@ -90,12 +90,19 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
                 getReminderSettings()
             ]);
 
-            // Sync local premium with RevenueCat if needed
-            if (isRevenueCatPremium && !localPremium) {
+            // Migration: Check both Google Play and local storage (for RevenueCat users)
+            // After migration period, you can remove the localPremium check
+            const isPremiumUser = hasPurchasedPremium || localPremium;
+
+            // Sync local storage with Google Play status
+            if (hasPurchasedPremium && !localPremium) {
                 await setPremiumStatusInStorage(true);
             }
 
-            setIsPremium(isRevenueCatPremium || localPremium);
+            setIsPremium(isPremiumUser);
+
+            // Track premium status in analytics
+            setUserPremiumStatus(isPremiumUser);
             setProgress(userProgress);
             setHighScores(scores);
             setMistakeBank(mistakes);
@@ -113,35 +120,43 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
         }
     };
 
-    const unlockPremium = async (pack?: PurchasesPackage) => {
+    const unlockPremium = async () => {
         try {
-            if (pack) {
-                // Real purchase
-                const customerInfo = await purchasePackage(pack);
-                if (customerInfo?.entitlements.active['premium']) {
-                    await setPremiumStatusInStorage(true);
-                    setIsPremium(true);
-                }
-            } else {
-                // Dev unlock / Restore
-                // Try restore first
-                try {
-                    const customerInfo = await restorePurchases();
-                    if (customerInfo?.entitlements.active['premium']) {
-                        await setPremiumStatusInStorage(true);
-                        setIsPremium(true);
-                        return;
-                    }
-                } catch (e) {
-                    console.log("Restore failed or no purchases to restore");
-                }
+            // Purchase premium via Google Play Billing
+            const purchase = await purchasePremium();
 
-                // Fallback to local unlock (for dev or if restore fails but we want to force it)
+            if (purchase) {
+                // Purchase successful
                 await setPremiumStatusInStorage(true);
                 setIsPremium(true);
+                setUserPremiumStatus(true);
+                console.log('[UserContext] Premium unlocked successfully');
+            } else {
+                // Purchase was cancelled
+                console.log('[UserContext] Purchase cancelled by user');
             }
         } catch (error) {
-            console.error("Purchase/Unlock failed", error);
+            console.error('[UserContext] Purchase failed:', error);
+            throw error;
+        }
+    };
+
+    const restorePremiumPurchases = async () => {
+        try {
+            const restored = await restoreBillingPurchases();
+
+            if (restored) {
+                await setPremiumStatusInStorage(true);
+                setIsPremium(true);
+                setUserPremiumStatus(true);
+                console.log('[UserContext] Purchases restored successfully');
+                return true;
+            } else {
+                console.log('[UserContext] No purchases to restore');
+                return false;
+            }
+        } catch (error) {
+            console.error('[UserContext] Restore failed:', error);
             throw error;
         }
     };
@@ -242,6 +257,7 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
             mistakeBank,
             isLoading,
             unlockPremium,
+            restorePurchases: restorePremiumPurchases,
             updateProgress,
             saveScore,
             addToMistakeBank,

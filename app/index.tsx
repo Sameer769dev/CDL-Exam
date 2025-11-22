@@ -5,6 +5,7 @@ import { Truck, Sparkles, AlertOctagon, Award, Activity, Bookmark, Settings, Gra
 import { useTheme } from "../src/context/ThemeContext";
 import { AnimatedCard } from "../src/components/AnimatedCard";
 import { getCategories } from "../src/utils/dataLoader";
+import BannerAdComponent from "../src/components/BannerAd";
 
 export default function LandingPage() {
     const router = useRouter();
@@ -44,11 +45,11 @@ export default function LandingPage() {
                 </View>
 
                 <Text className="text-5xl font-black text-slate-900 dark:text-white mb-3 text-center tracking-tight">
-                    CDL Prep 2025
+                    CDL Hazmat & Brakes 2025
                 </Text>
 
                 <Text className="text-lg font-normal text-slate-500 dark:text-slate-400 text-center mb-10 px-4 leading-relaxed">
-                    Master your Commercial Driver's License exam with our comprehensive practice tests.
+                    Master the hardest parts of your CDL exam. Ace Hazmat and Air Brakes with confidence.
                 </Text>
 
                 <View className="w-full max-w-sm">
@@ -127,6 +128,9 @@ export default function LandingPage() {
                     </TouchableOpacity>
                 </View>
             </View>
+
+            {/* Banner Ad - Shows only for free users */}
+            <BannerAdComponent position="bottom" />
         </ScrollView>
     );
 }

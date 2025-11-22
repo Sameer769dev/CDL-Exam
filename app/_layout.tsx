@@ -1,7 +1,8 @@
 import { Stack, useRouter, useSegments } from "expo-router";
 import { UserProvider } from "../src/context/UserContext";
 import { ThemeProvider, useTheme } from "../src/context/ThemeContext";
-import { initPurchases } from "../src/utils/purchases";
+import { initBilling } from "../src/utils/billing";
+import { initAds } from "../src/utils/ads";
 import { useEffect, useState } from "react";
 import { getHasCompletedOnboarding } from "../src/utils/storage";
 
@@ -9,7 +10,13 @@ import "../global.css";
 
 export default function Layout() {
     useEffect(() => {
-        initPurchases();
+        // Initialize billing and ads
+        const initMonetization = async () => {
+            await initBilling();
+            await initAds();
+        };
+
+        initMonetization();
     }, []);
 
     return (

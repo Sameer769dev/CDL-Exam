@@ -4,43 +4,102 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { Stack, useRouter } from "expo-router";
 import { Check, Star, Shield, Zap, X } from "lucide-react-native";
 import { useUser } from "../src/context/UserContext";
-import { getOfferings } from "../src/utils/purchases";
-import { PurchasesPackage } from "react-native-purchases";
+import { getPremiumProduct, getBillingErrorMessage } from "../src/utils/billing";
+import { trackPaywallView, trackPurchaseInitiated, trackPurchaseCompleted, trackPurchaseFailed, trackPurchaseCancelled, trackRestorePurchases } from "../src/utils/analytics";
+import { Product } from "react-native-iap";
 
 export default function PaywallScreen() {
     const router = useRouter();
-    const { unlockPremium, isLoading: isUserLoading } = useUser();
-    const [offering, setOffering] = useState<PurchasesPackage | null>(null);
+    const { unlockPremium, restorePurchases, isLoading: isUserLoading } = useUser();
+    const [product, setProduct] = useState<Product | null>(null);
     const [isLoading, setIsLoading] = useState(true);
+    const [isPurchasing, setIsPurchasing] = useState(false);
 
     useEffect(() => {
-        loadOfferings();
+        trackPaywallView();
+        loadProduct();
     }, []);
 
-    const loadOfferings = async () => {
-        const currentOffering = await getOfferings();
-        if (currentOffering?.availablePackages.length > 0) {
-            setOffering(currentOffering.availablePackages[0]);
+    const loadProduct = async () => {
+        setIsLoading(true);
+        try {
+            const premiumProduct = await getPremiumProduct();
+            setProduct(premiumProduct);
+        } catch (error) {
+            console.error('[Paywall] Error loading product:', error);
+            Alert.alert('Error', 'Failed to load product information. Please try again.');
+        } finally {
+            setIsLoading(false);
         }
-        setIsLoading(false);
     };
 
     const handlePurchase = async () => {
+        if (!product) {
+            Alert.alert('Error', 'Product not available. Please try again.');
+            return;
+        }
+
+        setIsPurchasing(true);
+        trackPurchaseInitiated(product.productId, product.localizedPrice);
+
         try {
-            await unlockPremium(offering || undefined);
-            router.back();
-        } catch (error) {
-            // Error is handled in unlockPremium or just cancelled
+            await unlockPremium();
+
+            // Track successful purchase
+            trackPurchaseCompleted(
+                product.productId,
+                product.localizedPrice,
+                parseFloat(product.price)
+            );
+
+            Alert.alert(
+                'Success! 🎉',
+                'Premium unlocked! You now have access to all features.',
+                [{ text: 'OK', onPress: () => router.back() }]
+            );
+        } catch (error: any) {
+            console.error('[Paywall] Purchase error:', error);
+
+            // Check if user cancelled
+            if (error?.code === 'E_USER_CANCELLED') {
+                trackPurchaseCancelled(product.productId);
+            } else {
+                const errorMessage = getBillingErrorMessage(error);
+                trackPurchaseFailed(product.productId, errorMessage);
+                Alert.alert('Purchase Failed', errorMessage);
+            }
+        } finally {
+            setIsPurchasing(false);
         }
     };
 
     const handleRestore = async () => {
+        setIsPurchasing(true);
+
         try {
-            await unlockPremium(); // No package arg triggers restore/fallback logic
-            Alert.alert("Success", "Purchases restored!");
-            router.back();
-        } catch (error) {
-            Alert.alert("Error", "Failed to restore purchases.");
+            const restored = await restorePurchases();
+
+            trackRestorePurchases(restored);
+
+            if (restored) {
+                Alert.alert(
+                    'Success! 🎉',
+                    'Purchases restored successfully!',
+                    [{ text: 'OK', onPress: () => router.back() }]
+                );
+            } else {
+                Alert.alert(
+                    'No Purchases Found',
+                    'No previous purchases were found for this account.'
+                );
+            }
+        } catch (error: any) {
+            console.error('[Paywall] Restore error:', error);
+            const errorMessage = getBillingErrorMessage(error);
+            trackRestorePurchases(false, errorMessage);
+            Alert.alert('Restore Failed', errorMessage);
+        } finally {
+            setIsPurchasing(false);
         }
     };
 
@@ -53,7 +112,7 @@ export default function PaywallScreen() {
         "Lifetime Updates"
     ];
 
-    const priceString = offering?.product.priceString || "$14.99";
+    const priceString = product?.localizedPrice || "$14.99";
 
     return (
         <View className="flex-1 bg-slate-900">
@@ -64,6 +123,7 @@ export default function PaywallScreen() {
                     <TouchableOpacity
                         onPress={() => router.back()}
                         className="bg-slate-800 p-2 rounded-full"
+                        disabled={isPurchasing}
                     >
                         <X size={24} color="white" />
                     </TouchableOpacity>
@@ -109,16 +169,24 @@ export default function PaywallScreen() {
                     <TouchableOpacity
                         onPress={handlePurchase}
                         className="bg-yellow-500 py-4 rounded-xl flex-row items-center justify-center shadow-lg shadow-yellow-500/20 active:bg-yellow-600 mb-4"
+                        disabled={isPurchasing || isLoading || !product}
                     >
-                        <Zap size={24} color="white" fill="white" className="mr-2" />
-                        <Text className="text-white font-bold text-xl">
-                            Unlock Everything
-                        </Text>
+                        {isPurchasing ? (
+                            <ActivityIndicator color="white" />
+                        ) : (
+                            <>
+                                <Zap size={24} color="white" fill="white" className="mr-2" />
+                                <Text className="text-white font-bold text-xl">
+                                    Unlock Everything
+                                </Text>
+                            </>
+                        )}
                     </TouchableOpacity>
 
                     <TouchableOpacity
                         onPress={handleRestore}
                         className="py-3 items-center"
+                        disabled={isPurchasing}
                     >
                         <Text className="text-slate-500 font-medium">
                             Restore Purchases

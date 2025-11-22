@@ -63,14 +63,15 @@ export const CategoryCard = React.memo(({
                             {Math.round(progress)}%
                         </Text>
                     </View>
-                    <View className="h-1.5 bg-slate-100 dark:bg-slate-700 rounded-full overflow-hidden">
+                    <View className="h-1.5 bg-slate-100 dark:bg-slate-700 rounded-full overflow-hidden flex-row">
                         <View
                             className="h-full rounded-full"
                             style={{
-                                width: `${progress}%`,
+                                flex: progress,
                                 backgroundColor: category.color,
                             }}
                         />
+                        <View style={{ flex: 100 - progress }} />
                     </View>
                 </View>
             )}
