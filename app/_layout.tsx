@@ -1,0 +1,73 @@
+import { Stack, useRouter, useSegments } from "expo-router";
+import { UserProvider } from "../src/context/UserContext";
+import { ThemeProvider, useTheme } from "../src/context/ThemeContext";
+import { initPurchases } from "../src/utils/purchases";
+import { useEffect, useState } from "react";
+import { getHasCompletedOnboarding } from "../src/utils/storage";
+
+import "../global.css";
+
+export default function Layout() {
+    useEffect(() => {
+        initPurchases();
+    }, []);
+
+    return (
+        <ThemeProvider>
+            <UserProvider>
+                <OnboardingCheck />
+            </UserProvider>
+        </ThemeProvider>
+    );
+}
+
+function OnboardingCheck() {
+    const router = useRouter();
+    const segments = useSegments();
+    const [isReady, setIsReady] = useState(false);
+
+    useEffect(() => {
+        checkOnboarding();
+    }, []);
+
+    const checkOnboarding = async () => {
+        const hasCompleted = await getHasCompletedOnboarding();
+
+        // Only redirect if we're not already on the onboarding screen
+        const inOnboarding = segments[0] === 'onboarding';
+
+        if (!hasCompleted && !inOnboarding) {
+            router.replace('/onboarding');
+        }
+
+        setIsReady(true);
+    };
+
+    if (!isReady) {
+        return null; // Or a loading screen
+    }
+
+    return <ThemedStack />;
+}
+
+function ThemedStack() {
+    const { isDark } = useTheme();
+
+    return (
+        <Stack
+            screenOptions={{
+                headerStyle: {
+                    backgroundColor: isDark ? "#0f172a" : "#f8fafc",
+                },
+                headerTintColor: isDark ? "#f8fafc" : "#0f172a",
+                headerShadowVisible: false,
+                headerTitleStyle: {
+                    fontWeight: "bold",
+                },
+                contentStyle: {
+                    backgroundColor: isDark ? "#0f172a" : "#f8fafc",
+                },
+            }}
+        />
+    );
+}

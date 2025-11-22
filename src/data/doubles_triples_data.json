@@ -1,0 +1,327 @@
+[
+    {
+        "id": 1,
+        "category": "Doubles/Triples",
+        "question": "When coupling twin trailers, the shut-off valves at the rear of the front trailer should be:",
+        "options": [
+            "Open",
+            "Closed",
+            "Partially open",
+            "It doesn't matter"
+        ],
+        "correct_answer": "Open",
+        "explanation": "The shut-off valves at the rear of the front trailer (and at the rear of the dolly) should be open to allow air to reach the brakes on the second trailer."
+    },
+    {
+        "id": 2,
+        "category": "Doubles/Triples",
+        "question": "When coupling doubles or triples, the trailer height should be:",
+        "options": [
+            "Higher than the center of the fifth wheel",
+            "Slightly lower than the center of the fifth wheel",
+            "Level with the fifth wheel",
+            "As low as possible"
+        ],
+        "correct_answer": "Slightly lower than the center of the fifth wheel",
+        "explanation": "The trailer should be slightly lower than the center of the fifth wheel so that when you back under it, the trailer will be lifted slightly as the fifth wheel locks into place."
+    },
+    {
+        "id": 3,
+        "category": "Doubles/Triples",
+        "question": "The converter dolly air tank drain valve should be:",
+        "options": [
+            "At the front of the dolly",
+            "At the rear of the dolly",
+            "On the side of the dolly",
+            "There is no drain valve on a dolly"
+        ],
+        "correct_answer": "At the rear of the dolly",
+        "explanation": "The converter dolly air tank drain valve is located at the rear of the dolly and should be drained regularly to remove moisture and contaminants."
+    },
+    {
+        "id": 4,
+        "category": "Doubles/Triples",
+        "question": "When backing a trailer, you should:",
+        "options": [
+            "Turn the steering wheel in the direction you want the trailer to go",
+            "Turn the steering wheel in the opposite direction you want the trailer to go",
+            "Keep the steering wheel straight",
+            "Use only the mirrors"
+        ],
+        "correct_answer": "Turn the steering wheel in the opposite direction you want the trailer to go",
+        "explanation": "When backing a trailer, turn the steering wheel in the opposite direction you want the trailer to go. This is opposite of backing a car."
+    },
+    {
+        "id": 5,
+        "category": "Doubles/Triples",
+        "question": "The air leakage rate for a combination vehicle with the engine off and brakes applied should not exceed:",
+        "options": [
+            "2 psi in one minute",
+            "3 psi in one minute",
+            "4 psi in one minute",
+            "5 psi in one minute"
+        ],
+        "correct_answer": "4 psi in one minute",
+        "explanation": "For a combination vehicle (tractor-trailer), the air loss rate with the engine off and brakes applied should not exceed 4 psi in one minute."
+    },
+    {
+        "id": 6,
+        "category": "Doubles/Triples",
+        "question": "Before coupling, the fifth wheel should be:",
+        "options": [
+            "Tilted down toward the rear of the tractor",
+            "Tilted up toward the rear of the tractor",
+            "Level",
+            "At any angle"
+        ],
+        "correct_answer": "Tilted down toward the rear of the tractor",
+        "explanation": "The fifth wheel should be tilted down toward the rear of the tractor so that when you back under the trailer, the kingpin will slide smoothly into the fifth wheel."
+    },
+    {
+        "id": 7,
+        "category": "Doubles/Triples",
+        "question": "When coupling doubles, after connecting the converter dolly to the front trailer, the dolly support should be:",
+        "options": [
+            "Left down",
+            "Raised to the up position",
+            "Removed",
+            "Adjusted to the lowest position"
+        ],
+        "correct_answer": "Raised to the up position",
+        "explanation": "After connecting the converter dolly to the front trailer, raise the dolly support to the up position to allow the dolly to move freely."
+    },
+    {
+        "id": 8,
+        "category": "Doubles/Triples",
+        "question": "The pintle hook on the rear of the first trailer should be:",
+        "options": [
+            "Latched and locked",
+            "Open",
+            "Removed",
+            "Greased only"
+        ],
+        "correct_answer": "Latched and locked",
+        "explanation": "The pintle hook (or coupling device) on the rear of the first trailer must be properly latched and locked to securely connect to the converter dolly."
+    },
+    {
+        "id": 9,
+        "category": "Doubles/Triples",
+        "question": "Doubles and triples are more likely to turn over than other vehicles because:",
+        "options": [
+            "They are longer",
+            "They have more axles",
+            "The rear trailer tends to swing out in a turn (crack the whip effect)",
+            "They carry lighter loads"
+        ],
+        "correct_answer": "The rear trailer tends to swing out in a turn (crack the whip effect)",
+        "explanation": "In doubles and triples, the rear trailer can swing out sharply in turns, especially if you turn too quickly. This 'crack the whip' effect can cause rollovers."
+    },
+    {
+        "id": 10,
+        "category": "Doubles/Triples",
+        "question": "When inspecting doubles or triples, make sure the shut-off valves:",
+        "options": [
+            "Are in the open position",
+            "Are in the closed position",
+            "At the rear of the last trailer are open, and all others are closed",
+            "At the rear of the last trailer are closed, and all others are open"
+        ],
+        "correct_answer": "At the rear of the last trailer are closed, and all others are open",
+        "explanation": "All shut-off valves should be open except the ones at the rear of the last trailer, which should be closed to maintain air pressure in the system."
+    },
+    {
+        "id": 11,
+        "category": "Doubles/Triples",
+        "question": "The trailer air supply control should be used to:",
+        "options": [
+            "Supply air to the trailer brakes",
+            "Release the trailer brakes for normal driving",
+            "Apply the trailer brakes in an emergency",
+            "Both supply air and release the trailer brakes"
+        ],
+        "correct_answer": "Both supply air and release the trailer brakes",
+        "explanation": "The trailer air supply control (also called the tractor protection valve control) supplies air to the trailer brakes and releases the trailer emergency brakes for normal driving."
+    },
+    {
+        "id": 12,
+        "category": "Doubles/Triples",
+        "question": "When coupling, after backing under the trailer, you should:",
+        "options": [
+            "Immediately drive forward",
+            "Check that the kingpin is locked into the fifth wheel",
+            "Disconnect the air lines",
+            "Lower the landing gear"
+        ],
+        "correct_answer": "Check that the kingpin is locked into the fifth wheel",
+        "explanation": "After backing under the trailer, check that the kingpin is properly locked into the fifth wheel before proceeding. This ensures a secure connection."
+    },
+    {
+        "id": 13,
+        "category": "Doubles/Triples",
+        "question": "The service line (also called the control line or signal line) carries:",
+        "options": [
+            "Fuel to the trailer",
+            "Air to control the trailer brakes",
+            "Electrical signals",
+            "Hydraulic fluid"
+        ],
+        "correct_answer": "Air to control the trailer brakes",
+        "explanation": "The service line (blue) carries air controlled by the brake pedal to apply the trailer brakes during normal driving."
+    },
+    {
+        "id": 14,
+        "category": "Doubles/Triples",
+        "question": "The emergency line (also called the supply line) is:",
+        "options": [
+            "Blue",
+            "Red",
+            "Yellow",
+            "Green"
+        ],
+        "correct_answer": "Red",
+        "explanation": "The emergency line (supply line) is red. It supplies air to the trailer air tanks and controls the emergency brakes on the trailer."
+    },
+    {
+        "id": 15,
+        "category": "Doubles/Triples",
+        "question": "Before uncoupling, you should:",
+        "options": [
+            "Lower the landing gear",
+            "Disconnect the air lines",
+            "Release the fifth wheel",
+            "Drive forward slowly"
+        ],
+        "correct_answer": "Lower the landing gear",
+        "explanation": "Before uncoupling, lower the landing gear to support the trailer. Make sure it is fully extended and the crank handle is secured."
+    },
+    {
+        "id": 16,
+        "category": "Doubles/Triples",
+        "question": "When pulling doubles or triples, you should:",
+        "options": [
+            "Drive faster to maintain momentum",
+            "Allow more space for stopping and turning",
+            "Use cruise control at all times",
+            "Keep the trailers partially loaded"
+        ],
+        "correct_answer": "Allow more space for stopping and turning",
+        "explanation": "Doubles and triples require more space for stopping and turning. Allow extra following distance and take turns more slowly to prevent rollovers."
+    },
+    {
+        "id": 17,
+        "category": "Doubles/Triples",
+        "question": "A converter dolly is used to:",
+        "options": [
+            "Connect the tractor to the first trailer",
+            "Support the front of the second or third trailer",
+            "Carry extra cargo",
+            "Store tools"
+        ],
+        "correct_answer": "Support the front of the second or third trailer",
+        "explanation": "A converter dolly (or dolly) is a coupling device with one or two axles and a fifth wheel used to support the front of a second or third trailer."
+    },
+    {
+        "id": 18,
+        "category": "Doubles/Triples",
+        "question": "When coupling twin trailers, you should secure the second trailer by connecting the:",
+        "options": [
+            "Safety chains only",
+            "Converter dolly to the rear of the first trailer",
+            "Air lines only",
+            "Electrical cable only"
+        ],
+        "correct_answer": "Converter dolly to the rear of the first trailer",
+        "explanation": "Secure the second trailer by properly connecting the converter dolly to the rear of the first trailer using the pintle hook or coupling device."
+    },
+    {
+        "id": 19,
+        "category": "Doubles/Triples",
+        "question": "The maximum length for a double trailer combination on most highways is:",
+        "options": [
+            "48 feet",
+            "53 feet",
+            "Varies by state",
+            "Unlimited"
+        ],
+        "correct_answer": "Varies by state",
+        "explanation": "Maximum length limits for double and triple trailers vary by state. Check state regulations before operating in a new state."
+    },
+    {
+        "id": 20,
+        "category": "Doubles/Triples",
+        "question": "When coupling, after connecting the air lines, you should:",
+        "options": [
+            "Immediately drive away",
+            "Charge the trailer air system and check for leaks",
+            "Disconnect the electrical cable",
+            "Lower the landing gear further"
+        ],
+        "correct_answer": "Charge the trailer air system and check for leaks",
+        "explanation": "After connecting the air lines, charge the trailer air system by pushing in the trailer air supply knob. Then check for air leaks before driving."
+    },
+    {
+        "id": 21,
+        "category": "Doubles/Triples",
+        "question": "The glad hands are used to:",
+        "options": [
+            "Connect the electrical system",
+            "Connect the air lines between the tractor and trailer",
+            "Secure the fifth wheel",
+            "Adjust the landing gear"
+        ],
+        "correct_answer": "Connect the air lines between the tractor and trailer",
+        "explanation": "Glad hands are coupling devices used to connect the service and emergency air lines between the tractor and trailer or between trailers."
+    },
+    {
+        "id": 22,
+        "category": "Doubles/Triples",
+        "question": "When driving doubles or triples, you should check the coupling devices:",
+        "options": [
+            "Once a week",
+            "Before the trip and during the trip",
+            "Only when you feel a problem",
+            "Once a month"
+        ],
+        "correct_answer": "Before the trip and during the trip",
+        "explanation": "Check all coupling devices before the trip and regularly during the trip to ensure they remain secure and properly connected."
+    },
+    {
+        "id": 23,
+        "category": "Doubles/Triples",
+        "question": "The safety chains or cables should be:",
+        "options": [
+            "Crossed under the tongue of the dolly",
+            "Attached to the same side",
+            "Left disconnected for easy uncoupling",
+            "Removed when not needed"
+        ],
+        "correct_answer": "Crossed under the tongue of the dolly",
+        "explanation": "Safety chains or cables should be crossed under the tongue of the dolly to provide support if the coupling fails."
+    },
+    {
+        "id": 24,
+        "category": "Doubles/Triples",
+        "question": "When uncoupling twin trailers, you should:",
+        "options": [
+            "Disconnect the rear trailer first",
+            "Disconnect the front trailer first",
+            "Disconnect both at the same time",
+            "Never uncouple twin trailers"
+        ],
+        "correct_answer": "Disconnect the rear trailer first",
+        "explanation": "When uncoupling twin trailers, disconnect the rear trailer first, then the converter dolly, and finally the front trailer."
+    },
+    {
+        "id": 25,
+        "category": "Doubles/Triples",
+        "question": "Rearward amplification (crack the whip effect) is:",
+        "options": [
+            "More pronounced in longer combination vehicles",
+            "Only a problem in single trailers",
+            "Eliminated by driving faster",
+            "Not a concern for experienced drivers"
+        ],
+        "correct_answer": "More pronounced in longer combination vehicles",
+        "explanation": "Rearward amplification (crack the whip effect) is more pronounced in longer combination vehicles. The rear trailer can swing out much more than the tractor during turns or lane changes."
+    }
+]

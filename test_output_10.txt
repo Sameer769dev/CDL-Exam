@@ -1,0 +1,51 @@
+
+> cdl-prep@1.0.0 test
+> jest
+
+  console.warn
+    SafeAreaView has been deprecated and will be removed in a future release. Please use 'react-native-safe-area-context' instead. See https://github.com/th3rdwave/react-native-safe-area-context
+
+    [0m [90m 49 |[39m
+     [90m 50 |[39m     [36mreturn[39m (
+    [31m[1m>[22m[39m[90m 51 |[39m         [33m<[39m[33mSafeAreaView[39m className[33m=[39m[32m"flex-1 bg-slate-50"[39m[33m>[39m
+     [90m    |[39m          [31m[1m^[22m[39m
+     [90m 52 |[39m             [33m<[39m[33mStack[39m[33m.[39m[33mScreen[39m options[33m=[39m{{ title[33m:[39m [32m"Quiz"[39m }} [33m/[39m[33m>[39m
+     [90m 53 |[39m
+     [90m 54 |[39m             [33m<[39m[33mView[39m className[33m=[39m[32m"p-6 flex-1"[39m[33m>[39m[0m
+
+      at warn (node_modules/react-native/Libraries/Utilities/warnOnce.js:27:11)
+      at Object.warnOnce [as SafeAreaView] (node_modules/react-native/index.js:92:5)
+      at SafeAreaView (app/quiz.tsx:51:10)
+      at Object.react-stack-bottom-frame (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:13976:20)
+      at renderWithHooks (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:2866:22)
+      at updateFunctionComponent (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:6006:19)
+      at beginWork (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:7474:18)
+      at runWithFiberInDEV (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:1574:13)
+      at performUnitOfWork (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:10972:22)
+      at workLoopSync (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:10816:41)
+      at renderRootSync (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:10797:11)
+      at performWorkOnRoot (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:10349:13)
+      at performWorkOnRootViaSchedulerTask (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:2094:7)
+      at flushActQueue (node_modules/react/cjs/react.development.js:566:34)
+      at process.env.NODE_ENV.exports.act (node_modules/react/cjs/react.development.js:859:10)
+      at actImplementation (node_modules/@testing-library/react-native/src/act.ts:30:25)
+      at renderWithAct (node_modules/@testing-library/react-native/src/render-act.ts:13:11)
+      at renderInternal (node_modules/@testing-library/react-native/src/render.tsx:69:33)
+      at renderInternal (node_modules/@testing-library/react-native/src/render.tsx:44:10)
+      at Object.<anonymous> (__tests__/QuizLogic.test.tsx:37:15)
+
+FAIL __tests__/QuizLogic.test.tsx
+  ● Test suite failed to run
+
+    ReferenceError: You are trying to `import` a file outside of the scope of the test code.
+
+      at Runtime._execModule (node_modules/jest-runtime/build/index.js:1216:13)
+      at require (node_modules/expo/src/winter/runtime.native.ts:20:43)
+      at getValue (node_modules/expo/src/winter/installGlobal.ts:97:21)
+      at Object.get [as __ExpoImportMetaRegistry] (node_modules/expo/src/winter/installGlobal.ts:44:16)
+
+Test Suites: 1 failed, 1 total
+Tests:       0 total
+Snapshots:   0 total
+Time:        10.507 s
+Ran all test suites.

@@ -1,0 +1,38 @@
+
+> cdl-prep@1.0.0 test
+> jest
+
+FAIL __tests__/QuizLogic.test.tsx
+  ● Test suite failed to run
+
+    Cannot find module 'react-native-svg' from 'node_modules/lucide-react-native/dist/cjs/createLucideIcon.js'
+
+    Require stack:
+      node_modules/lucide-react-native/dist/cjs/createLucideIcon.js
+      node_modules/lucide-react-native/dist/cjs/icons/a-arrow-down.js
+      node_modules/lucide-react-native/dist/cjs/icons/index.js
+      node_modules/lucide-react-native/dist/cjs/lucide-react-native.js
+      app/quiz.tsx
+      __tests__/QuizLogic.test.tsx
+
+    [0m [90m 2 |[39m [36mimport[39m { [33mView[39m[33m,[39m [33mText[39m[33m,[39m [33mScrollView[39m[33m,[39m [33mTouchableOpacity[39m[33m,[39m [33mSafeAreaView[39m } [36mfrom[39m [32m"react-native"[39m[33m;[39m
+     [90m 3 |[39m [36mimport[39m { [33mStack[39m[33m,[39m useRouter } [36mfrom[39m [32m"expo-router"[39m[33m;[39m
+    [31m[1m>[22m[39m[90m 4 |[39m [36mimport[39m { [33mArrowRight[39m[33m,[39m [33mAlertCircle[39m } [36mfrom[39m [32m"lucide-react-native"[39m[33m;[39m
+     [90m   |[39m [31m[1m^[22m[39m
+     [90m 5 |[39m [36mimport[39m { [33mProgressBar[39m } [36mfrom[39m [32m"../src/components/ProgressBar"[39m[33m;[39m
+     [90m 6 |[39m [36mimport[39m { [33mOptionButton[39m } [36mfrom[39m [32m"../src/components/OptionButton"[39m[33m;[39m
+     [90m 7 |[39m [36mimport[39m airBrakesData [36mfrom[39m [32m"../src/data/air_brakes_data.json"[39m[33m;[39m[0m
+
+      at Resolver._throwModNotFoundError (node_modules/jest-resolve/build/index.js:863:11)
+      at Object.<anonymous> (node_modules/lucide-react-native/dist/cjs/createLucideIcon.js:16:17)
+      at Object.<anonymous> (node_modules/lucide-react-native/dist/cjs/icons/a-arrow-down.js:10:24)
+      at Object.<anonymous> (node_modules/lucide-react-native/dist/cjs/icons/index.js:10:18)
+      at Object.<anonymous> (node_modules/lucide-react-native/dist/cjs/lucide-react-native.js:10:13)
+      at Object.require (app/quiz.tsx:4:1)
+      at Object.require (__tests__/QuizLogic.test.tsx:3:1)
+
+Test Suites: 1 failed, 1 total
+Tests:       0 total
+Snapshots:   0 total
+Time:        2.122 s
+Ran all test suites.

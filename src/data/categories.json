@@ -1,0 +1,82 @@
+[
+    {
+        "id": "air_brakes",
+        "name": "Air Brakes",
+        "description": "Air brake system operation and safety",
+        "isPremium": true,
+        "freeQuestionCount": 10,
+        "icon": "gauge",
+        "color": "#2563eb",
+        "totalQuestions": 20
+    },
+    {
+        "id": "general_knowledge",
+        "name": "General Knowledge",
+        "description": "Core CDL knowledge and regulations",
+        "isPremium": false,
+        "freeQuestionCount": null,
+        "icon": "graduation-cap",
+        "color": "#16a34a",
+        "totalQuestions": 10
+    },
+    {
+        "id": "hazmat",
+        "name": "Hazmat",
+        "description": "Hazardous materials endorsement",
+        "isPremium": true,
+        "freeQuestionCount": 0,
+        "icon": "flame",
+        "color": "#dc2626",
+        "totalQuestions": 25
+    },
+    {
+        "id": "tanker",
+        "name": "Tanker Vehicles",
+        "description": "Liquid transport endorsement",
+        "isPremium": true,
+        "freeQuestionCount": 0,
+        "icon": "droplets",
+        "color": "#0891b2",
+        "totalQuestions": 25
+    },
+    {
+        "id": "doubles_triples",
+        "name": "Doubles/Triples",
+        "description": "Multiple trailer endorsement",
+        "isPremium": true,
+        "freeQuestionCount": 0,
+        "icon": "layers",
+        "color": "#7c3aed",
+        "totalQuestions": 25
+    },
+    {
+        "id": "passenger_transport",
+        "name": "Passenger Transport",
+        "description": "Passenger vehicle endorsement",
+        "isPremium": true,
+        "freeQuestionCount": 0,
+        "icon": "users-round",
+        "color": "#ea580c",
+        "totalQuestions": 25
+    },
+    {
+        "id": "school_bus",
+        "name": "School Bus",
+        "description": "School bus endorsement",
+        "isPremium": true,
+        "freeQuestionCount": 0,
+        "icon": "bus-front",
+        "color": "#eab308",
+        "totalQuestions": 25
+    },
+    {
+        "id": "combination_vehicles",
+        "name": "Combination Vehicles",
+        "description": "Tractor-trailer combinations",
+        "isPremium": true,
+        "freeQuestionCount": 0,
+        "icon": "boxes",
+        "color": "#059669",
+        "totalQuestions": 25
+    }
+]

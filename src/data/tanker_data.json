@@ -1,0 +1,327 @@
+[
+    {
+        "id": 1,
+        "category": "Tanker",
+        "question": "What is the most important reason for being aware of outage in liquid tankers?",
+        "options": [
+            "To prevent overflow due to liquid expansion",
+            "To reduce fuel consumption",
+            "To improve handling",
+            "To increase cargo capacity"
+        ],
+        "correct_answer": "To prevent overflow due to liquid expansion",
+        "explanation": "Outage is the space left in a tank to allow for expansion of the liquid as it warms. Without proper outage, the liquid could expand and overflow or damage the tank."
+    },
+    {
+        "id": 2,
+        "category": "Tanker",
+        "question": "Liquid surge in tankers is most dangerous when:",
+        "options": [
+            "The tank is full",
+            "The tank is partially full",
+            "The tank is empty",
+            "Driving on flat roads"
+        ],
+        "correct_answer": "The tank is partially full",
+        "explanation": "Liquid surge is most dangerous when the tank is partially full. The liquid can surge back and forth, causing loss of vehicle control. A full tank or baffled tank reduces surge."
+    },
+    {
+        "id": 3,
+        "category": "Tanker",
+        "question": "What are baffles in a tank designed to do?",
+        "options": [
+            "Increase tank capacity",
+            "Reduce liquid surge",
+            "Improve fuel efficiency",
+            "Make loading easier"
+        ],
+        "correct_answer": "Reduce liquid surge",
+        "explanation": "Baffles are bulkheads with holes in them that allow liquid to flow through but slow down the surge of liquid. This helps maintain vehicle stability."
+    },
+    {
+        "id": 4,
+        "category": "Tanker",
+        "question": "Smooth bore tanks have:",
+        "options": [
+            "Multiple compartments",
+            "Baffles",
+            "No baffles or compartments",
+            "Special pumps"
+        ],
+        "correct_answer": "No baffles or compartments",
+        "explanation": "Smooth bore tanks have nothing inside to slow down the flow of liquid. This makes liquid surge especially dangerous. These tanks are often used for food products to make cleaning easier."
+    },
+    {
+        "id": 5,
+        "category": "Tanker",
+        "question": "The amount of liquid to load into a tank depends on:",
+        "options": [
+            "The weight of the liquid and legal weight limits",
+            "The size of the tank only",
+            "The driver's preference",
+            "The delivery schedule"
+        ],
+        "correct_answer": "The weight of the liquid and legal weight limits",
+        "explanation": "You must know the weight of the liquid you are loading and make sure you do not exceed legal weight limits. Different liquids have different weights per gallon."
+    },
+    {
+        "id": 6,
+        "category": "Tanker",
+        "question": "When loading or unloading a tanker, the driver should:",
+        "options": [
+            "Stay in the cab",
+            "Be present and monitor the process",
+            "Go inside the facility",
+            "Make phone calls"
+        ],
+        "correct_answer": "Be present and monitor the process",
+        "explanation": "The driver must be present and alert during loading and unloading to prevent overfills, spills, or other problems. Never leave the vehicle unattended during these operations."
+    },
+    {
+        "id": 7,
+        "category": "Tanker",
+        "question": "Before loading a tank with a regulated substance, the driver must ensure the tank is:",
+        "options": [
+            "Painted",
+            "Properly certified and within the test date",
+            "At least 10 years old",
+            "Insulated"
+        ],
+        "correct_answer": "Properly certified and within the test date",
+        "explanation": "Cargo tanks must be inspected and tested periodically. The driver must check that the tank has a current test date and is certified for the material being transported."
+    },
+    {
+        "id": 8,
+        "category": "Tanker",
+        "question": "The center of gravity of a load:",
+        "options": [
+            "Should be as high as possible",
+            "Affects vehicle stability",
+            "Does not matter in tankers",
+            "Only matters when empty"
+        ],
+        "correct_answer": "Affects vehicle stability",
+        "explanation": "A high center of gravity makes a vehicle more likely to roll over. Tankers have a high center of gravity because of the shape of the tank, making them especially prone to rollovers."
+    },
+    {
+        "id": 9,
+        "category": "Tanker",
+        "question": "When should you check the cargo tank for leaks?",
+        "options": [
+            "Once a month",
+            "Before and during every trip",
+            "Only when loading",
+            "Once a year"
+        ],
+        "correct_answer": "Before and during every trip",
+        "explanation": "Check for leaks before every trip and during the trip. Look under the vehicle for signs of leaking liquid and check all fittings and valves."
+    },
+    {
+        "id": 10,
+        "category": "Tanker",
+        "question": "What is side-to-side surge?",
+        "options": [
+            "Liquid moving from front to back",
+            "Liquid moving from side to side in the tank",
+            "Air pressure changes",
+            "Temperature variations"
+        ],
+        "correct_answer": "Liquid moving from side to side in the tank",
+        "explanation": "Side-to-side surge can push the vehicle sideways and cause a rollover, especially during turns or lane changes. This is particularly dangerous in smooth bore tanks."
+    },
+    {
+        "id": 11,
+        "category": "Tanker",
+        "question": "Bulkheads with holes in them that let the liquid flow through slowly are called:",
+        "options": [
+            "Dividers",
+            "Baffles",
+            "Partitions",
+            "Separators"
+        ],
+        "correct_answer": "Baffles",
+        "explanation": "Baffles are bulkheads with holes that allow liquid to flow through but slow down the surge. They help control liquid movement and improve vehicle stability."
+    },
+    {
+        "id": 12,
+        "category": "Tanker",
+        "question": "When driving a tanker, you should take curves and on-ramps:",
+        "options": [
+            "At the posted speed",
+            "Well below the posted speed",
+            "Faster than normal",
+            "At any speed"
+        ],
+        "correct_answer": "Well below the posted speed",
+        "explanation": "Tankers have a high center of gravity and are prone to rollovers. Take curves, on-ramps, and off-ramps well below the posted speeds to maintain control."
+    },
+    {
+        "id": 13,
+        "category": "Tanker",
+        "question": "Emergency equipment required for tankers includes:",
+        "options": [
+            "A fire extinguisher only",
+            "Reflective triangles only",
+            "A fire extinguisher and reflective triangles",
+            "A cell phone"
+        ],
+        "correct_answer": "A fire extinguisher and reflective triangles",
+        "explanation": "Tankers must carry a fire extinguisher and reflective warning triangles. Some tankers carrying hazardous materials may require additional emergency equipment."
+    },
+    {
+        "id": 14,
+        "category": "Tanker",
+        "question": "How often should you check the cargo tank during a trip?",
+        "options": [
+            "Every 50 miles or 2 hours",
+            "Every 100 miles or 3 hours",
+            "Every 150 miles or 3 hours",
+            "Only at the destination"
+        ],
+        "correct_answer": "Every 150 miles or 3 hours",
+        "explanation": "Federal regulations require checking the cargo tank at least every 150 miles or 3 hours, whichever comes first, and after every break."
+    },
+    {
+        "id": 15,
+        "category": "Tanker",
+        "question": "What is the purpose of bulkheads in a tanker?",
+        "options": [
+            "To increase capacity",
+            "To divide the tank into smaller tanks",
+            "To improve fuel economy",
+            "To make loading faster"
+        ],
+        "correct_answer": "To divide the tank into smaller tanks",
+        "explanation": "Bulkheads divide the tank into separate compartments. This reduces liquid surge and allows the transport of different products in the same tank."
+    },
+    {
+        "id": 16,
+        "category": "Tanker",
+        "question": "When loading a tanker, you should:",
+        "options": [
+            "Fill it completely to the top",
+            "Leave room for expansion (outage)",
+            "Fill it halfway",
+            "Load as quickly as possible"
+        ],
+        "correct_answer": "Leave room for expansion (outage)",
+        "explanation": "Always leave room for the liquid to expand (outage). Liquids expand when they warm up, and overfilling can cause spills or tank damage."
+    },
+    {
+        "id": 17,
+        "category": "Tanker",
+        "question": "The legal weight limit for a tanker:",
+        "options": [
+            "Is always the same",
+            "Depends on the number of axles and axle spacing",
+            "Depends only on the tank size",
+            "Is unlimited"
+        ],
+        "correct_answer": "Depends on the number of axles and axle spacing",
+        "explanation": "Legal weight limits depend on the number of axles, axle spacing, and state regulations. You must know these limits and not exceed them."
+    },
+    {
+        "id": 18,
+        "category": "Tanker",
+        "question": "Forward-and-back surge is most dangerous when:",
+        "options": [
+            "Starting or stopping",
+            "Turning",
+            "Driving straight",
+            "Backing up"
+        ],
+        "correct_answer": "Starting or stopping",
+        "explanation": "Forward-and-back surge occurs when starting or stopping. The liquid can surge forward or backward, making it difficult to control the vehicle and potentially causing loss of braking or acceleration control."
+    },
+    {
+        "id": 19,
+        "category": "Tanker",
+        "question": "Before unloading a tanker, you should:",
+        "options": [
+            "Start unloading immediately",
+            "Check that the delivery location is correct and the tank is properly grounded",
+            "Call your dispatcher",
+            "Take a break"
+        ],
+        "correct_answer": "Check that the delivery location is correct and the tank is properly grounded",
+        "explanation": "Before unloading, verify you are at the correct location and that the tank is properly grounded if required. This prevents spills and static electricity hazards."
+    },
+    {
+        "id": 20,
+        "category": "Tanker",
+        "question": "What is the best way to prevent rollover in a tanker?",
+        "options": [
+            "Drive faster",
+            "Keep the tank partially full",
+            "Drive at safe speeds, especially on curves",
+            "Use cruise control"
+        ],
+        "correct_answer": "Drive at safe speeds, especially on curves",
+        "explanation": "The best way to prevent rollover is to drive at safe speeds, especially on curves, ramps, and when changing lanes. Tankers have a high center of gravity and are prone to rollovers."
+    },
+    {
+        "id": 21,
+        "category": "Tanker",
+        "question": "Portable tanks must be secured to the vehicle with:",
+        "options": [
+            "Rope",
+            "Chains or other tie-downs that meet DOT standards",
+            "Bungee cords",
+            "Nothing, they are self-securing"
+        ],
+        "correct_answer": "Chains or other tie-downs that meet DOT standards",
+        "explanation": "Portable tanks must be secured with chains or other tie-downs that meet Department of Transportation standards to prevent shifting during transport."
+    },
+    {
+        "id": 22,
+        "category": "Tanker",
+        "question": "When is liquid surge most likely to occur?",
+        "options": [
+            "When the tank is completely full",
+            "When the tank is about half full",
+            "When the tank is empty",
+            "When driving on smooth roads"
+        ],
+        "correct_answer": "When the tank is about half full",
+        "explanation": "Liquid surge is most severe when the tank is about half full. There is enough liquid to create momentum but also enough empty space for the liquid to move around."
+    },
+    {
+        "id": 23,
+        "category": "Tanker",
+        "question": "What should you do if you experience a front-to-back surge while braking?",
+        "options": [
+            "Brake harder",
+            "Accelerate",
+            "Use smooth, gradual braking",
+            "Turn sharply"
+        ],
+        "correct_answer": "Use smooth, gradual braking",
+        "explanation": "Use smooth, gradual braking to minimize front-to-back surge. Sudden braking can cause the liquid to surge forward, pushing the vehicle and making it difficult to stop."
+    },
+    {
+        "id": 24,
+        "category": "Tanker",
+        "question": "The term 'outage' refers to:",
+        "options": [
+            "A power failure",
+            "Space left in the tank for liquid expansion",
+            "A leak in the tank",
+            "The amount of liquid loaded"
+        ],
+        "correct_answer": "Space left in the tank for liquid expansion",
+        "explanation": "Outage is the space left in a tank to allow for expansion of the liquid due to temperature changes. Proper outage prevents overfilling and potential spills."
+    },
+    {
+        "id": 25,
+        "category": "Tanker",
+        "question": "When transporting liquids in tankers, you must have a commercial driver's license with:",
+        "options": [
+            "No special endorsement",
+            "A tanker endorsement",
+            "Only a Class A license",
+            "A passenger endorsement"
+        ],
+        "correct_answer": "A tanker endorsement",
+        "explanation": "You must have a commercial driver's license with a tanker (N) endorsement to operate a vehicle designed to transport liquid or gaseous materials in a tank with a capacity of 1,000 gallons or more."
+    }
+]

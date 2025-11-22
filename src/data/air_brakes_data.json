@@ -1,0 +1,260 @@
+[
+  {
+    "id": 1,
+    "category": "Air Brakes",
+    "question": "Why must air tanks be drained?",
+    "options": [
+      "To drain all the air out of the tank",
+      "To remove water and oil",
+      "To check for air leaks",
+      "To measure the air pressure"
+    ],
+    "correct_answer": "To remove water and oil",
+    "explanation": "Compressed air usually has some water and some compressor oil in it, which is bad for the air brake system. For example, the water can freeze in cold weather and cause brake failure."
+  },
+  {
+    "id": 2,
+    "category": "Air Brakes",
+    "question": "The air compressor governor controls:",
+    "options": [
+      "When the air compressor pumps air into the storage tanks",
+      "The speed of the air compressor",
+      "The air pressure in the brake chambers",
+      "When the brake lights turn on"
+    ],
+    "correct_answer": "When the air compressor pumps air into the storage tanks",
+    "explanation": "The governor controls when the air compressor will pump air into the air storage tanks."
+  },
+  {
+    "id": 3,
+    "category": "Air Brakes",
+    "question": "The air compressor governor should cut out the air compressor at about:",
+    "options": [
+      "100 psi",
+      "125 psi",
+      "150 psi",
+      "85 psi"
+    ],
+    "correct_answer": "125 psi",
+    "explanation": "When air tank pressure rises to the 'cut-out' level (around 125 psi), the governor stops the compressor from pumping air."
+  },
+  {
+    "id": 4,
+    "category": "Air Brakes",
+    "question": "The driver must be able to see a warning before air pressure in the service air tanks falls below:",
+    "options": [
+      "80 psi",
+      "60 psi",
+      "40 psi",
+      "20 psi"
+    ],
+    "correct_answer": "60 psi",
+    "explanation": "A low air pressure warning signal is required on vehicles with air brakes. It must come on before the air pressure in the tanks falls below 60 psi."
+  },
+  {
+    "id": 5,
+    "category": "Air Brakes",
+    "question": "If your truck or bus has dual parking control valves, you can use pressure from a separate tank to:",
+    "options": [
+      "Release the spring emergency/parking brakes to move a short distance",
+      "Apply more pressure for braking",
+      "Balance the weight of the vehicle",
+      "Stay parked indefinitely"
+    ],
+    "correct_answer": "Release the spring emergency/parking brakes to move a short distance",
+    "explanation": "Dual parking control valves allow you to use air pressure from a separate tank to release the spring brakes to move the vehicle in an emergency."
+  },
+  {
+    "id": 6,
+    "category": "Air Brakes",
+    "question": "The brake system that applies and releases the brakes when the driver uses the brake pedal is the:",
+    "options": [
+      "Emergency brake system",
+      "Service brake system",
+      "Parking brake system",
+      "Auxiliary brake system"
+    ],
+    "correct_answer": "Service brake system",
+    "explanation": "The service brake system applies and releases the brakes when you use the brake pedal during normal driving."
+  },
+  {
+    "id": 7,
+    "category": "Air Brakes",
+    "question": "Your truck or bus has a dual air brake system. If a low air pressure warning comes on for the secondary system, you should:",
+    "options": [
+      "Bring the vehicle to a safe stop and continue only when the system is fixed",
+      "Reduce your speed and drive to the nearest garage",
+      "Use the parking brake to stop",
+      "Ignore it if the primary system is working"
+    ],
+    "correct_answer": "Bring the vehicle to a safe stop and continue only when the system is fixed",
+    "explanation": "If the warning light comes on, either the front or rear brakes have failed. It is not safe to continue driving."
+  },
+  {
+    "id": 8,
+    "category": "Air Brakes",
+    "question": "How should you check that your service brakes are working properly?",
+    "options": [
+      "Wait for normal air pressure, release the parking brake, move forward slowly, and apply the brakes firmly using the brake pedal",
+      "Park on a hill and see if the vehicle rolls",
+      "Pump the brake pedal three times and hold it",
+      "Listen for air leaks while driving"
+    ],
+    "correct_answer": "Wait for normal air pressure, release the parking brake, move forward slowly, and apply the brakes firmly using the brake pedal",
+    "explanation": "This test confirms the brakes are stopping the vehicle and checks if the vehicle pulls to one side, which could indicate a brake problem."
+  },
+  {
+    "id": 9,
+    "category": "Air Brakes",
+    "question": "During normal driving, spring brakes are usually held back by:",
+    "options": [
+      "Bolts or clamps",
+      "Air pressure",
+      "Spring pressure",
+      "Centrifugal force"
+    ],
+    "correct_answer": "Air pressure",
+    "explanation": "Powerful springs are held back by air pressure. If the air pressure is removed, the springs put on the brakes."
+  },
+  {
+    "id": 10,
+    "category": "Air Brakes",
+    "question": "A straight truck or bus air brake system should not leak at a rate of more than ___ psi per minute with the engine off and the brakes released.",
+    "options": [
+      "1",
+      "2",
+      "3",
+      "4"
+    ],
+    "correct_answer": "2",
+    "explanation": "For a single vehicle (straight truck or bus), the static leakage rate (brakes released) should be less than 2 psi per minute."
+  },
+  {
+    "id": 11,
+    "category": "Air Brakes",
+    "question": "The safety valve is set to automatically reduce pressure at:",
+    "options": [
+      "50 psi",
+      "100 psi",
+      "150 psi",
+      "200 psi"
+    ],
+    "correct_answer": "150 psi",
+    "explanation": "A safety relief valve protects the tank and the rest of the system from too much pressure. It is usually set to open at 150 psi."
+  },
+  {
+    "id": 12,
+    "category": "Air Brakes",
+    "question": "Excessive use of the service brakes results in overheating, which can lead to:",
+    "options": [
+      "Increased contact area",
+      "Brake fade",
+      "Better braking performance",
+      "Expansion of the brake drums"
+    ],
+    "correct_answer": "Brake fade",
+    "explanation": "Excessive heat causes chemical changes in the brake lining and expansion of the brake drums, leading to brake fade (loss of stopping power)."
+  },
+  {
+    "id": 13,
+    "category": "Air Brakes",
+    "question": "If you are away from your vehicle only a short time, you do not need to use the parking brake.",
+    "options": [
+      "True",
+      "False"
+    ],
+    "correct_answer": "False",
+    "explanation": "Whenever you park, use the parking brakes, except when the brakes are very hot or wet in freezing temperatures."
+  },
+  {
+    "id": 14,
+    "category": "Air Brakes",
+    "question": "How do you check the slack adjusters?",
+    "options": [
+      "Park on level ground, turn off the parking brakes, and pull hard on each slack adjuster",
+      "Apply the service brakes and measure the push rod travel",
+      "Look at them to see if they are broken",
+      "Measure the distance from the ground"
+    ],
+    "correct_answer": "Park on level ground, turn off the parking brakes, and pull hard on each slack adjuster",
+    "explanation": "If a slack adjuster moves more than about one inch where the push rod attaches to it, it probably needs adjustment."
+  },
+  {
+    "id": 15,
+    "category": "Air Brakes",
+    "question": "The air loss rate for a combination vehicle (with air brakes) with the engine off and the brakes applied should not be more than:",
+    "options": [
+      "2 psi in one minute",
+      "3 psi in one minute",
+      "4 psi in one minute",
+      "5 psi in one minute"
+    ],
+    "correct_answer": "4 psi in one minute",
+    "explanation": "For a combination vehicle, the applied leakage rate (brakes held down) must be less than 4 psi per minute."
+  },
+  {
+    "id": 16,
+    "category": "Air Brakes",
+    "question": "If the air pressure is not built up fast enough within the correct time:",
+    "options": [
+      "You should drive slower",
+      "The air pressure may drop too low during driving",
+      "The alcohol evaporator is full",
+      "The governor is set too high"
+    ],
+    "correct_answer": "The air pressure may drop too low during driving",
+    "explanation": "If air pressure does not build up fast enough, the pressure may drop too low during driving, requiring an emergency stop."
+  },
+  {
+    "id": 17,
+    "category": "Air Brakes",
+    "question": "The S-cam:",
+    "options": [
+      "Controls the air flow to the brake chamber",
+      "Forces the brake shoes against the inside of the brake drum",
+      "Is a type of emergency brake",
+      "Is used only in hydraulic brakes"
+    ],
+    "correct_answer": "Forces the brake shoes against the inside of the brake drum",
+    "explanation": "When you push the brake pedal, air is let into the brake chamber. The S-cam forces the brake shoes away from one another and presses them against the inside of the brake drum."
+  },
+  {
+    "id": 18,
+    "category": "Air Brakes",
+    "question": "Under normal conditions, in order to engage the parking brakes the driver must:",
+    "options": [
+      "Turn off the engine",
+      "Let the air out of the air brake system",
+      "Push down the brake pedal",
+      "Pull the parking brake control knob out"
+    ],
+    "correct_answer": "Pull the parking brake control knob out",
+    "explanation": "The parking brake control is a diamond-shaped, yellow, push-pull control knob. You pull the knob out to put the parking brakes on."
+  },
+  {
+    "id": 19,
+    "category": "Air Brakes",
+    "question": "Tractor and straight truck spring brakes will come fully on when air pressure drops to a range of:",
+    "options": [
+      "20 to 45 psi",
+      "60 to 80 psi",
+      "100 to 125 psi",
+      "0 to 10 psi"
+    ],
+    "correct_answer": "20 to 45 psi",
+    "explanation": "If air pressure drops to a range of 20 to 45 psi, the spring brakes will come on automatically."
+  },
+  {
+    "id": 20,
+    "category": "Air Brakes",
+    "question": "When driving a vehicle with a dual air system, you should allow time for the air compressor to build up a minimum of ____ psi pressure in both the primary and secondary systems.",
+    "options": [
+      "60",
+      "85",
+      "100",
+      "125"
+    ],
+    "correct_answer": "100",
+    "explanation": "Before driving a vehicle with a dual air system, allow time for the air compressor to build up a minimum of 100 psi pressure in both systems."
+  }
+]

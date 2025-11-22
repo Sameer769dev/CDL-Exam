@@ -1,0 +1,29 @@
+
+> cdl-prep@1.0.0 test
+> jest
+
+FAIL __tests__/QuizLogic.test.tsx
+  ● Test suite failed to run
+
+    Caching has already been configured with .never or .forever()
+
+    [0m [90m 1 |[39m module[33m.[39mexports [33m=[39m [36mfunction[39m (api) {
+     [90m 2 |[39m     api[33m.[39mcache([36mtrue[39m)[33m;[39m
+    [31m[1m>[22m[39m[90m 3 |[39m     [36mconst[39m isTest [33m=[39m api[33m.[39menv([32m"test"[39m)[33m;[39m
+     [90m   |[39m                        [31m[1m^[22m[39m
+     [90m 4 |[39m     [36mreturn[39m {
+     [90m 5 |[39m         presets[33m:[39m [
+     [90m 6 |[39m             [[32m"babel-preset-expo"[39m[33m,[39m { jsxImportSource[33m:[39m [32m"nativewind"[39m[33m,[39m reanimated[33m:[39m [33m![39misTest }][33m,[39m[0m
+
+      at CacheConfigurator.using (node_modules/@babel/core/lib/config/caching.js:188:13)
+      at Object.env (node_modules/@babel/core/lib/config/helpers/config-api.js:19:30)
+      at module.exports (babel.config.js:3:24)
+      at loadPartialConfigSync (node_modules/@babel/core/lib/config/index.js:37:84)
+      at Module._compile (node_modules/pirates/lib/index.js:124:29)
+      at Object.newLoader (node_modules/pirates/lib/index.js:134:7)
+
+Test Suites: 1 failed, 1 total
+Tests:       0 total
+Snapshots:   0 total
+Time:        0.176 s
+Ran all test suites.

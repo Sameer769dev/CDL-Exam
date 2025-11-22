@@ -1,0 +1,28 @@
+
+> cdl-prep@1.0.0 test
+> jest
+
+FAIL __tests__/QuizLogic.test.tsx
+  ● Test suite failed to run
+
+    Incorrect version of "react-test-renderer" detected. Expected "19.1.0", but found "19.2.0".
+
+    Fix it by running:
+    npm install -D react-test-renderer@19.1.0
+
+    [0m [90m 1 |[39m [36mimport[39m [33mReact[39m [36mfrom[39m [32m'react'[39m[33m;[39m
+    [31m[1m>[22m[39m[90m 2 |[39m [36mimport[39m { render[33m,[39m fireEvent[33m,[39m screen } [36mfrom[39m [32m'@testing-library/react-native'[39m[33m;[39m
+     [90m   |[39m [31m[1m^[22m[39m
+     [90m 3 |[39m [36mimport[39m [33mQuizScreen[39m [36mfrom[39m [32m'../app/quiz'[39m[33m;[39m
+     [90m 4 |[39m
+     [90m 5 |[39m [90m// Mock Expo Router[39m[0m
+
+      at Object.ensurePeerDeps (node_modules/@testing-library/react-native/src/helpers/ensure-peer-deps.ts:36:3)
+      at Object.require (node_modules/@testing-library/react-native/src/index.ts:1:1)
+      at Object.require (__tests__/QuizLogic.test.tsx:2:1)
+
+Test Suites: 1 failed, 1 total
+Tests:       0 total
+Snapshots:   0 total
+Time:        2.333 s
+Ran all test suites.

@@ -1,0 +1,327 @@
+[
+    {
+        "id": 1,
+        "category": "school_bus",
+        "question": "When should you activate your school bus's alternating flashing amber lights?",
+        "options": [
+            "When loading or unloading students",
+            "At least 100-300 feet before a stop",
+            "Only in school zones",
+            "When driving in heavy traffic"
+        ],
+        "correct_answer": "At least 100-300 feet before a stop",
+        "explanation": "Amber lights should be activated at least 100-300 feet (or more, depending on speed and conditions) before the stop to warn other drivers that the bus is preparing to stop for students."
+    },
+    {
+        "id": 2,
+        "category": "school_bus",
+        "question": "When are you required to use the alternating red flashing lights and stop arm?",
+        "options": [
+            "When driving to school",
+            "When loading or unloading students",
+            "When parking the bus",
+            "When driving in a school zone"
+        ],
+        "correct_answer": "When loading or unloading students",
+        "explanation": "Red flashing lights and the stop arm must be activated when loading or unloading students. This signals to other drivers that they must stop."
+    },
+    {
+        "id": 3,
+        "category": "school_bus",
+        "question": "How far from a school bus must vehicles stop when the red lights are flashing?",
+        "options": [
+            "At least 10 feet",
+            "At least 20 feet",
+            "At least 50 feet",
+            "It varies by state"
+        ],
+        "correct_answer": "It varies by state",
+        "explanation": "The required stopping distance varies by state law, but vehicles must stop when a school bus has its red lights flashing and stop arm extended, typically at least 20 feet away."
+    },
+    {
+        "id": 4,
+        "category": "school_bus",
+        "question": "Before crossing railroad tracks with a school bus, you must:",
+        "options": [
+            "Slow down and look both ways",
+            "Stop, open the door, and look and listen for trains",
+            "Speed up to cross quickly",
+            "Only stop if you see a train"
+        ],
+        "correct_answer": "Stop, open the door, and look and listen for trains",
+        "explanation": "School buses must stop between 15 and 50 feet from railroad tracks, open the service door and driver's window, and look and listen for trains before crossing."
+    },
+    {
+        "id": 5,
+        "category": "school_bus",
+        "question": "When should you evacuate a school bus?",
+        "options": [
+            "Only if there is a fire",
+            "When the bus is in the path of a train or could be hit",
+            "When students are misbehaving",
+            "Never evacuate"
+        ],
+        "correct_answer": "When the bus is in the path of a train or could be hit",
+        "explanation": "Evacuate the bus when it is in the path of a train, fire or danger of fire, or when the bus is in a position where it could be hit by another vehicle. Also evacuate if there is a smell of fuel or if the bus is on an unstable surface."
+    },
+    {
+        "id": 6,
+        "category": "school_bus",
+        "question": "What is the danger zone around a school bus?",
+        "options": [
+            "The area 5 feet around the bus",
+            "The area 10 feet around the bus where children are most at risk",
+            "The area inside the bus",
+            "The area behind the bus only"
+        ],
+        "correct_answer": "The area 10 feet around the bus where children are most at risk",
+        "explanation": "The danger zone is the area on all sides of the bus where children are in the most danger of being hit, either by another vehicle or by the school bus itself. This is typically 10 feet around the bus."
+    },
+    {
+        "id": 7,
+        "category": "school_bus",
+        "question": "When loading students, the bus driver should:",
+        "options": [
+            "Count the students as they board",
+            "Watch for students in the danger zone",
+            "Load as quickly as possible",
+            "Stay seated at all times"
+        ],
+        "correct_answer": "Watch for students in the danger zone",
+        "explanation": "When loading, the driver should watch for students in the danger zone and ensure all students are safely on the bus before moving. The driver should also count students to ensure everyone is accounted for."
+    },
+    {
+        "id": 8,
+        "category": "school_bus",
+        "question": "What should you do if a student drops something near the bus?",
+        "options": [
+            "Tell them to pick it up quickly",
+            "Pick it up yourself",
+            "Make sure the student is in view before allowing them to retrieve it",
+            "Leave it and continue"
+        ],
+        "correct_answer": "Make sure the student is in view before allowing them to retrieve it",
+        "explanation": "If a student drops something near the bus, make sure you can see the student before allowing them to retrieve it. Never allow a student to go under or around the bus without being in full view."
+    },
+    {
+        "id": 9,
+        "category": "school_bus",
+        "question": "When unloading students, they should walk:",
+        "options": [
+            "Behind the bus",
+            "At least 10 feet in front of the bus where the driver can see them",
+            "Directly to their destination",
+            "Alongside the bus"
+        ],
+        "correct_answer": "At least 10 feet in front of the bus where the driver can see them",
+        "explanation": "Students who must cross the road should walk at least 10 feet in front of the bus where the driver can see them. They should wait for the driver's signal before crossing."
+    },
+    {
+        "id": 10,
+        "category": "school_bus",
+        "question": "What is a passive railroad crossing?",
+        "options": [
+            "A crossing with gates and lights",
+            "A crossing with only crossbuck signs",
+            "A crossing that doesn't require stopping",
+            "A crossing with a flagman"
+        ],
+        "correct_answer": "A crossing with only crossbuck signs",
+        "explanation": "A passive crossing has only crossbuck signs and does not have gates, lights, or bells. School buses must still stop at all railroad crossings, whether active or passive."
+    },
+    {
+        "id": 11,
+        "category": "school_bus",
+        "question": "When should you check your mirrors on a school bus?",
+        "options": [
+            "Only when changing lanes",
+            "Before, during, and after loading/unloading",
+            "Once every 5 minutes",
+            "Only in heavy traffic"
+        ],
+        "correct_answer": "Before, during, and after loading/unloading",
+        "explanation": "You should check your mirrors before, during, and after loading and unloading students to ensure their safety and to be aware of traffic and pedestrians around the bus."
+    },
+    {
+        "id": 12,
+        "category": "school_bus",
+        "question": "What is the purpose of the school bus's crossover mirrors?",
+        "options": [
+            "To see behind the bus",
+            "To see the danger zone in front of the bus",
+            "To see traffic on the sides",
+            "To see inside the bus"
+        ],
+        "correct_answer": "To see the danger zone in front of the bus",
+        "explanation": "Crossover mirrors are mounted on both left and right front corners of the bus and are used to see the front bumper 'danger zone' area directly in front of the bus and the area from the front of the bus to the service door."
+    },
+    {
+        "id": 13,
+        "category": "school_bus",
+        "question": "When approaching a school bus stop, you should:",
+        "options": [
+            "Activate amber lights 100-300 feet before the stop",
+            "Stop immediately",
+            "Honk your horn",
+            "Speed up to get there faster"
+        ],
+        "correct_answer": "Activate amber lights 100-300 feet before the stop",
+        "explanation": "Activate your amber warning lights at least 100-300 feet before the stop (or more, depending on speed and road conditions) to alert other drivers."
+    },
+    {
+        "id": 14,
+        "category": "school_bus",
+        "question": "What should you do if you see a student running to catch the bus?",
+        "options": [
+            "Drive away to stay on schedule",
+            "Wait for the student to board safely",
+            "Honk and wave them away",
+            "Tell them to catch the next bus"
+        ],
+        "correct_answer": "Wait for the student to board safely",
+        "explanation": "If you see a student running to catch the bus, wait for them to board safely. A student running to catch the bus may not be paying attention to traffic and could be in danger."
+    },
+    {
+        "id": 15,
+        "category": "school_bus",
+        "question": "How many feet should you stop from a railroad crossing?",
+        "options": [
+            "5-10 feet",
+            "10-15 feet",
+            "15-50 feet",
+            "50-100 feet"
+        ],
+        "correct_answer": "15-50 feet",
+        "explanation": "School buses must stop between 15 and 50 feet from railroad tracks. This distance allows you to see and hear approaching trains while keeping the bus clear of the tracks."
+    },
+    {
+        "id": 16,
+        "category": "school_bus",
+        "question": "When is it safe to proceed after stopping at a railroad crossing?",
+        "options": [
+            "After waiting 10 seconds",
+            "When you can't see or hear a train",
+            "When other vehicles start moving",
+            "Immediately after stopping"
+        ],
+        "correct_answer": "When you can't see or hear a train",
+        "explanation": "After stopping, opening the door, and checking for trains, you may proceed only when you are certain no train is approaching and it is safe to cross."
+    },
+    {
+        "id": 17,
+        "category": "school_bus",
+        "question": "What should you do if your bus stalls on railroad tracks?",
+        "options": [
+            "Try to restart it immediately",
+            "Evacuate students and move them far from the tracks",
+            "Wait for help",
+            "Push the bus off the tracks"
+        ],
+        "correct_answer": "Evacuate students and move them far from the tracks",
+        "explanation": "If your bus stalls on railroad tracks, immediately evacuate all students and move them at least 100 feet away from the tracks in the direction of any oncoming train. Then notify authorities."
+    },
+    {
+        "id": 18,
+        "category": "school_bus",
+        "question": "When should you use your school bus's emergency exits?",
+        "options": [
+            "For regular student boarding",
+            "During emergency evacuations only",
+            "When the main door is broken",
+            "Both B and C"
+        ],
+        "correct_answer": "Both B and C",
+        "explanation": "Emergency exits should be used during emergency evacuations or when the main door is inoperable and students need to exit the bus."
+    },
+    {
+        "id": 19,
+        "category": "school_bus",
+        "question": "What is the proper loading procedure for students?",
+        "options": [
+            "Students should board in any order",
+            "Younger students should board first",
+            "Students should board from front to back",
+            "Students should wait for the driver's signal"
+        ],
+        "correct_answer": "Students should wait for the driver's signal",
+        "explanation": "Students should wait for the driver's signal before approaching and boarding the bus. The driver should ensure the area is safe before signaling students to board."
+    },
+    {
+        "id": 20,
+        "category": "school_bus",
+        "question": "When backing a school bus, you should:",
+        "options": [
+            "Use a spotter if available",
+            "Back up as quickly as possible",
+            "Only use mirrors",
+            "Honk continuously"
+        ],
+        "correct_answer": "Use a spotter if available",
+        "explanation": "When backing is necessary, use a spotter outside the bus if possible. If no spotter is available, check all mirrors and blind spots carefully and back slowly."
+    },
+    {
+        "id": 21,
+        "category": "school_bus",
+        "question": "What should you do if you see a vehicle illegally passing your stopped school bus?",
+        "options": [
+            "Chase after them",
+            "Note the vehicle description and report it",
+            "Block their path",
+            "Ignore it"
+        ],
+        "correct_answer": "Note the vehicle description and report it",
+        "explanation": "If a vehicle illegally passes your stopped school bus, note the vehicle description, license plate, and location, and report it to authorities. Do not chase or confront the driver."
+    },
+    {
+        "id": 22,
+        "category": "school_bus",
+        "question": "How should students be seated on a school bus?",
+        "options": [
+            "Standing is acceptable for short trips",
+            "All students must be seated before the bus moves",
+            "Only older students need to be seated",
+            "Students can stand in the aisle"
+        ],
+        "correct_answer": "All students must be seated before the bus moves",
+        "explanation": "All students must be seated before the bus moves. Standing students are at risk of injury if the bus stops suddenly or is involved in an accident."
+    },
+    {
+        "id": 23,
+        "category": "school_bus",
+        "question": "What is the purpose of the overhead inside rearview mirror?",
+        "options": [
+            "To see traffic behind the bus",
+            "To monitor student behavior inside the bus",
+            "To see the road ahead",
+            "To check blind spots"
+        ],
+        "correct_answer": "To monitor student behavior inside the bus",
+        "explanation": "The overhead inside rearview mirror is used to monitor student behavior and activity inside the bus. This helps the driver maintain order and ensure student safety."
+    },
+    {
+        "id": 24,
+        "category": "school_bus",
+        "question": "When should you deactivate the red flashing lights and stop arm?",
+        "options": [
+            "As soon as students board",
+            "After all students are seated",
+            "After all students are safely away from the roadway",
+            "When other vehicles start moving"
+        ],
+        "correct_answer": "After all students are safely away from the roadway",
+        "explanation": "Deactivate the red lights and stop arm only after all students have boarded or exited and are safely away from the roadway. This ensures maximum protection for students."
+    },
+    {
+        "id": 25,
+        "category": "school_bus",
+        "question": "What is the most important safety rule for school bus drivers?",
+        "options": [
+            "Stay on schedule",
+            "Keep the bus clean",
+            "Ensure student safety at all times",
+            "Follow traffic laws"
+        ],
+        "correct_answer": "Ensure student safety at all times",
+        "explanation": "The most important responsibility of a school bus driver is to ensure the safety of students at all times. This takes priority over schedules, routes, or other concerns."
+    }
+]

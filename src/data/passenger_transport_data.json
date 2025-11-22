@@ -1,0 +1,327 @@
+[
+    {
+        "id": 1,
+        "category": "passenger_transport",
+        "question": "Which of the following is NOT a reason to prohibit a passenger from standing forward of the rear of the driver's seat in a moving bus?",
+        "options": [
+            "It blocks the driver's view",
+            "It can distract the driver",
+            "It increases fuel consumption",
+            "It is unsafe for the passenger"
+        ],
+        "correct_answer": "It increases fuel consumption",
+        "explanation": "Passengers are prohibited from standing forward of the rear of the driver's seat because it blocks the driver's view, can be distracting, and is unsafe for the passenger. Fuel consumption is not a safety concern related to this rule."
+    },
+    {
+        "id": 2,
+        "category": "passenger_transport",
+        "question": "When should you check your bus for sleeping passengers?",
+        "options": [
+            "Only at the end of your shift",
+            "After every trip",
+            "Once per day",
+            "Only on long trips"
+        ],
+        "correct_answer": "After every trip",
+        "explanation": "You should check for sleeping passengers after every trip to ensure no one is left on the bus. This is a critical safety procedure."
+    },
+    {
+        "id": 3,
+        "category": "passenger_transport",
+        "question": "When loading, the bus driver should:",
+        "options": [
+            "Count the number of passengers",
+            "Watch for late passengers running to catch the bus",
+            "Avoid talking to passengers",
+            "Load as quickly as possible"
+        ],
+        "correct_answer": "Watch for late passengers running to catch the bus",
+        "explanation": "When loading, drivers should watch for late passengers who may be running to catch the bus and could be in the driver's blind spot. This prevents accidents during departure."
+    },
+    {
+        "id": 4,
+        "category": "passenger_transport",
+        "question": "Which of the following is a good rule to follow when driving a bus?",
+        "options": [
+            "Avoid slowing down for curves",
+            "Encourage passengers to stand while the bus is moving",
+            "Avoid fueling with passengers on board",
+            "Keep the aisle clear only during loading"
+        ],
+        "correct_answer": "Avoid fueling with passengers on board",
+        "explanation": "You should avoid fueling your bus with passengers on board unless absolutely necessary. This is a safety precaution to protect passengers from potential fuel-related hazards."
+    },
+    {
+        "id": 5,
+        "category": "passenger_transport",
+        "question": "When approaching a railroad crossing with a bus, you should:",
+        "options": [
+            "Slow down and look both ways",
+            "Stop between 15 and 50 feet from the tracks",
+            "Speed up to cross quickly",
+            "Only stop if you see a train"
+        ],
+        "correct_answer": "Stop between 15 and 50 feet from the tracks",
+        "explanation": "Federal regulations require buses to stop between 15 and 50 feet from railroad tracks, open the door, and look and listen for trains before crossing."
+    },
+    {
+        "id": 6,
+        "category": "passenger_transport",
+        "question": "When is it acceptable to tow or push a disabled bus with passengers on board?",
+        "options": [
+            "When the distance is short",
+            "In an emergency",
+            "Getting off the bus would be unsafe",
+            "Never"
+        ],
+        "correct_answer": "Getting off the bus would be unsafe",
+        "explanation": "You should never tow or push a bus with passengers aboard unless getting off would be unsafe. In most situations, passengers should disembark before the bus is moved."
+    },
+    {
+        "id": 7,
+        "category": "passenger_transport",
+        "question": "What is the standee line?",
+        "options": [
+            "A line passengers must stand behind when boarding",
+            "A 2-inch line on the floor showing where passengers may not stand",
+            "The line where passengers wait for the bus",
+            "A line marking the driver's area"
+        ],
+        "correct_answer": "A 2-inch line on the floor showing where passengers may not stand",
+        "explanation": "The standee line is a 2-inch line on the floor or some other marking that shows riders where they cannot stand. This is usually in the front of the bus and helps keep the area around the driver clear."
+    },
+    {
+        "id": 8,
+        "category": "passenger_transport",
+        "question": "You should check your mirrors:",
+        "options": [
+            "Only when changing lanes",
+            "Before and after every stop",
+            "Once every 5 minutes",
+            "Only in heavy traffic"
+        ],
+        "correct_answer": "Before and after every stop",
+        "explanation": "You should check your mirrors before and after every stop to ensure passenger safety and to be aware of your surroundings, including pedestrians and other vehicles."
+    },
+    {
+        "id": 9,
+        "category": "passenger_transport",
+        "question": "When driving in high winds, you should:",
+        "options": [
+            "Speed up to get through quickly",
+            "Keep a strong grip on the steering wheel",
+            "Drive in the left lane only",
+            "Avoid using mirrors"
+        ],
+        "correct_answer": "Keep a strong grip on the steering wheel",
+        "explanation": "High winds can push your bus sideways or even off the road. Keep a strong grip on the steering wheel and be prepared for sudden gusts, especially when leaving tunnels or passing large vehicles."
+    },
+    {
+        "id": 10,
+        "category": "passenger_transport",
+        "question": "Carry-on baggage:",
+        "options": [
+            "Can be stored anywhere on the bus",
+            "Should not block the aisle or emergency exit",
+            "Is not the driver's concern",
+            "Should be stored under seats only"
+        ],
+        "correct_answer": "Should not block the aisle or emergency exit",
+        "explanation": "Baggage and freight must be secured so it does not block the aisle or emergency exit, or prevent the driver from moving freely. This is critical for safety and emergency evacuation."
+    },
+    {
+        "id": 11,
+        "category": "passenger_transport",
+        "question": "When approaching a bus stop, you should:",
+        "options": [
+            "Activate your turn signal at least 100 feet before the stop",
+            "Stop as quickly as possible",
+            "Honk your horn to alert passengers",
+            "Slow down gradually without signaling"
+        ],
+        "correct_answer": "Activate your turn signal at least 100 feet before the stop",
+        "explanation": "You should activate your turn signal at least 100 feet before the bus stop (or according to local regulations) to alert other drivers of your intention to stop."
+    },
+    {
+        "id": 12,
+        "category": "passenger_transport",
+        "question": "Which of the following is true about bus evacuation?",
+        "options": [
+            "Evacuate only if there is a fire",
+            "The driver should be the first to exit",
+            "Passengers should be directed to a safe place",
+            "Evacuation is never necessary"
+        ],
+        "correct_answer": "Passengers should be directed to a safe place",
+        "explanation": "During an evacuation, passengers should be directed to a safe place at least 100 feet from the road in the direction of oncoming traffic to prevent them from being struck by other vehicles."
+    },
+    {
+        "id": 13,
+        "category": "passenger_transport",
+        "question": "When is it acceptable to leave a bus unattended?",
+        "options": [
+            "When making a quick stop",
+            "Never, unless in an emergency",
+            "When passengers are not on board",
+            "When the engine is off"
+        ],
+        "correct_answer": "Never, unless in an emergency",
+        "explanation": "You should never leave your bus unattended in a passenger loading area or with the engine running, except in an emergency situation."
+    },
+    {
+        "id": 14,
+        "category": "passenger_transport",
+        "question": "What should you do if a passenger is disruptive?",
+        "options": [
+            "Ignore them and continue driving",
+            "Stop the bus and call for help if necessary",
+            "Ask other passengers to handle it",
+            "Speed up to reach your destination faster"
+        ],
+        "correct_answer": "Stop the bus and call for help if necessary",
+        "explanation": "If a passenger becomes disruptive or threatening, you should stop the bus in a safe location and call for assistance. Your primary responsibility is the safety of all passengers."
+    },
+    {
+        "id": 15,
+        "category": "passenger_transport",
+        "question": "How many emergency exits must a bus have?",
+        "options": [
+            "At least one",
+            "At least two",
+            "At least three",
+            "It depends on the size of the bus"
+        ],
+        "correct_answer": "It depends on the size of the bus",
+        "explanation": "The number of emergency exits required depends on the size and capacity of the bus. Larger buses require more emergency exits to ensure safe evacuation."
+    },
+    {
+        "id": 16,
+        "category": "passenger_transport",
+        "question": "Before driving, you should check that:",
+        "options": [
+            "All passengers are seated",
+            "Emergency exits are clearly marked and operational",
+            "The radio is working",
+            "All windows are closed"
+        ],
+        "correct_answer": "Emergency exits are clearly marked and operational",
+        "explanation": "Before driving, you must ensure that all emergency exits are clearly marked, operational, and not blocked. This is critical for passenger safety in case of an emergency."
+    },
+    {
+        "id": 17,
+        "category": "passenger_transport",
+        "question": "When driving at night, you should:",
+        "options": [
+            "Use high beams at all times",
+            "Turn on interior lights for passenger comfort",
+            "Adjust speed for reduced visibility",
+            "Follow other vehicles closely"
+        ],
+        "correct_answer": "Adjust speed for reduced visibility",
+        "explanation": "At night, visibility is reduced, so you should adjust your speed accordingly. You should be able to stop within the distance you can see ahead."
+    },
+    {
+        "id": 18,
+        "category": "passenger_transport",
+        "question": "What is the proper procedure for using a bus interlock system?",
+        "options": [
+            "It prevents the bus from starting without proper authorization",
+            "It locks the doors when the bus is moving",
+            "It automatically applies the brakes",
+            "It controls the air conditioning system"
+        ],
+        "correct_answer": "It prevents the bus from starting without proper authorization",
+        "explanation": "An interlock system is designed to prevent the bus from starting or moving without proper authorization, such as ensuring the driver is properly seated or that certain safety conditions are met."
+    },
+    {
+        "id": 19,
+        "category": "passenger_transport",
+        "question": "When should you use your bus's emergency exit?",
+        "options": [
+            "For regular passenger boarding",
+            "Only during an emergency evacuation",
+            "When the main door is blocked",
+            "Both B and C"
+        ],
+        "correct_answer": "Both B and C",
+        "explanation": "Emergency exits should be used during emergency evacuations or when the main door is blocked and passengers need to exit the bus safely."
+    },
+    {
+        "id": 20,
+        "category": "passenger_transport",
+        "question": "What should you do if you see a passenger trying to board with a prohibited item?",
+        "options": [
+            "Allow them to board anyway",
+            "Politely refuse to let them board with the item",
+            "Ignore it and let them on",
+            "Call the police immediately"
+        ],
+        "correct_answer": "Politely refuse to let them board with the item",
+        "explanation": "If a passenger attempts to board with a prohibited item (such as hazardous materials or weapons), you should politely but firmly refuse to allow them to board with that item."
+    },
+    {
+        "id": 21,
+        "category": "passenger_transport",
+        "question": "When making a turn with a bus, you should:",
+        "options": [
+            "Turn as sharply as possible",
+            "Check mirrors and blind spots",
+            "Speed up through the turn",
+            "Avoid using turn signals"
+        ],
+        "correct_answer": "Check mirrors and blind spots",
+        "explanation": "When making a turn, always check your mirrors and blind spots to ensure no pedestrians, cyclists, or vehicles are in your path. Buses have large blind spots that require extra caution."
+    },
+    {
+        "id": 22,
+        "category": "passenger_transport",
+        "question": "What is the purpose of a pre-trip inspection on a bus?",
+        "options": [
+            "To clean the bus",
+            "To ensure the bus is safe to operate",
+            "To count passengers",
+            "To check fuel levels only"
+        ],
+        "correct_answer": "To ensure the bus is safe to operate",
+        "explanation": "A pre-trip inspection is conducted to ensure that the bus is safe to operate. This includes checking brakes, lights, tires, emergency equipment, and other critical systems."
+    },
+    {
+        "id": 23,
+        "category": "passenger_transport",
+        "question": "When should you use your bus's hazard lights?",
+        "options": [
+            "When driving in heavy traffic",
+            "When the bus is stopped and creating a hazard",
+            "When making a turn",
+            "Never"
+        ],
+        "correct_answer": "When the bus is stopped and creating a hazard",
+        "explanation": "Hazard lights should be used when your bus is stopped and creating a traffic hazard, such as during a breakdown or emergency stop."
+    },
+    {
+        "id": 24,
+        "category": "passenger_transport",
+        "question": "What is the minimum tread depth for front tires on a bus?",
+        "options": [
+            "2/32 inch",
+            "4/32 inch",
+            "6/32 inch",
+            "8/32 inch"
+        ],
+        "correct_answer": "4/32 inch",
+        "explanation": "Front tires on a bus must have at least 4/32 inch of tread depth. This is critical for maintaining traction and safe steering."
+    },
+    {
+        "id": 25,
+        "category": "passenger_transport",
+        "question": "When driving in fog, you should:",
+        "options": [
+            "Use high beam headlights",
+            "Use low beam headlights and reduce speed",
+            "Follow the vehicle ahead closely",
+            "Turn off all lights"
+        ],
+        "correct_answer": "Use low beam headlights and reduce speed",
+        "explanation": "In fog, use low beam headlights (high beams reflect off the fog and reduce visibility) and reduce your speed. You should be able to stop within the distance you can see."
+    }
+]

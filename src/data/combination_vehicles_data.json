@@ -1,0 +1,327 @@
+[
+    {
+        "id": 1,
+        "category": "combination_vehicles",
+        "question": "When coupling a tractor to a semi-trailer, the trailer should be:",
+        "options": [
+            "Slightly higher than the fifth wheel",
+            "Slightly lower than the fifth wheel",
+            "At the same height as the fifth wheel",
+            "Much higher than the fifth wheel"
+        ],
+        "correct_answer": "Slightly lower than the fifth wheel",
+        "explanation": "The trailer should be slightly lower than the fifth wheel so that when the tractor backs under it, the fifth wheel will slide under the trailer and lift it slightly as it locks."
+    },
+    {
+        "id": 2,
+        "category": "combination_vehicles",
+        "question": "After coupling, how much space should be between the upper and lower fifth wheel?",
+        "options": [
+            "No space - they should be in firm contact",
+            "About 1 inch",
+            "About 2 inches",
+            "About 3 inches"
+        ],
+        "correct_answer": "No space - they should be in firm contact",
+        "explanation": "After coupling, there should be no space between the upper and lower fifth wheel. They should be in firm contact with no visible gap."
+    },
+    {
+        "id": 3,
+        "category": "combination_vehicles",
+        "question": "What is offtracking?",
+        "options": [
+            "When the rear wheels follow a different path than the front wheels",
+            "When the trailer goes off the road",
+            "When the tractor and trailer separate",
+            "When the vehicle leaves the designated route"
+        ],
+        "correct_answer": "When the rear wheels follow a different path than the front wheels",
+        "explanation": "Offtracking occurs when the rear wheels of a vehicle follow a different (shorter) path than the front wheels when turning. This is especially pronounced in longer combination vehicles."
+    },
+    {
+        "id": 4,
+        "category": "combination_vehicles",
+        "question": "When backing a trailer, you should:",
+        "options": [
+            "Turn the steering wheel in the direction you want the trailer to go",
+            "Turn the steering wheel in the opposite direction you want the trailer to go",
+            "Keep the steering wheel straight",
+            "Use only the mirrors"
+        ],
+        "correct_answer": "Turn the steering wheel in the opposite direction you want the trailer to go",
+        "explanation": "When backing a trailer, turn the steering wheel in the opposite direction you want the trailer to go. To make the trailer go right, turn the wheel left, and vice versa."
+    },
+    {
+        "id": 5,
+        "category": "combination_vehicles",
+        "question": "What is a \"trailer jackknife\"?",
+        "options": [
+            "When the trailer pushes the tractor sideways",
+            "When the tractor and trailer fold together",
+            "When the trailer swings out and hits the tractor",
+            "When the trailer brakes lock up"
+        ],
+        "correct_answer": "When the trailer swings out and hits the tractor",
+        "explanation": "A trailer jackknife occurs when the trailer's wheels lock up (usually from braking too hard) and the trailer swings around toward the cab, potentially hitting the tractor."
+    },
+    {
+        "id": 6,
+        "category": "combination_vehicles",
+        "question": "What is a \"tractor jackknife\"?",
+        "options": [
+            "When the trailer pushes the tractor sideways",
+            "When the drive wheels lock and the tractor slides",
+            "When the steering wheel locks",
+            "When the fifth wheel fails"
+        ],
+        "correct_answer": "When the drive wheels lock and the tractor slides",
+        "explanation": "A tractor jackknife occurs when the tractor's drive wheels lock up (from braking or acceleration) and the rear of the tractor slides sideways, causing the tractor and trailer to fold together."
+    },
+    {
+        "id": 7,
+        "category": "combination_vehicles",
+        "question": "Before backing under a trailer, you should:",
+        "options": [
+            "Make sure the trailer brakes are locked",
+            "Raise the landing gear",
+            "Disconnect the electrical lines",
+            "Lower the fifth wheel"
+        ],
+        "correct_answer": "Make sure the trailer brakes are locked",
+        "explanation": "Before backing under a trailer, make sure the trailer brakes are locked or wheel chocks are in place to prevent the trailer from rolling."
+    },
+    {
+        "id": 8,
+        "category": "combination_vehicles",
+        "question": "After coupling, you should test the connection by:",
+        "options": [
+            "Driving forward slowly",
+            "Pulling gently forward in low gear against the locked trailer brakes",
+            "Backing up quickly",
+            "Shaking the fifth wheel"
+        ],
+        "correct_answer": "Pulling gently forward in low gear against the locked trailer brakes",
+        "explanation": "After coupling, test the connection by pulling gently forward in low gear against the locked trailer brakes. This ensures the fifth wheel is properly locked."
+    },
+    {
+        "id": 9,
+        "category": "combination_vehicles",
+        "question": "What should you check after coupling air lines?",
+        "options": [
+            "That air flows to all trailers",
+            "That the air pressure is at least 100 psi",
+            "That there are no air leaks",
+            "All of the above"
+        ],
+        "correct_answer": "All of the above",
+        "explanation": "After coupling air lines, check that air flows to all trailers, that air pressure builds to at least 100 psi, and that there are no air leaks in the connections."
+    },
+    {
+        "id": 10,
+        "category": "combination_vehicles",
+        "question": "The service line (also called the control line) is:",
+        "options": [
+            "Used to supply air to the trailer brakes during normal braking",
+            "Used to supply air to the trailer air tanks",
+            "Used only in emergencies",
+            "Not necessary for combination vehicles"
+        ],
+        "correct_answer": "Used to supply air to the trailer brakes during normal braking",
+        "explanation": "The service line (blue) carries air controlled by the foot brake or trailer hand brake and is used to apply the trailer brakes during normal braking."
+    },
+    {
+        "id": 11,
+        "category": "combination_vehicles",
+        "question": "The emergency line (also called the supply line) is:",
+        "options": [
+            "Used only when the service line fails",
+            "Used to supply air to the trailer air tanks and emergency brakes",
+            "Used for normal braking",
+            "Not necessary for short trips"
+        ],
+        "correct_answer": "Used to supply air to the trailer air tanks and emergency brakes",
+        "explanation": "The emergency line (red) provides air to the trailer air tanks and controls the emergency brakes on the trailer. If it loses pressure, the trailer emergency brakes activate."
+    },
+    {
+        "id": 12,
+        "category": "combination_vehicles",
+        "question": "When uncoupling, you should:",
+        "options": [
+            "Lower the landing gear before disconnecting air lines",
+            "Disconnect air lines before lowering landing gear",
+            "Pull the fifth wheel release while moving",
+            "Leave the trailer brakes unlocked"
+        ],
+        "correct_answer": "Lower the landing gear before disconnecting air lines",
+        "explanation": "When uncoupling, lower the landing gear fully before disconnecting air lines. This supports the trailer and prevents it from falling when you pull away."
+    },
+    {
+        "id": 13,
+        "category": "combination_vehicles",
+        "question": "What is the purpose of the trailer air supply control (also called the tractor protection valve)?",
+        "options": [
+            "To control the trailer brakes",
+            "To protect the tractor's air supply if the trailer breaks away",
+            "To inflate the trailer tires",
+            "To sound an alarm"
+        ],
+        "correct_answer": "To protect the tractor's air supply if the trailer breaks away",
+        "explanation": "The trailer air supply control (tractor protection valve) automatically shuts off air to the trailer if the trailer breaks away or develops a major air leak, protecting the tractor's air supply."
+    },
+    {
+        "id": 14,
+        "category": "combination_vehicles",
+        "question": "When should you use the trailer hand valve (trolley valve)?",
+        "options": [
+            "For normal braking",
+            "Only to test the trailer brakes",
+            "To park the trailer",
+            "Never"
+        ],
+        "correct_answer": "Only to test the trailer brakes",
+        "explanation": "The trailer hand valve should only be used to test the trailer brakes. Using it for normal braking can cause the trailer wheels to lock up and lead to a jackknife."
+    },
+    {
+        "id": 15,
+        "category": "combination_vehicles",
+        "question": "What can happen if the air lines are crossed when hooking up to a trailer?",
+        "options": [
+            "Nothing - they are interchangeable",
+            "The trailer brakes won't work properly",
+            "The trailer will have no brakes",
+            "The emergency brakes will activate"
+        ],
+        "correct_answer": "The trailer will have no brakes",
+        "explanation": "If the air lines are crossed (emergency line connected to service glad hand and vice versa), you could drive away with no trailer brakes, which is extremely dangerous."
+    },
+    {
+        "id": 16,
+        "category": "combination_vehicles",
+        "question": "What is the maximum length of a combination vehicle?",
+        "options": [
+            "48 feet",
+            "53 feet",
+            "65 feet",
+            "It varies by state"
+        ],
+        "correct_answer": "It varies by state",
+        "explanation": "Maximum length for combination vehicles varies by state law. Drivers must know and comply with the regulations in each state where they operate."
+    },
+    {
+        "id": 17,
+        "category": "combination_vehicles",
+        "question": "When driving a combination vehicle on a curve, you should:",
+        "options": [
+            "Speed up through the curve",
+            "Slow down before entering the curve",
+            "Brake hard in the curve",
+            "Use the trailer hand brake"
+        ],
+        "correct_answer": "Slow down before entering the curve",
+        "explanation": "Slow down before entering a curve. Combination vehicles can roll over at higher speeds than other vehicles due to their high center of gravity. Braking in a curve can cause loss of control."
+    },
+    {
+        "id": 18,
+        "category": "combination_vehicles",
+        "question": "What is \"rearward amplification\" (crack-the-whip effect)?",
+        "options": [
+            "When the rear trailer swings more than the front during a turn",
+            "When the brakes fail on the rear trailer",
+            "When the rear trailer goes faster than the tractor",
+            "When the trailer pushes the tractor forward"
+        ],
+        "correct_answer": "When the rear trailer swings more than the front during a turn",
+        "explanation": "Rearward amplification (crack-the-whip effect) occurs in longer combination vehicles when the rear trailer swings out more than the vehicle in front during a quick lane change or turn, potentially causing a rollover."
+    },
+    {
+        "id": 19,
+        "category": "combination_vehicles",
+        "question": "Before driving a combination vehicle, you should:",
+        "options": [
+            "Check that the fifth wheel is properly lubricated",
+            "Ensure the kingpin is not bent or damaged",
+            "Check that the locking jaws are around the shank of the kingpin",
+            "All of the above"
+        ],
+        "correct_answer": "All of the above",
+        "explanation": "Before driving, check that the fifth wheel is lubricated, the kingpin is not damaged, and the locking jaws are securely around the shank of the kingpin (not the head)."
+    },
+    {
+        "id": 20,
+        "category": "combination_vehicles",
+        "question": "What is the purpose of the sliding fifth wheel?",
+        "options": [
+            "To make coupling easier",
+            "To distribute weight between the tractor axles",
+            "To allow for different trailer heights",
+            "To improve fuel economy"
+        ],
+        "correct_answer": "To distribute weight between the tractor axles",
+        "explanation": "A sliding fifth wheel allows you to adjust the weight distribution between the tractor's steer axle and drive axles to comply with weight limits and improve handling."
+    },
+    {
+        "id": 21,
+        "category": "combination_vehicles",
+        "question": "When should you check the fifth wheel locking mechanism?",
+        "options": [
+            "Only during the pre-trip inspection",
+            "After every coupling",
+            "Once a week",
+            "Only if you hear unusual noises"
+        ],
+        "correct_answer": "After every coupling",
+        "explanation": "You should check the fifth wheel locking mechanism after every coupling to ensure it is properly secured. This is critical for safe operation."
+    },
+    {
+        "id": 22,
+        "category": "combination_vehicles",
+        "question": "What should you do if your trailer starts to skid?",
+        "options": [
+            "Brake harder",
+            "Release the brakes to regain traction",
+            "Turn the steering wheel sharply",
+            "Use the trailer hand brake"
+        ],
+        "correct_answer": "Release the brakes to regain traction",
+        "explanation": "If your trailer starts to skid, release the brakes to allow the wheels to regain traction. Then reapply the brakes gently to slow down."
+    },
+    {
+        "id": 23,
+        "category": "combination_vehicles",
+        "question": "The apron (or platform) of the fifth wheel should be:",
+        "options": [
+            "Greased only at the center",
+            "Greased as required to prevent friction",
+            "Never greased",
+            "Painted to prevent rust"
+        ],
+        "correct_answer": "Greased as required to prevent friction",
+        "explanation": "The fifth wheel apron should be properly greased to reduce friction between the tractor and trailer during turns and to prevent wear."
+    },
+    {
+        "id": 24,
+        "category": "combination_vehicles",
+        "question": "What is the minimum tread depth for tires on a combination vehicle?",
+        "options": [
+            "2/32 inch on all tires",
+            "4/32 inch on front tires, 2/32 inch on other tires",
+            "4/32 inch on all tires",
+            "6/32 inch on all tires"
+        ],
+        "correct_answer": "4/32 inch on front tires, 2/32 inch on other tires",
+        "explanation": "Front (steer) tires must have at least 4/32 inch of tread depth. All other tires must have at least 2/32 inch of tread depth."
+    },
+    {
+        "id": 25,
+        "category": "combination_vehicles",
+        "question": "When should you use the trailer emergency brakes?",
+        "options": [
+            "For normal stopping",
+            "Only in an actual emergency",
+            "To park the trailer",
+            "When going downhill"
+        ],
+        "correct_answer": "Only in an actual emergency",
+        "explanation": "Trailer emergency brakes should only be used in an actual emergency. They are designed to stop the trailer if it separates from the tractor or if there is a major air system failure."
+    }
+]

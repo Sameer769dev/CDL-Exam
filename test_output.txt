@@ -1,0 +1,12 @@
+
+> cdl-prep@1.0.0 test
+> jest
+
+● Validation Error:
+
+  Module @testing-library/react-native/extend-expect in the setupFilesAfterEnv option was not found.
+         <rootDir> is: C:\Users\dhana\Desktop\CDL Exam
+
+  Configuration Documentation:
+  https://jestjs.io/docs/configuration
+

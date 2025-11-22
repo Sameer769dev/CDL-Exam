@@ -1,0 +1,142 @@
+[
+    {
+        "id": 1001,
+        "category": "General Knowledge",
+        "categoryId": "general_knowledge",
+        "question": "What is the most important reason for doing a vehicle inspection?",
+        "options": [
+            "To ensure the vehicle looks good",
+            "Safety is the most important reason you inspect your vehicle",
+            "To check the fuel level",
+            "To keep the logbook updated"
+        ],
+        "correct_answer": "Safety is the most important reason you inspect your vehicle",
+        "explanation": "Safety is the most important reason you inspect your vehicle, safety for yourself and for other road users."
+    },
+    {
+        "id": 1002,
+        "category": "General Knowledge",
+        "categoryId": "general_knowledge",
+        "question": "What things should you check during a trip?",
+        "options": [
+            "Watch gauges for signs of trouble",
+            "Use your senses to check for problems (look, listen, smell, feel)",
+            "Check critical items when you stop (tires, brakes, lights)",
+            "All of the above"
+        ],
+        "correct_answer": "All of the above",
+        "explanation": "You should watch gauges, use your senses, and check critical items like tires, wheels, brakes, lights, and electrical connections when you stop."
+    },
+    {
+        "id": 1003,
+        "category": "General Knowledge",
+        "categoryId": "general_knowledge",
+        "question": "Name some key steering system parts.",
+        "options": [
+            "Steering wheel, tie rod, steering shaft",
+            "Steering arm, spindle, steering knuckle",
+            "Drag link, pitman arm, gear box",
+            "All of the above"
+        ],
+        "correct_answer": "All of the above",
+        "explanation": "Key steering system parts include the steering wheel, tie rod, steering shaft, steering arm, spindle, steering knuckle, drag link, pitman arm, and gear box."
+    },
+    {
+        "id": 1004,
+        "category": "General Knowledge",
+        "categoryId": "general_knowledge",
+        "question": "What is the minimum tread depth for front tires?",
+        "options": [
+            "4/32-inch",
+            "2/32-inch",
+            "1/32-inch",
+            "6/32-inch"
+        ],
+        "correct_answer": "4/32-inch",
+        "explanation": "You need at least 4/32-inch tread depth in every major groove on front tires. You need 2/32-inch on other tires."
+    },
+    {
+        "id": 1005,
+        "category": "General Knowledge",
+        "categoryId": "general_knowledge",
+        "question": "Which of these is NOT a sign of wheel or rim problems?",
+        "options": [
+            "Rust around wheel nuts",
+            "Missing clamps, spacers, studs, or lugs",
+            "Welding repairs on the rim",
+            "Tires that are the same size"
+        ],
+        "correct_answer": "Tires that are the same size",
+        "explanation": "Rust around wheel nuts may mean the nuts are loose. Missing parts and welding repairs are dangerous. Tires of the same size are good."
+    },
+    {
+        "id": 1006,
+        "category": "General Knowledge",
+        "categoryId": "general_knowledge",
+        "question": "How do you test hydraulic brakes for leaks?",
+        "options": [
+            "Pump the brake pedal 3 times, then apply firm pressure for 5 seconds",
+            "Drive at 5 mph and slam on the brakes",
+            "Look for puddles under the truck",
+            "Listen for air escaping"
+        ],
+        "correct_answer": "Pump the brake pedal 3 times, then apply firm pressure for 5 seconds",
+        "explanation": "Pump the brake pedal three times. Then apply firm pressure to the pedal and hold for five seconds. The pedal should not move. If it does, there may be a leak."
+    },
+    {
+        "id": 1007,
+        "category": "General Knowledge",
+        "categoryId": "general_knowledge",
+        "question": "Why should you back toward the driver's side?",
+        "options": [
+            "It is required by law",
+            "So you can see better",
+            "It is always safer to back to the right",
+            "The mirrors are bigger on the left"
+        ],
+        "correct_answer": "So you can see better",
+        "explanation": "Back toward the driver's side so you can see better. Backing toward the right side is very dangerous because you can't see as well."
+    },
+    {
+        "id": 1008,
+        "category": "General Knowledge",
+        "categoryId": "general_knowledge",
+        "question": "What is a 'pull-up'?",
+        "options": [
+            "Pulling forward to reposition the vehicle when backing",
+            "Doing exercise during a break",
+            "Pulling over to the side of the road",
+            "Pulling a trailer up a hill"
+        ],
+        "correct_answer": "Pulling forward to reposition the vehicle when backing",
+        "explanation": "When backing a truck, if you need to correct your position, you pull forward. This is called a pull-up."
+    },
+    {
+        "id": 1009,
+        "category": "General Knowledge",
+        "categoryId": "general_knowledge",
+        "question": "How far ahead does the manual say you should look?",
+        "options": [
+            "5 to 10 seconds",
+            "12 to 15 seconds",
+            "20 to 30 seconds",
+            "Just past the hood"
+        ],
+        "correct_answer": "12 to 15 seconds",
+        "explanation": "Most good drivers look at least 12 to 15 seconds ahead. That means looking for what is going to happen in the distance, not just right in front of you."
+    },
+    {
+        "id": 1010,
+        "category": "General Knowledge",
+        "categoryId": "general_knowledge",
+        "question": "What are two main things to look for ahead?",
+        "options": [
+            "Traffic and road conditions",
+            "Police and weigh stations",
+            "Rest stops and food",
+            "Billboards and scenery"
+        ],
+        "correct_answer": "Traffic and road conditions",
+        "explanation": "Look for traffic (vehicles coming onto the highway, into your lane, or turning) and road conditions (hills, curves, traffic signals)."
+    }
+]

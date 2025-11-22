@@ -1,0 +1,268 @@
+app/index.tsx(7,15): error TS2769: No overload matches this call.
+  Overload 1 of 2, '(props: ViewProps): View', gave the following error.
+    Type '{ children: Element[]; className: string; }' is not assignable to type 'IntrinsicAttributes & IntrinsicClassAttributes<View> & Readonly<ViewProps>'.
+      Property 'className' does not exist on type 'IntrinsicAttributes & IntrinsicClassAttributes<View> & Readonly<ViewProps>'.
+  Overload 2 of 2, '(props: ViewProps, context: any): View', gave the following error.
+    Type '{ children: Element[]; className: string; }' is not assignable to type 'IntrinsicAttributes & IntrinsicClassAttributes<View> & Readonly<ViewProps>'.
+      Property 'className' does not exist on type 'IntrinsicAttributes & IntrinsicClassAttributes<View> & Readonly<ViewProps>'.
+app/index.tsx(10,19): error TS2769: No overload matches this call.
+  Overload 1 of 2, '(props: ViewProps): View', gave the following error.
+    Type '{ children: Element; className: string; }' is not assignable to type 'IntrinsicAttributes & IntrinsicClassAttributes<View> & Readonly<ViewProps>'.
+      Property 'className' does not exist on type 'IntrinsicAttributes & IntrinsicClassAttributes<View> & Readonly<ViewProps>'.
+  Overload 2 of 2, '(props: ViewProps, context: any): View', gave the following error.
+    Type '{ children: Element; className: string; }' is not assignable to type 'IntrinsicAttributes & IntrinsicClassAttributes<View> & Readonly<ViewProps>'.
+      Property 'className' does not exist on type 'IntrinsicAttributes & IntrinsicClassAttributes<View> & Readonly<ViewProps>'.
+app/index.tsx(14,19): error TS2769: No overload matches this call.
+  Overload 1 of 2, '(props: TextProps): Text', gave the following error.
+    Type '{ children: string; className: string; }' is not assignable to type 'IntrinsicAttributes & IntrinsicClassAttributes<Text> & Readonly<TextProps>'.
+      Property 'className' does not exist on type 'IntrinsicAttributes & IntrinsicClassAttributes<Text> & Readonly<TextProps>'.
+  Overload 2 of 2, '(props: TextProps, context: any): Text', gave the following error.
+    Type '{ children: string; className: string; }' is not assignable to type 'IntrinsicAttributes & IntrinsicClassAttributes<Text> & Readonly<TextProps>'.
+      Property 'className' does not exist on type 'IntrinsicAttributes & IntrinsicClassAttributes<Text> & Readonly<TextProps>'.
+app/index.tsx(17,19): error TS2769: No overload matches this call.
+  Overload 1 of 2, '(props: TextProps): Text', gave the following error.
+    Type '{ children: string; className: string; }' is not assignable to type 'IntrinsicAttributes & IntrinsicClassAttributes<Text> & Readonly<TextProps>'.
+      Property 'className' does not exist on type 'IntrinsicAttributes & IntrinsicClassAttributes<Text> & Readonly<TextProps>'.
+  Overload 2 of 2, '(props: TextProps, context: any): Text', gave the following error.
+    Type '{ children: string; className: string; }' is not assignable to type 'IntrinsicAttributes & IntrinsicClassAttributes<Text> & Readonly<TextProps>'.
+      Property 'className' does not exist on type 'IntrinsicAttributes & IntrinsicClassAttributes<Text> & Readonly<TextProps>'.
+app/index.tsx(21,19): error TS2769: No overload matches this call.
+  Overload 1 of 2, '(props: ViewProps): View', gave the following error.
+    Type '{ children: Element[]; className: string; }' is not assignable to type 'IntrinsicAttributes & IntrinsicClassAttributes<View> & Readonly<ViewProps>'.
+      Property 'className' does not exist on type 'IntrinsicAttributes & IntrinsicClassAttributes<View> & Readonly<ViewProps>'.
+  Overload 2 of 2, '(props: ViewProps, context: any): View', gave the following error.
+    Type '{ children: Element[]; className: string; }' is not assignable to type 'IntrinsicAttributes & IntrinsicClassAttributes<View> & Readonly<ViewProps>'.
+      Property 'className' does not exist on type 'IntrinsicAttributes & IntrinsicClassAttributes<View> & Readonly<ViewProps>'.
+app/index.tsx(23,39): error TS2322: Type '{ children: Element[]; className: string; }' is not assignable to type 'IntrinsicAttributes & TouchableOpacityProps & RefAttributes<View>'.
+  Property 'className' does not exist on type 'IntrinsicAttributes & TouchableOpacityProps & RefAttributes<View>'.
+app/index.tsx(24,31): error TS2769: No overload matches this call.
+  Overload 1 of 2, '(props: TextProps): Text', gave the following error.
+    Type '{ children: string; className: string; }' is not assignable to type 'IntrinsicAttributes & IntrinsicClassAttributes<Text> & Readonly<TextProps>'.
+      Property 'className' does not exist on type 'IntrinsicAttributes & IntrinsicClassAttributes<Text> & Readonly<TextProps>'.
+  Overload 2 of 2, '(props: TextProps, context: any): Text', gave the following error.
+    Type '{ children: string; className: string; }' is not assignable to type 'IntrinsicAttributes & IntrinsicClassAttributes<Text> & Readonly<TextProps>'.
+      Property 'className' does not exist on type 'IntrinsicAttributes & IntrinsicClassAttributes<Text> & Readonly<TextProps>'.
+app/index.tsx(29,23): error TS2769: No overload matches this call.
+  Overload 1 of 2, '(props: TextProps): Text', gave the following error.
+    Type '{ children: string; className: string; }' is not assignable to type 'IntrinsicAttributes & IntrinsicClassAttributes<Text> & Readonly<TextProps>'.
+      Property 'className' does not exist on type 'IntrinsicAttributes & IntrinsicClassAttributes<Text> & Readonly<TextProps>'.
+  Overload 2 of 2, '(props: TextProps, context: any): Text', gave the following error.
+    Type '{ children: string; className: string; }' is not assignable to type 'IntrinsicAttributes & IntrinsicClassAttributes<Text> & Readonly<TextProps>'.
+      Property 'className' does not exist on type 'IntrinsicAttributes & IntrinsicClassAttributes<Text> & Readonly<TextProps>'.
+app/quiz.tsx(51,23): error TS2769: No overload matches this call.
+  Overload 1 of 2, '(props: ViewProps): SafeAreaView', gave the following error.
+    Type '{ children: Element[]; className: string; }' is not assignable to type 'IntrinsicAttributes & IntrinsicClassAttributes<SafeAreaView> & Readonly<ViewProps>'.
+      Property 'className' does not exist on type 'IntrinsicAttributes & IntrinsicClassAttributes<SafeAreaView> & Readonly<ViewProps>'.
+  Overload 2 of 2, '(props: ViewProps, context: any): SafeAreaView', gave the following error.
+    Type '{ children: Element[]; className: string; }' is not assignable to type 'IntrinsicAttributes & IntrinsicClassAttributes<SafeAreaView> & Readonly<ViewProps>'.
+      Property 'className' does not exist on type 'IntrinsicAttributes & IntrinsicClassAttributes<SafeAreaView> & Readonly<ViewProps>'.
+app/quiz.tsx(54,19): error TS2769: No overload matches this call.
+  Overload 1 of 2, '(props: ViewProps): View', gave the following error.
+    Type '{ children: (false | Element)[]; className: string; }' is not assignable to type 'IntrinsicAttributes & IntrinsicClassAttributes<View> & Readonly<ViewProps>'.
+      Property 'className' does not exist on type 'IntrinsicAttributes & IntrinsicClassAttributes<View> & Readonly<ViewProps>'.
+  Overload 2 of 2, '(props: ViewProps, context: any): View', gave the following error.
+    Type '{ children: (false | Element)[]; className: string; }' is not assignable to type 'IntrinsicAttributes & IntrinsicClassAttributes<View> & Readonly<ViewProps>'.
+      Property 'className' does not exist on type 'IntrinsicAttributes & IntrinsicClassAttributes<View> & Readonly<ViewProps>'.
+app/quiz.tsx(57,29): error TS2769: No overload matches this call.
+  Overload 1 of 2, '(props: ScrollViewProps): ScrollView', gave the following error.
+    Type '{ children: (false | Element)[]; className: string; showsVerticalScrollIndicator: false; }' is not assignable to type 'IntrinsicAttributes & IntrinsicClassAttributes<ScrollView> & Readonly<ScrollViewProps>'.
+      Property 'className' does not exist on type 'IntrinsicAttributes & IntrinsicClassAttributes<ScrollView> & Readonly<ScrollViewProps>'.
+  Overload 2 of 2, '(props: ScrollViewProps, context: any): ScrollView', gave the following error.
+    Type '{ children: (false | Element)[]; className: string; showsVerticalScrollIndicator: false; }' is not assignable to type 'IntrinsicAttributes & IntrinsicClassAttributes<ScrollView> & Readonly<ScrollViewProps>'.
+      Property 'className' does not exist on type 'IntrinsicAttributes & IntrinsicClassAttributes<ScrollView> & Readonly<ScrollViewProps>'.
+app/quiz.tsx(58,27): error TS2769: No overload matches this call.
+  Overload 1 of 2, '(props: TextProps): Text', gave the following error.
+    Type '{ children: string; className: string; }' is not assignable to type 'IntrinsicAttributes & IntrinsicClassAttributes<Text> & Readonly<TextProps>'.
+      Property 'className' does not exist on type 'IntrinsicAttributes & IntrinsicClassAttributes<Text> & Readonly<TextProps>'.
+  Overload 2 of 2, '(props: TextProps, context: any): Text', gave the following error.
+    Type '{ children: string; className: string; }' is not assignable to type 'IntrinsicAttributes & IntrinsicClassAttributes<Text> & Readonly<TextProps>'.
+      Property 'className' does not exist on type 'IntrinsicAttributes & IntrinsicClassAttributes<Text> & Readonly<TextProps>'.
+app/quiz.tsx(62,27): error TS2769: No overload matches this call.
+  Overload 1 of 2, '(props: ViewProps): View', gave the following error.
+    Type '{ children: Element[]; className: string; }' is not assignable to type 'IntrinsicAttributes & IntrinsicClassAttributes<View> & Readonly<ViewProps>'.
+      Property 'className' does not exist on type 'IntrinsicAttributes & IntrinsicClassAttributes<View> & Readonly<ViewProps>'.
+  Overload 2 of 2, '(props: ViewProps, context: any): View', gave the following error.
+    Type '{ children: Element[]; className: string; }' is not assignable to type 'IntrinsicAttributes & IntrinsicClassAttributes<View> & Readonly<ViewProps>'.
+      Property 'className' does not exist on type 'IntrinsicAttributes & IntrinsicClassAttributes<View> & Readonly<ViewProps>'.
+app/quiz.tsx(74,31): error TS2769: No overload matches this call.
+  Overload 1 of 2, '(props: ViewProps): View', gave the following error.
+    Type '{ children: Element[]; className: string; }' is not assignable to type 'IntrinsicAttributes & IntrinsicClassAttributes<View> & Readonly<ViewProps>'.
+      Property 'className' does not exist on type 'IntrinsicAttributes & IntrinsicClassAttributes<View> & Readonly<ViewProps>'.
+  Overload 2 of 2, '(props: ViewProps, context: any): View', gave the following error.
+    Type '{ children: Element[]; className: string; }' is not assignable to type 'IntrinsicAttributes & IntrinsicClassAttributes<View> & Readonly<ViewProps>'.
+      Property 'className' does not exist on type 'IntrinsicAttributes & IntrinsicClassAttributes<View> & Readonly<ViewProps>'.
+app/quiz.tsx(75,35): error TS2769: No overload matches this call.
+  Overload 1 of 2, '(props: ViewProps): View', gave the following error.
+    Type '{ children: Element[]; className: string; }' is not assignable to type 'IntrinsicAttributes & IntrinsicClassAttributes<View> & Readonly<ViewProps>'.
+      Property 'className' does not exist on type 'IntrinsicAttributes & IntrinsicClassAttributes<View> & Readonly<ViewProps>'.
+  Overload 2 of 2, '(props: ViewProps, context: any): View', gave the following error.
+    Type '{ children: Element[]; className: string; }' is not assignable to type 'IntrinsicAttributes & IntrinsicClassAttributes<View> & Readonly<ViewProps>'.
+      Property 'className' does not exist on type 'IntrinsicAttributes & IntrinsicClassAttributes<View> & Readonly<ViewProps>'.
+app/quiz.tsx(76,72): error TS2322: Type '{ size: number; color: string; className: string; }' is not assignable to type 'IntrinsicAttributes & LucideProps'.
+  Property 'className' does not exist on type 'IntrinsicAttributes & LucideProps'.
+app/quiz.tsx(77,39): error TS2769: No overload matches this call.
+  Overload 1 of 2, '(props: TextProps): Text', gave the following error.
+    Type '{ children: string; className: string; }' is not assignable to type 'IntrinsicAttributes & IntrinsicClassAttributes<Text> & Readonly<TextProps>'.
+      Property 'className' does not exist on type 'IntrinsicAttributes & IntrinsicClassAttributes<Text> & Readonly<TextProps>'.
+  Overload 2 of 2, '(props: TextProps, context: any): Text', gave the following error.
+    Type '{ children: string; className: string; }' is not assignable to type 'IntrinsicAttributes & IntrinsicClassAttributes<Text> & Readonly<TextProps>'.
+      Property 'className' does not exist on type 'IntrinsicAttributes & IntrinsicClassAttributes<Text> & Readonly<TextProps>'.
+app/quiz.tsx(79,35): error TS2769: No overload matches this call.
+  Overload 1 of 2, '(props: TextProps): Text', gave the following error.
+    Type '{ children: string; className: string; }' is not assignable to type 'IntrinsicAttributes & IntrinsicClassAttributes<Text> & Readonly<TextProps>'.
+      Property 'className' does not exist on type 'IntrinsicAttributes & IntrinsicClassAttributes<Text> & Readonly<TextProps>'.
+  Overload 2 of 2, '(props: TextProps, context: any): Text', gave the following error.
+    Type '{ children: string; className: string; }' is not assignable to type 'IntrinsicAttributes & IntrinsicClassAttributes<Text> & Readonly<TextProps>'.
+      Property 'className' does not exist on type 'IntrinsicAttributes & IntrinsicClassAttributes<Text> & Readonly<TextProps>'.
+app/quiz.tsx(87,27): error TS2769: No overload matches this call.
+  Overload 1 of 2, '(props: ViewProps): View', gave the following error.
+    Type '{ children: Element; className: string; }' is not assignable to type 'IntrinsicAttributes & IntrinsicClassAttributes<View> & Readonly<ViewProps>'.
+      Property 'className' does not exist on type 'IntrinsicAttributes & IntrinsicClassAttributes<View> & Readonly<ViewProps>'.
+  Overload 2 of 2, '(props: ViewProps, context: any): View', gave the following error.
+    Type '{ children: Element; className: string; }' is not assignable to type 'IntrinsicAttributes & IntrinsicClassAttributes<View> & Readonly<ViewProps>'.
+      Property 'className' does not exist on type 'IntrinsicAttributes & IntrinsicClassAttributes<View> & Readonly<ViewProps>'.
+app/quiz.tsx(90,29): error TS2322: Type '{ children: Element[]; onPress: () => void; className: string; }' is not assignable to type 'IntrinsicAttributes & TouchableOpacityProps & RefAttributes<View>'.
+  Property 'className' does not exist on type 'IntrinsicAttributes & TouchableOpacityProps & RefAttributes<View>'.
+app/quiz.tsx(92,35): error TS2769: No overload matches this call.
+  Overload 1 of 2, '(props: TextProps): Text', gave the following error.
+    Type '{ children: string; className: string; }' is not assignable to type 'IntrinsicAttributes & IntrinsicClassAttributes<Text> & Readonly<TextProps>'.
+      Property 'className' does not exist on type 'IntrinsicAttributes & IntrinsicClassAttributes<Text> & Readonly<TextProps>'.
+  Overload 2 of 2, '(props: TextProps, context: any): Text', gave the following error.
+    Type '{ children: string; className: string; }' is not assignable to type 'IntrinsicAttributes & IntrinsicClassAttributes<Text> & Readonly<TextProps>'.
+      Property 'className' does not exist on type 'IntrinsicAttributes & IntrinsicClassAttributes<Text> & Readonly<TextProps>'.
+app/results.tsx(18,23): error TS2769: No overload matches this call.
+  Overload 1 of 2, '(props: ViewProps): SafeAreaView', gave the following error.
+    Type '{ children: Element[]; className: string; }' is not assignable to type 'IntrinsicAttributes & IntrinsicClassAttributes<SafeAreaView> & Readonly<ViewProps>'.
+      Property 'className' does not exist on type 'IntrinsicAttributes & IntrinsicClassAttributes<SafeAreaView> & Readonly<ViewProps>'.
+  Overload 2 of 2, '(props: ViewProps, context: any): SafeAreaView', gave the following error.
+    Type '{ children: Element[]; className: string; }' is not assignable to type 'IntrinsicAttributes & IntrinsicClassAttributes<SafeAreaView> & Readonly<ViewProps>'.
+      Property 'className' does not exist on type 'IntrinsicAttributes & IntrinsicClassAttributes<SafeAreaView> & Readonly<ViewProps>'.
+app/results.tsx(20,19): error TS2769: No overload matches this call.
+  Overload 1 of 2, '(props: ViewProps): View', gave the following error.
+    Type '{ children: Element; className: string; }' is not assignable to type 'IntrinsicAttributes & IntrinsicClassAttributes<View> & Readonly<ViewProps>'.
+      Property 'className' does not exist on type 'IntrinsicAttributes & IntrinsicClassAttributes<View> & Readonly<ViewProps>'.
+  Overload 2 of 2, '(props: ViewProps, context: any): View', gave the following error.
+    Type '{ children: Element; className: string; }' is not assignable to type 'IntrinsicAttributes & IntrinsicClassAttributes<View> & Readonly<ViewProps>'.
+      Property 'className' does not exist on type 'IntrinsicAttributes & IntrinsicClassAttributes<View> & Readonly<ViewProps>'.
+src/components/OptionButton.tsx(28,53): error TS2322: Type '{ size: number; color: string; className: string; }' is not assignable to type 'IntrinsicAttributes & LucideProps'.
+  Property 'className' does not exist on type 'IntrinsicAttributes & LucideProps'.
+src/components/OptionButton.tsx(33,49): error TS2322: Type '{ size: number; color: string; className: string; }' is not assignable to type 'IntrinsicAttributes & LucideProps'.
+  Property 'className' does not exist on type 'IntrinsicAttributes & LucideProps'.
+src/components/OptionButton.tsx(49,13): error TS2322: Type '{ children: (Element | null)[]; onPress: () => void; disabled: boolean; className: string; activeOpacity: number; }' is not assignable to type 'IntrinsicAttributes & TouchableOpacityProps & RefAttributes<View>'.
+  Property 'className' does not exist on type 'IntrinsicAttributes & TouchableOpacityProps & RefAttributes<View>'.
+src/components/OptionButton.tsx(53,19): error TS2769: No overload matches this call.
+  Overload 1 of 2, '(props: TextProps): Text', gave the following error.
+    Type '{ children: string; className: string; }' is not assignable to type 'IntrinsicAttributes & IntrinsicClassAttributes<Text> & Readonly<TextProps>'.
+      Property 'className' does not exist on type 'IntrinsicAttributes & IntrinsicClassAttributes<Text> & Readonly<TextProps>'.
+  Overload 2 of 2, '(props: TextProps, context: any): Text', gave the following error.
+    Type '{ children: string; className: string; }' is not assignable to type 'IntrinsicAttributes & IntrinsicClassAttributes<Text> & Readonly<TextProps>'.
+      Property 'className' does not exist on type 'IntrinsicAttributes & IntrinsicClassAttributes<Text> & Readonly<TextProps>'.
+src/components/ProgressBar.tsx(13,15): error TS2769: No overload matches this call.
+  Overload 1 of 2, '(props: ViewProps): View', gave the following error.
+    Type '{ children: Element[]; className: string; }' is not assignable to type 'IntrinsicAttributes & IntrinsicClassAttributes<View> & Readonly<ViewProps>'.
+      Property 'className' does not exist on type 'IntrinsicAttributes & IntrinsicClassAttributes<View> & Readonly<ViewProps>'.
+  Overload 2 of 2, '(props: ViewProps, context: any): View', gave the following error.
+    Type '{ children: Element[]; className: string; }' is not assignable to type 'IntrinsicAttributes & IntrinsicClassAttributes<View> & Readonly<ViewProps>'.
+      Property 'className' does not exist on type 'IntrinsicAttributes & IntrinsicClassAttributes<View> & Readonly<ViewProps>'.
+src/components/ProgressBar.tsx(14,19): error TS2769: No overload matches this call.
+  Overload 1 of 2, '(props: ViewProps): View', gave the following error.
+    Type '{ children: Element[]; className: string; }' is not assignable to type 'IntrinsicAttributes & IntrinsicClassAttributes<View> & Readonly<ViewProps>'.
+      Property 'className' does not exist on type 'IntrinsicAttributes & IntrinsicClassAttributes<View> & Readonly<ViewProps>'.
+  Overload 2 of 2, '(props: ViewProps, context: any): View', gave the following error.
+    Type '{ children: Element[]; className: string; }' is not assignable to type 'IntrinsicAttributes & IntrinsicClassAttributes<View> & Readonly<ViewProps>'.
+      Property 'className' does not exist on type 'IntrinsicAttributes & IntrinsicClassAttributes<View> & Readonly<ViewProps>'.
+src/components/ProgressBar.tsx(15,23): error TS2769: No overload matches this call.
+  Overload 1 of 2, '(props: TextProps): Text', gave the following error.
+    Type '{ children: (string | number)[]; className: string; }' is not assignable to type 'IntrinsicAttributes & IntrinsicClassAttributes<Text> & Readonly<TextProps>'.
+      Property 'className' does not exist on type 'IntrinsicAttributes & IntrinsicClassAttributes<Text> & Readonly<TextProps>'.
+  Overload 2 of 2, '(props: TextProps, context: any): Text', gave the following error.
+    Type '{ children: (string | number)[]; className: string; }' is not assignable to type 'IntrinsicAttributes & IntrinsicClassAttributes<Text> & Readonly<TextProps>'.
+      Property 'className' does not exist on type 'IntrinsicAttributes & IntrinsicClassAttributes<Text> & Readonly<TextProps>'.
+src/components/ProgressBar.tsx(18,23): error TS2769: No overload matches this call.
+  Overload 1 of 2, '(props: TextProps): Text', gave the following error.
+    Type '{ children: (string | number)[]; className: string; }' is not assignable to type 'IntrinsicAttributes & IntrinsicClassAttributes<Text> & Readonly<TextProps>'.
+      Property 'className' does not exist on type 'IntrinsicAttributes & IntrinsicClassAttributes<Text> & Readonly<TextProps>'.
+  Overload 2 of 2, '(props: TextProps, context: any): Text', gave the following error.
+    Type '{ children: (string | number)[]; className: string; }' is not assignable to type 'IntrinsicAttributes & IntrinsicClassAttributes<Text> & Readonly<TextProps>'.
+      Property 'className' does not exist on type 'IntrinsicAttributes & IntrinsicClassAttributes<Text> & Readonly<TextProps>'.
+src/components/ProgressBar.tsx(20,19): error TS2769: No overload matches this call.
+  Overload 1 of 2, '(props: ViewProps): View', gave the following error.
+    Type '{ children: Element; className: string; }' is not assignable to type 'IntrinsicAttributes & IntrinsicClassAttributes<View> & Readonly<ViewProps>'.
+      Property 'className' does not exist on type 'IntrinsicAttributes & IntrinsicClassAttributes<View> & Readonly<ViewProps>'.
+  Overload 2 of 2, '(props: ViewProps, context: any): View', gave the following error.
+    Type '{ children: Element; className: string; }' is not assignable to type 'IntrinsicAttributes & IntrinsicClassAttributes<View> & Readonly<ViewProps>'.
+      Property 'className' does not exist on type 'IntrinsicAttributes & IntrinsicClassAttributes<View> & Readonly<ViewProps>'.
+src/components/ProgressBar.tsx(22,21): error TS2769: No overload matches this call.
+  Overload 1 of 2, '(props: ViewProps): View', gave the following error.
+    Type '{ className: string; style: { width: `${number}%`; }; }' is not assignable to type 'IntrinsicAttributes & IntrinsicClassAttributes<View> & Readonly<ViewProps>'.
+      Property 'className' does not exist on type 'IntrinsicAttributes & IntrinsicClassAttributes<View> & Readonly<ViewProps>'.
+  Overload 2 of 2, '(props: ViewProps, context: any): View', gave the following error.
+    Type '{ className: string; style: { width: `${number}%`; }; }' is not assignable to type 'IntrinsicAttributes & IntrinsicClassAttributes<View> & Readonly<ViewProps>'.
+      Property 'className' does not exist on type 'IntrinsicAttributes & IntrinsicClassAttributes<View> & Readonly<ViewProps>'.
+src/components/ResultCard.tsx(20,15): error TS2769: No overload matches this call.
+  Overload 1 of 2, '(props: ViewProps): View', gave the following error.
+    Type '{ children: Element[]; className: string; }' is not assignable to type 'IntrinsicAttributes & IntrinsicClassAttributes<View> & Readonly<ViewProps>'.
+      Property 'className' does not exist on type 'IntrinsicAttributes & IntrinsicClassAttributes<View> & Readonly<ViewProps>'.
+  Overload 2 of 2, '(props: ViewProps, context: any): View', gave the following error.
+    Type '{ children: Element[]; className: string; }' is not assignable to type 'IntrinsicAttributes & IntrinsicClassAttributes<View> & Readonly<ViewProps>'.
+      Property 'className' does not exist on type 'IntrinsicAttributes & IntrinsicClassAttributes<View> & Readonly<ViewProps>'.
+src/components/ResultCard.tsx(21,19): error TS2769: No overload matches this call.
+  Overload 1 of 2, '(props: ViewProps): View', gave the following error.
+    Type '{ children: Element; className: string; }' is not assignable to type 'IntrinsicAttributes & IntrinsicClassAttributes<View> & Readonly<ViewProps>'.
+      Property 'className' does not exist on type 'IntrinsicAttributes & IntrinsicClassAttributes<View> & Readonly<ViewProps>'.
+  Overload 2 of 2, '(props: ViewProps, context: any): View', gave the following error.
+    Type '{ children: Element; className: string; }' is not assignable to type 'IntrinsicAttributes & IntrinsicClassAttributes<View> & Readonly<ViewProps>'.
+      Property 'className' does not exist on type 'IntrinsicAttributes & IntrinsicClassAttributes<View> & Readonly<ViewProps>'.
+src/components/ResultCard.tsx(29,19): error TS2769: No overload matches this call.
+  Overload 1 of 2, '(props: TextProps): Text', gave the following error.
+    Type '{ children: string; className: string; }' is not assignable to type 'IntrinsicAttributes & IntrinsicClassAttributes<Text> & Readonly<TextProps>'.
+      Property 'className' does not exist on type 'IntrinsicAttributes & IntrinsicClassAttributes<Text> & Readonly<TextProps>'.
+  Overload 2 of 2, '(props: TextProps, context: any): Text', gave the following error.
+    Type '{ children: string; className: string; }' is not assignable to type 'IntrinsicAttributes & IntrinsicClassAttributes<Text> & Readonly<TextProps>'.
+      Property 'className' does not exist on type 'IntrinsicAttributes & IntrinsicClassAttributes<Text> & Readonly<TextProps>'.
+src/components/ResultCard.tsx(33,19): error TS2769: No overload matches this call.
+  Overload 1 of 2, '(props: TextProps): Text', gave the following error.
+    Type '{ children: string; className: string; }' is not assignable to type 'IntrinsicAttributes & IntrinsicClassAttributes<Text> & Readonly<TextProps>'.
+      Property 'className' does not exist on type 'IntrinsicAttributes & IntrinsicClassAttributes<Text> & Readonly<TextProps>'.
+  Overload 2 of 2, '(props: TextProps, context: any): Text', gave the following error.
+    Type '{ children: string; className: string; }' is not assignable to type 'IntrinsicAttributes & IntrinsicClassAttributes<Text> & Readonly<TextProps>'.
+      Property 'className' does not exist on type 'IntrinsicAttributes & IntrinsicClassAttributes<Text> & Readonly<TextProps>'.
+src/components/ResultCard.tsx(39,19): error TS2769: No overload matches this call.
+  Overload 1 of 2, '(props: ViewProps): View', gave the following error.
+    Type '{ children: Element[]; className: string; }' is not assignable to type 'IntrinsicAttributes & IntrinsicClassAttributes<View> & Readonly<ViewProps>'.
+      Property 'className' does not exist on type 'IntrinsicAttributes & IntrinsicClassAttributes<View> & Readonly<ViewProps>'.
+  Overload 2 of 2, '(props: ViewProps, context: any): View', gave the following error.
+    Type '{ children: Element[]; className: string; }' is not assignable to type 'IntrinsicAttributes & IntrinsicClassAttributes<View> & Readonly<ViewProps>'.
+      Property 'className' does not exist on type 'IntrinsicAttributes & IntrinsicClassAttributes<View> & Readonly<ViewProps>'.
+src/components/ResultCard.tsx(40,23): error TS2769: No overload matches this call.
+  Overload 1 of 2, '(props: TextProps): Text', gave the following error.
+    Type '{ children: string; className: string; }' is not assignable to type 'IntrinsicAttributes & IntrinsicClassAttributes<Text> & Readonly<TextProps>'.
+      Property 'className' does not exist on type 'IntrinsicAttributes & IntrinsicClassAttributes<Text> & Readonly<TextProps>'.
+  Overload 2 of 2, '(props: TextProps, context: any): Text', gave the following error.
+    Type '{ children: string; className: string; }' is not assignable to type 'IntrinsicAttributes & IntrinsicClassAttributes<Text> & Readonly<TextProps>'.
+      Property 'className' does not exist on type 'IntrinsicAttributes & IntrinsicClassAttributes<Text> & Readonly<TextProps>'.
+src/components/ResultCard.tsx(43,23): error TS2769: No overload matches this call.
+  Overload 1 of 2, '(props: TextProps): Text', gave the following error.
+    Type '{ children: (string | number)[]; className: string; }' is not assignable to type 'IntrinsicAttributes & IntrinsicClassAttributes<Text> & Readonly<TextProps>'.
+      Property 'className' does not exist on type 'IntrinsicAttributes & IntrinsicClassAttributes<Text> & Readonly<TextProps>'.
+  Overload 2 of 2, '(props: TextProps, context: any): Text', gave the following error.
+    Type '{ children: (string | number)[]; className: string; }' is not assignable to type 'IntrinsicAttributes & IntrinsicClassAttributes<Text> & Readonly<TextProps>'.
+      Property 'className' does not exist on type 'IntrinsicAttributes & IntrinsicClassAttributes<Text> & Readonly<TextProps>'.
+src/components/ResultCard.tsx(46,23): error TS2769: No overload matches this call.
+  Overload 1 of 2, '(props: TextProps): Text', gave the following error.
+    Type '{ children: (string | number)[]; className: string; }' is not assignable to type 'IntrinsicAttributes & IntrinsicClassAttributes<Text> & Readonly<TextProps>'.
+      Property 'className' does not exist on type 'IntrinsicAttributes & IntrinsicClassAttributes<Text> & Readonly<TextProps>'.
+  Overload 2 of 2, '(props: TextProps, context: any): Text', gave the following error.
+    Type '{ children: (string | number)[]; className: string; }' is not assignable to type 'IntrinsicAttributes & IntrinsicClassAttributes<Text> & Readonly<TextProps>'.
+      Property 'className' does not exist on type 'IntrinsicAttributes & IntrinsicClassAttributes<Text> & Readonly<TextProps>'.
+src/components/ResultCard.tsx(53,17): error TS2322: Type '{ children: Element[]; onPress: () => void; className: string; }' is not assignable to type 'IntrinsicAttributes & TouchableOpacityProps & RefAttributes<View>'.
+  Property 'className' does not exist on type 'IntrinsicAttributes & TouchableOpacityProps & RefAttributes<View>'.
+src/components/ResultCard.tsx(55,52): error TS2322: Type '{ size: number; color: string; className: string; }' is not assignable to type 'IntrinsicAttributes & LucideProps'.
+  Property 'className' does not exist on type 'IntrinsicAttributes & LucideProps'.
+src/components/ResultCard.tsx(56,23): error TS2769: No overload matches this call.
+  Overload 1 of 2, '(props: TextProps): Text', gave the following error.
+    Type '{ children: string; className: string; }' is not assignable to type 'IntrinsicAttributes & IntrinsicClassAttributes<Text> & Readonly<TextProps>'.
+      Property 'className' does not exist on type 'IntrinsicAttributes & IntrinsicClassAttributes<Text> & Readonly<TextProps>'.
+  Overload 2 of 2, '(props: TextProps, context: any): Text', gave the following error.
+    Type '{ children: string; className: string; }' is not assignable to type 'IntrinsicAttributes & IntrinsicClassAttributes<Text> & Readonly<TextProps>'.
+      Property 'className' does not exist on type 'IntrinsicAttributes & IntrinsicClassAttributes<Text> & Readonly<TextProps>'.

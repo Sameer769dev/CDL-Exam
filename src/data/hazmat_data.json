@@ -1,0 +1,327 @@
+[
+    {
+        "id": 1,
+        "category": "Hazmat",
+        "question": "Which of the following is NOT a hazard class?",
+        "options": [
+            "Flammable liquids",
+            "Explosives",
+            "Perishable goods",
+            "Radioactive materials"
+        ],
+        "correct_answer": "Perishable goods",
+        "explanation": "Perishable goods are not a hazard class. The nine hazard classes include explosives, gases, flammable liquids, flammable solids, oxidizers, toxic materials, radioactive materials, corrosives, and miscellaneous."
+    },
+    {
+        "id": 2,
+        "category": "Hazmat",
+        "question": "The shipper of hazardous materials must provide the carrier with:",
+        "options": [
+            "Shipping papers",
+            "A list of all employees",
+            "Insurance documents",
+            "Vehicle registration"
+        ],
+        "correct_answer": "Shipping papers",
+        "explanation": "The shipper must provide proper shipping papers that describe the hazardous materials being transported, including the proper shipping name, hazard class, identification number, and packing group."
+    },
+    {
+        "id": 3,
+        "category": "Hazmat",
+        "question": "When transporting hazardous materials, placards must be placed on:",
+        "options": [
+            "The front only",
+            "All four sides of the vehicle",
+            "The rear only",
+            "Both sides only"
+        ],
+        "correct_answer": "All four sides of the vehicle",
+        "explanation": "Placards must be placed on all four sides of the vehicle (front, rear, and both sides) to warn others of the hazardous materials being transported."
+    },
+    {
+        "id": 4,
+        "category": "Hazmat",
+        "question": "What is the minimum amount of a hazardous material that requires placarding?",
+        "options": [
+            "Any amount",
+            "1,001 pounds",
+            "5,000 pounds",
+            "10,000 pounds"
+        ],
+        "correct_answer": "1,001 pounds",
+        "explanation": "Generally, placards are required when transporting 1,001 pounds or more of hazardous materials. However, some materials require placards for any amount, such as explosives, radioactive materials, and inhalation hazards."
+    },
+    {
+        "id": 5,
+        "category": "Hazmat",
+        "question": "The hazardous materials identification number must appear on the:",
+        "options": [
+            "Shipping papers and package",
+            "Driver's license",
+            "Vehicle registration",
+            "Insurance card"
+        ],
+        "correct_answer": "Shipping papers and package",
+        "explanation": "The identification number (a four-digit number preceded by UN or NA) must appear on the shipping papers and on the package or placard."
+    },
+    {
+        "id": 6,
+        "category": "Hazmat",
+        "question": "Who is responsible for packaging, labeling, and preparing the shipping papers for hazardous materials?",
+        "options": [
+            "The driver",
+            "The carrier",
+            "The shipper",
+            "The receiver"
+        ],
+        "correct_answer": "The shipper",
+        "explanation": "The shipper is responsible for packaging, labeling, and preparing the proper shipping papers for hazardous materials shipments."
+    },
+    {
+        "id": 7,
+        "category": "Hazmat",
+        "question": "When loading or unloading hazardous materials, you must:",
+        "options": [
+            "Keep the engine running",
+            "Turn off the engine unless it's needed to operate a pump",
+            "Keep the radio on",
+            "Lock all doors"
+        ],
+        "correct_answer": "Turn off the engine unless it's needed to operate a pump",
+        "explanation": "Turn off your engine before loading or unloading any hazardous material, unless you need the engine to operate a pump for loading or unloading."
+    },
+    {
+        "id": 8,
+        "category": "Hazmat",
+        "question": "A driver transporting hazardous materials must have a commercial driver's license (CDL) with:",
+        "options": [
+            "No special endorsement",
+            "A hazardous materials endorsement",
+            "Only a Class A license",
+            "A passenger endorsement"
+        ],
+        "correct_answer": "A hazardous materials endorsement",
+        "explanation": "You must have a commercial driver's license with a hazardous materials (H) endorsement to transport hazardous materials that require placarding."
+    },
+    {
+        "id": 9,
+        "category": "Hazmat",
+        "question": "The shipping papers for hazardous materials must be:",
+        "options": [
+            "In the glove compartment",
+            "In the driver's pocket",
+            "Within the driver's reach while driving, or in a pouch on the driver's door",
+            "In the trailer"
+        ],
+        "correct_answer": "Within the driver's reach while driving, or in a pouch on the driver's door",
+        "explanation": "Shipping papers must be within the driver's reach while driving or in a pouch on the driver's door. If you are not in the vehicle, the papers must be on the driver's seat or in a pouch on the door."
+    },
+    {
+        "id": 10,
+        "category": "Hazmat",
+        "question": "What shape are hazardous materials warning labels?",
+        "options": [
+            "Square",
+            "Diamond",
+            "Circle",
+            "Triangle"
+        ],
+        "correct_answer": "Diamond",
+        "explanation": "Hazardous materials warning labels and placards are diamond-shaped (square on point) to make them easily recognizable."
+    },
+    {
+        "id": 11,
+        "category": "Hazmat",
+        "question": "When transporting chlorine in cargo tanks, you must have:",
+        "options": [
+            "A fire extinguisher only",
+            "An approved gas mask",
+            "A cell phone",
+            "Extra fuel"
+        ],
+        "correct_answer": "An approved gas mask",
+        "explanation": "When transporting chlorine, you must have an approved gas mask in the vehicle. Chlorine is a poisonous gas that requires special safety equipment."
+    },
+    {
+        "id": 12,
+        "category": "Hazmat",
+        "question": "If hazardous materials are spilling from your vehicle, do not move it:",
+        "options": [
+            "More than necessary for safety",
+            "At all",
+            "Until the police arrive",
+            "Until you call the shipper"
+        ],
+        "correct_answer": "More than necessary for safety",
+        "explanation": "If hazardous materials are spilling, do not move your vehicle any more than safety requires. You may move off the road and away from places where people gather if doing so serves safety."
+    },
+    {
+        "id": 13,
+        "category": "Hazmat",
+        "question": "When transporting Division 1.1, 1.2, or 1.3 explosives, you must not park within ____ feet of a bridge, tunnel, or building.",
+        "options": [
+            "100",
+            "200",
+            "300",
+            "500"
+        ],
+        "correct_answer": "300",
+        "explanation": "When transporting Division 1.1, 1.2, or 1.3 explosives, do not park within 300 feet of a bridge, tunnel, or building, or in places where people gather."
+    },
+    {
+        "id": 14,
+        "category": "Hazmat",
+        "question": "The basic description of a hazardous material on shipping papers must include:",
+        "options": [
+            "Identification number, proper shipping name, hazard class, and packing group",
+            "Driver's name and license number",
+            "Vehicle identification number",
+            "Insurance policy number"
+        ],
+        "correct_answer": "Identification number, proper shipping name, hazard class, and packing group",
+        "explanation": "The basic description must include the identification number (UN or NA number), proper shipping name, hazard class or division, and packing group (if any) in that specific order."
+    },
+    {
+        "id": 15,
+        "category": "Hazmat",
+        "question": "A vehicle carrying hazardous materials must have a fire extinguisher with a UL rating of at least:",
+        "options": [
+            "5 B:C",
+            "10 B:C",
+            "15 B:C",
+            "20 B:C"
+        ],
+        "correct_answer": "10 B:C",
+        "explanation": "Vehicles carrying hazardous materials must have a fire extinguisher with a UL rating of at least 10 B:C. The driver must know how to use it."
+    },
+    {
+        "id": 16,
+        "category": "Hazmat",
+        "question": "When transporting hazardous materials, you must stop ____ to ____ feet before a railroad crossing.",
+        "options": [
+            "5 to 10",
+            "10 to 20",
+            "15 to 50",
+            "50 to 100"
+        ],
+        "correct_answer": "15 to 50",
+        "explanation": "You must stop 15 to 50 feet before the nearest rail of a railroad crossing when transporting hazardous materials, unless the crossing is exempt."
+    },
+    {
+        "id": 17,
+        "category": "Hazmat",
+        "question": "The Hazardous Materials Table is found in:",
+        "options": [
+            "The vehicle owner's manual",
+            "The Federal Hazardous Materials Regulations (49 CFR)",
+            "The driver's handbook",
+            "The insurance policy"
+        ],
+        "correct_answer": "The Federal Hazardous Materials Regulations (49 CFR)",
+        "explanation": "The Hazardous Materials Table is in the Federal Hazardous Materials Regulations (49 CFR 172.101). It lists hazardous materials and their shipping requirements."
+    },
+    {
+        "id": 18,
+        "category": "Hazmat",
+        "question": "When transporting hazardous materials, you must check the tires:",
+        "options": [
+            "Once a week",
+            "At the beginning of each trip and each time the vehicle is parked",
+            "Only if you feel a problem",
+            "Once a month"
+        ],
+        "correct_answer": "At the beginning of each trip and each time the vehicle is parked",
+        "explanation": "You must check the tires at the beginning of each trip and each time the vehicle is parked to ensure they are properly inflated and in good condition."
+    },
+    {
+        "id": 19,
+        "category": "Hazmat",
+        "question": "What is the purpose of the Emergency Response Guidebook (ERG)?",
+        "options": [
+            "To provide vehicle maintenance schedules",
+            "To provide emergency response information for hazardous materials incidents",
+            "To list all CDL requirements",
+            "To provide fuel efficiency tips"
+        ],
+        "correct_answer": "To provide emergency response information for hazardous materials incidents",
+        "explanation": "The Emergency Response Guidebook provides first responders with information about how to handle hazardous materials incidents safely during the critical first minutes."
+    },
+    {
+        "id": 20,
+        "category": "Hazmat",
+        "question": "A hazardous materials endorsement is NOT required when:",
+        "options": [
+            "Transporting any amount of explosives",
+            "Transporting materials that do not require placards",
+            "Transporting radioactive materials",
+            "Transporting inhalation hazards"
+        ],
+        "correct_answer": "Transporting materials that do not require placards",
+        "explanation": "You do not need a hazardous materials endorsement if you are transporting materials that do not require placarding. However, you still need a CDL for the vehicle class."
+    },
+    {
+        "id": 21,
+        "category": "Hazmat",
+        "question": "Smoking is prohibited within ____ feet of a vehicle containing Class 1 (explosives), Class 3 (flammable liquids), or Class 4 (flammable solids).",
+        "options": [
+            "10",
+            "15",
+            "25",
+            "50"
+        ],
+        "correct_answer": "25",
+        "explanation": "Do not smoke or carry a lighted cigarette, cigar, or pipe within 25 feet of any vehicle containing Class 1, 3, 4, or 5 materials."
+    },
+    {
+        "id": 22,
+        "category": "Hazmat",
+        "question": "If you are transporting hazardous materials and have ___ different shipping papers, they must be tabbed or on top of the others.",
+        "options": [
+            "Two or more",
+            "Three or more",
+            "Four or more",
+            "Five or more"
+        ],
+        "correct_answer": "Two or more",
+        "explanation": "If you have two or more different shipping papers, the hazardous materials papers must be tabbed or placed on top of the others so they are easily found."
+    },
+    {
+        "id": 23,
+        "category": "Hazmat",
+        "question": "What does the packing group indicate?",
+        "options": [
+            "The size of the package",
+            "The degree of danger",
+            "The weight of the material",
+            "The shipping cost"
+        ],
+        "correct_answer": "The degree of danger",
+        "explanation": "The packing group (I, II, or III) indicates the degree of danger. Packing Group I is the most dangerous, and Packing Group III is the least dangerous."
+    },
+    {
+        "id": 24,
+        "category": "Hazmat",
+        "question": "When fueling a vehicle containing hazardous materials, someone must always be:",
+        "options": [
+            "In the vehicle",
+            "At the nozzle, controlling the fuel flow",
+            "Inside the building",
+            "On the phone"
+        ],
+        "correct_answer": "At the nozzle, controlling the fuel flow",
+        "explanation": "When fueling a placarded vehicle, someone must always be at the nozzle controlling the fuel flow. The engine must be off."
+    },
+    {
+        "id": 25,
+        "category": "Hazmat",
+        "question": "A driver's dated receipt for hazardous materials must be kept by the carrier for:",
+        "options": [
+            "30 days",
+            "90 days",
+            "1 year",
+            "3 years"
+        ],
+        "correct_answer": "1 year",
+        "explanation": "The carrier must keep a copy of the hazardous materials shipping papers (or an electronic image) for one year after the material is accepted by the final carrier."
+    }
+]
