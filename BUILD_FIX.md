@@ -56,30 +56,6 @@ The library includes both implementations and uses Gradle flavors to select the 
 Once the APK is built, verify:
 - [ ] App installs successfully
 - [ ] Billing initializes without errors
-- [ ] Product fetching works
-- [ ] Purchase flow opens Google Play sheet
-- [ ] No crashes related to billing
-
-## Additional Notes
-
-### AdMob Plugin Temporarily Removed
-
-I also temporarily removed the Google Mobile Ads plugin from `app.json` because it was causing configuration warnings. We can add it back after confirming the basic build works.
-
-To re-enable ads later:
-1. Add the plugin back to `app.json`
-2. Configure with your real AdMob App ID
-3. Rebuild
-
-### Package Name
-
-✅ Package name is correctly set to: `com.protimeworld.cdlprep`
-✅ App name is: "CDL Hazmat & Brakes 2025"
-
----
-
-## Build Monitoring
-
 Track your build at:
 https://expo.dev/accounts/dhanabaral/projects/cdl-hazmat-brakes/builds
 
