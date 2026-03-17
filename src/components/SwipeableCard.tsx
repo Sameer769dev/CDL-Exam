@@ -9,7 +9,8 @@ import Animated, {
     runOnJS,
     interpolate,
     Extrapolation,
-    interpolateColor
+    interpolateColor,
+    Easing
 } from 'react-native-reanimated';
 import { CheckCircle2, HelpCircle } from 'lucide-react-native';
 
@@ -66,7 +67,10 @@ export const SwipeableCard: React.FC<SwipeableCardProps> = ({
 
     const tapGesture = Gesture.Tap()
         .onEnd(() => {
-            rotateY.value = withTiming(isFlipped ? 0 : 180, { duration: 300 }, () => {
+            rotateY.value = withTiming(isFlipped ? 0 : 180, {
+                duration: 500,
+                easing: Easing.out(Easing.cubic)
+            }, () => {
                 runOnJS(setIsFlipped)(!isFlipped);
             });
         });

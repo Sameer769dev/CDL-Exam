@@ -64,7 +64,8 @@
             }
           }
         }
-      ]
+      ],
+      "expo-font"
     ],
     "extra": {
       "router": {},

@@ -7,7 +7,7 @@ interface StreakHeatmapProps {
     last7Days?: boolean[]; // Array of true/false for the last 7 days
 }
 
-export const StreakHeatmap: React.FC<StreakHeatmapProps> = ({ streak, last7Days = [true, true, false, true, true, true, true] }) => {
+export const StreakHeatmap: React.FC<StreakHeatmapProps> = ({ streak, last7Days = [false, false, false, false, false, false, false] }) => {
     // Mock data generation if not provided (simulating "Calendar Heatmap")
     // In a real app, this would come from the user's study history
     const days = ['M', 'T', 'W', 'T', 'F', 'S', 'S'];
@@ -43,8 +43,8 @@ export const StreakHeatmap: React.FC<StreakHeatmapProps> = ({ streak, last7Days 
                             </Text>
                             <View
                                 className={`w-8 h-8 rounded-lg items-center justify-center ${isActive
-                                        ? 'bg-orange-500 shadow-sm shadow-orange-200 dark:shadow-none'
-                                        : 'bg-slate-200 dark:bg-slate-700'
+                                    ? 'bg-orange-500 shadow-sm shadow-orange-200 dark:shadow-none'
+                                    : 'bg-slate-200 dark:bg-slate-700'
                                     }`}
                             >
                                 {isActive && (

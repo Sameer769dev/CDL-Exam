@@ -37,7 +37,7 @@ const Dot: React.FC<{ index: number; currentIndex: number }> = ({ index, current
 
         return {
             width: withSpring(width, { damping: 15, stiffness: 100 }),
-            opacity: withTiming(isActive.value ? 1 : 0.5, { duration: 200 }),
+            opacity: withTiming(isActive.value ? 1 : 0.5, { duration: 400 }),
             backgroundColor: isActive.value ? '#3B82F6' : '#94A3B8', // Blue-500 : Slate-400
         };
     });

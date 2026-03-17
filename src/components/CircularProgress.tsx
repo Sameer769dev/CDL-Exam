@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { View, Text } from 'react-native';
 import Svg, { Circle } from 'react-native-svg';
-import Animated, { useSharedValue, useAnimatedProps, withTiming } from 'react-native-reanimated';
+import Animated, { useSharedValue, useAnimatedProps, withTiming, Easing } from 'react-native-reanimated';
 
 const AnimatedCircle = Animated.createAnimatedComponent(Circle);
 
@@ -23,7 +23,10 @@ export const CircularProgress: React.FC<CircularProgressProps> = ({
     const progress = useSharedValue(0);
 
     useEffect(() => {
-        progress.value = withTiming(current / total, { duration: 500 });
+        progress.value = withTiming(current / total, {
+            duration: 700,
+            easing: Easing.out(Easing.cubic)
+        });
     }, [current, total]);
 
     const animatedProps = useAnimatedProps(() => ({

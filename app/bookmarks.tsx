@@ -7,6 +7,7 @@ import { useUser } from '../src/context/UserContext';
 import { getAllQuestions, getCategoryById } from '../src/utils/dataLoader';
 import { Question } from '../src/types/quiz';
 import { useTheme } from '../src/context/ThemeContext';
+import { BottomNav } from '../src/components/BottomNav';
 
 export default function BookmarksScreen() {
     const router = useRouter();
@@ -69,10 +70,20 @@ export default function BookmarksScreen() {
     };
 
     return (
-        <SafeAreaView className="flex-1 bg-slate-50 dark:bg-slate-900" edges={['bottom', 'left', 'right']}>
-            <Stack.Screen options={{ title: "Saved Questions" }} />
+        <SafeAreaView className="flex-1 bg-slate-50 dark:bg-slate-900" edges={['top']}>
+            <Stack.Screen options={{ headerShown: false }} />
 
-            <View className="flex-1 p-6">
+            {/* Header */}
+            <View className="px-6 py-4 bg-white dark:bg-slate-800 border-b border-slate-200 dark:border-slate-700">
+                <Text className="text-2xl font-bold text-slate-900 dark:text-white">
+                    Saved Questions
+                </Text>
+                <Text className="text-sm text-slate-500 dark:text-slate-400">
+                    Review your bookmarked questions
+                </Text>
+            </View>
+
+            <View className="flex-1 p-6 pb-24">
                 {bookmarkedQuestions.length > 0 ? (
                     <>
                         <View className="bg-blue-600 dark:bg-blue-700 p-6 rounded-2xl mb-6 shadow-lg shadow-blue-200 dark:shadow-none">
@@ -121,14 +132,16 @@ export default function BookmarksScreen() {
                             Tap the bookmark icon while taking a quiz to save questions for later review.
                         </Text>
                         <TouchableOpacity
-                            onPress={() => router.back()}
+                            onPress={() => router.push('/categories')}
                             className="mt-8 bg-slate-900 dark:bg-slate-700 py-3 px-6 rounded-xl"
                         >
-                            <Text className="text-white font-bold">Go Back</Text>
+                            <Text className="text-white font-bold">Start Studying</Text>
                         </TouchableOpacity>
                     </View>
                 )}
             </View>
+
+            <BottomNav />
         </SafeAreaView>
     );
 }

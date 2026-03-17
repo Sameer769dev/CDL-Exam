@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { View, Text } from 'react-native';
 import Svg, { Circle, G } from 'react-native-svg';
-import Animated, { useSharedValue, useAnimatedProps, withTiming, withDelay } from 'react-native-reanimated';
+import Animated, { useSharedValue, useAnimatedProps, withTiming, withDelay, Easing } from 'react-native-reanimated';
 
 const AnimatedCircle = Animated.createAnimatedComponent(Circle);
 
@@ -34,12 +34,21 @@ export const DonutChart: React.FC<DonutChartProps> = ({
         const incorrectPct = total > 0 ? incorrect / total : 0;
         const unseenPct = total > 0 ? unseen / total : 1;
 
-        correctProgress.value = withDelay(0, withTiming(correctPct, { duration: 1000 }));
-        incorrectProgress.value = withDelay(200, withTiming(incorrectPct, { duration: 1000 }));
-        unseenProgress.value = withDelay(400, withTiming(unseenPct, { duration: 1000 }));
+        correctProgress.value = withDelay(0, withTiming(correctPct, {
+            duration: 1000,
+            easing: Easing.out(Easing.cubic)
+        }));
+        incorrectProgress.value = withDelay(200, withTiming(incorrectPct, {
+            duration: 1000,
+            easing: Easing.out(Easing.cubic)
+        }));
+        unseenProgress.value = withDelay(400, withTiming(unseenPct, {
+            duration: 1000,
+            easing: Easing.out(Easing.cubic)
+        }));
     }, [correct, incorrect, unseen, total]);
 
-    const createAnimatedProps = (progressValue: Animated.SharedValue<number>, offset: number = 0) => {
+    const createAnimatedProps = (progressValue: ReturnType<typeof useSharedValue<number>>, offset: number = 0) => {
         return useAnimatedProps(() => {
             const strokeDashoffset = circumference * (1 - progressValue.value);
             return {

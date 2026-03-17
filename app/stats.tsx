@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { View, Text, ScrollView, TouchableOpacity, ActivityIndicator } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { router } from 'expo-router';
-import { ArrowLeft, BookOpen, CheckCircle2, Flame, TrendingUp, AlertCircle } from 'lucide-react-native';
+import { BookOpen, CheckCircle2, Flame, TrendingUp, AlertCircle } from 'lucide-react-native';
 import { StatCard } from '../src/components/StatCard';
 import { CategoryPerformanceCard } from '../src/components/CategoryPerformanceCard';
 import { getCategories } from '../src/utils/dataLoader';
@@ -87,21 +87,13 @@ export default function StatsScreen() {
         <SafeAreaView className="flex-1 bg-slate-50 dark:bg-slate-900">
             {/* Header */}
             <View className="px-6 py-4 bg-white dark:bg-slate-800 border-b border-slate-200 dark:border-slate-700">
-                <View className="flex-row items-center">
-                    <TouchableOpacity
-                        onPress={() => router.back()}
-                        className="mr-4 p-2 -ml-2"
-                    >
-                        <ArrowLeft size={24} color={isDark ? "#e2e8f0" : "#1e293b"} />
-                    </TouchableOpacity>
-                    <View>
-                        <Text className="text-2xl font-bold text-slate-900 dark:text-white">
-                            Statistics
-                        </Text>
-                        <Text className="text-sm text-slate-500 dark:text-slate-400">
-                            Track your learning progress
-                        </Text>
-                    </View>
+                <View>
+                    <Text className="text-2xl font-bold text-slate-900 dark:text-white">
+                        Your Stats
+                    </Text>
+                    <Text className="text-sm text-slate-500 dark:text-slate-400">
+                        Track your learning progress
+                    </Text>
                 </View>
             </View>
 

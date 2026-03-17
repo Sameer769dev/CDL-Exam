@@ -23,7 +23,7 @@ export const OnboardingSlide: React.FC<OnboardingSlideProps> = ({
         <View className="flex-1 items-center justify-center px-8" style={{ width: SCREEN_WIDTH }}>
             {/* Visual Content - Appears First */}
             <Animated.View
-                entering={FadeIn.delay(100).duration(600)}
+                entering={FadeIn.delay(200).duration(800)}
                 className="mb-16 items-center justify-center"
                 style={{ height: 280 }}
             >
@@ -41,13 +41,13 @@ export const OnboardingSlide: React.FC<OnboardingSlideProps> = ({
             {/* Text Content - Staggered Entrance */}
             <View className="w-full">
                 <Animated.Text
-                    entering={SlideInUp.delay(300).springify().damping(15)}
+                    entering={SlideInUp.delay(400).springify().damping(20).stiffness(80)}
                     className="text-5xl font-bold text-slate-50 text-left mb-4 tracking-tight"
                 >
                     {title}
                 </Animated.Text>
                 <Animated.Text
-                    entering={FadeInDown.delay(500).duration(600)}
+                    entering={FadeInDown.delay(600).duration(800)}
                     className="text-lg text-slate-400 text-left leading-relaxed"
                 >
                     {description}

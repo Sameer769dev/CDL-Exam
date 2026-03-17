@@ -2,6 +2,7 @@ import React from 'react';
 import { TouchableOpacity, Animated } from 'react-native';
 import { Bookmark } from 'lucide-react-native';
 import { useUser } from '../context/UserContext';
+import * as Haptics from 'expo-haptics';
 
 interface BookmarkButtonProps {
     questionId: number;
@@ -21,16 +22,23 @@ export const BookmarkButton: React.FC<BookmarkButtonProps> = ({
     const scaleAnim = React.useRef(new Animated.Value(1)).current;
 
     const handlePress = async () => {
+        // Haptic feedback
+        if (bookmarked) {
+            Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light); // Removing bookmark
+        } else {
+            Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium); // Adding bookmark
+        }
+
         // Animate
         Animated.sequence([
             Animated.timing(scaleAnim, {
                 toValue: 1.2,
-                duration: 100,
+                duration: 300,
                 useNativeDriver: true,
             }),
             Animated.timing(scaleAnim, {
                 toValue: 1,
-                duration: 100,
+                duration: 300,
                 useNativeDriver: true,
             }),
         ]).start();

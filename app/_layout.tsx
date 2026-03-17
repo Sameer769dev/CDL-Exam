@@ -6,10 +6,18 @@ import { initAds } from "../src/utils/ads";
 import { useEffect, useState } from "react";
 import { getHasCompletedOnboarding } from "../src/utils/storage";
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import { useFonts, Inter_400Regular, Inter_500Medium, Inter_600SemiBold, Inter_700Bold } from '@expo-google-fonts/inter';
 
 import "../global.css";
 
 export default function Layout() {
+    const [fontsLoaded] = useFonts({
+        Inter_400Regular,
+        Inter_500Medium,
+        Inter_600SemiBold,
+        Inter_700Bold,
+    });
+
     useEffect(() => {
         // Initialize billing and ads
         const initMonetization = async () => {
@@ -19,6 +27,10 @@ export default function Layout() {
 
         initMonetization();
     }, []);
+
+    if (!fontsLoaded) {
+        return null; // Or a loading screen
+    }
 
     return (
         <GestureHandlerRootView style={{ flex: 1 }}>

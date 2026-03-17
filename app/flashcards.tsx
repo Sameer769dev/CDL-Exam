@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback } from "react";
 import { View, Text, TouchableOpacity } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Stack, useLocalSearchParams, useRouter } from "expo-router";
-import { ArrowLeft, RotateCcw, CheckCircle2 } from "lucide-react-native";
+import { RotateCcw, CheckCircle2 } from "lucide-react-native";
 import { BookmarkButton } from "../src/components/BookmarkButton";
 import { SwipeableCard } from "../src/components/SwipeableCard";
 import { getQuestionsByCategory, getCategoryById } from "../src/utils/dataLoader";
@@ -75,12 +75,6 @@ export default function FlashcardsScreen() {
 
             {/* Header */}
             <View className="px-6 py-4 flex-row items-center justify-between">
-                <TouchableOpacity
-                    onPress={() => router.back()}
-                    className="p-2 -ml-2 rounded-full active:bg-slate-100 dark:active:bg-slate-800"
-                >
-                    <ArrowLeft size={24} color={isDark ? "#e2e8f0" : "#1e293b"} />
-                </TouchableOpacity>
                 <Text className="text-lg font-bold text-slate-900 dark:text-white">
                     {categoryName}
                 </Text>

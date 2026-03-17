@@ -6,6 +6,12 @@ module.exports = {
   darkMode: 'class',
   theme: {
     extend: {
+      fontFamily: {
+        sans: ['Inter_400Regular', 'System'],
+        medium: ['Inter_500Medium', 'System'],
+        semibold: ['Inter_600SemiBold', 'System'],
+        bold: ['Inter_700Bold', 'System'],
+      },
       colors: {
         slate: {
           800: '#1E293B',
