@@ -22,7 +22,8 @@ interface SwipeableCardProps {
     answer: string;
     onSwipeRight: () => void;
     onSwipeLeft: () => void;
-    index: number; // To stack cards visually if needed, though we might just show one
+    index: number;
+    disabled?: boolean;
 }
 
 export const SwipeableCard: React.FC<SwipeableCardProps> = ({
@@ -30,7 +31,8 @@ export const SwipeableCard: React.FC<SwipeableCardProps> = ({
     answer,
     onSwipeRight,
     onSwipeLeft,
-    index
+    index,
+    disabled = false
 }) => {
     const translateX = useSharedValue(0);
     const translateY = useSharedValue(0);
@@ -128,17 +130,17 @@ export const SwipeableCard: React.FC<SwipeableCardProps> = ({
     }));
 
     return (
-        <GestureDetector gesture={composedGesture}>
+        <GestureDetector gesture={disabled ? Gesture.Native() : composedGesture}>
             <Animated.View style={[styles.container, cardStyle]}>
                 {/* Front Side (Question) */}
-                <Animated.View style={[styles.card, frontAnimatedStyle]} className="bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-700">
-                    <View className="bg-blue-100 dark:bg-blue-900/30 p-4 rounded-full mb-6">
-                        <HelpCircle size={40} color="#2563eb" />
+                <Animated.View style={[styles.card, frontAnimatedStyle]} className="bg-white dark:bg-slate-800 border-2 border-slate-100 dark:border-slate-700">
+                    <View className="bg-blue-100 dark:bg-blue-500/20 p-5 rounded-full mb-8">
+                        <HelpCircle size={48} color="#3b82f6" />
                     </View>
-                    <Text className="text-2xl font-bold text-slate-900 dark:text-white text-center leading-9">
+                    <Text className="text-2xl font-bold text-slate-900 dark:text-white text-center leading-9 px-2">
                         {question}
                     </Text>
-                    <Text className="text-slate-500 dark:text-slate-400 text-center mt-8 font-medium">
+                    <Text className="text-slate-400 dark:text-slate-500 text-center mt-auto font-medium text-sm uppercase tracking-wider">
                         Tap to flip • Swipe to decide
                     </Text>
 

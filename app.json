@@ -2,7 +2,7 @@
   "expo": {
     "name": "CDL Hazmat & Brakes 2025",
     "slug": "cdl-hazmat-brakes",
-    "version": "1.0.0",
+    "version": "1.0.7",
     "platforms": [
       "ios",
       "android",
@@ -27,7 +27,8 @@
       },
       "edgeToEdgeEnabled": true,
       "predictiveBackGestureEnabled": false,
-      "package": "com.protimeworld.cdlprep",
+      "package": "com.protimeworld.cdl",
+      "versionCode": 9,
       "permissions": [
         "com.android.vending.BILLING"
       ]
@@ -42,7 +43,7 @@
         "react-native-google-mobile-ads",
         {
           "androidAppId": "ca-app-pub-5397047296907599~7797119607",
-          "iosAppId": "ca-app-pub-5397047296907599~7797119607"
+          "iosAppId": "ca-app-pub-3940256099942544~1458002511"
         }
       ],
       "react-native-iap",
@@ -68,10 +69,11 @@
       "expo-font"
     ],
     "extra": {
-      "router": {},
-      "eas": {
-        "projectId": "ed223e68-e969-4d40-b9b9-9f26d9ab5d95"
-      }
+      "router": {}
     }
+  },
+  "react-native-google-mobile-ads": {
+    "android_app_id": "ca-app-pub-5397047296907599~7797119607",
+    "ios_app_id": "ca-app-pub-3940256099942544~1458002511"
   }
 }

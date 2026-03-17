@@ -17,7 +17,10 @@ export const PaginationDots: React.FC<PaginationDotsProps> = ({ total, currentIn
     );
 };
 
+import { useTheme } from '../context/ThemeContext';
+
 const Dot: React.FC<{ index: number; currentIndex: number }> = ({ index, currentIndex }) => {
+    const { colors } = useTheme();
     const isActive = useDerivedValue(() => {
         return index === currentIndex;
     }, [currentIndex]);
@@ -29,16 +32,10 @@ const Dot: React.FC<{ index: number; currentIndex: number }> = ({ index, current
             [8, 32] // 8px (w-2) to 32px (w-8)
         );
 
-        const opacity = interpolate(
-            isActive.value ? 1 : 0,
-            [0, 1],
-            [0.5, 1]
-        );
-
         return {
             width: withSpring(width, { damping: 15, stiffness: 100 }),
             opacity: withTiming(isActive.value ? 1 : 0.5, { duration: 400 }),
-            backgroundColor: isActive.value ? '#3B82F6' : '#94A3B8', // Blue-500 : Slate-400
+            backgroundColor: isActive.value ? colors.primary.main : colors.icon.default,
         };
     });
 

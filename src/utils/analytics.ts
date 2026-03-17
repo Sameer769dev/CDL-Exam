@@ -33,7 +33,7 @@ export const trackEvent = (eventName: MonetizationEvent, properties?: EventPrope
         ...properties,
     };
 
-    console.log('[Analytics]', eventName, eventData);
+
 
     // TODO: Integrate with your analytics service
     // Examples:
@@ -125,7 +125,7 @@ export const trackAdClosed = (adType: 'banner' | 'interstitial' | 'rewarded', re
  * Set user properties
  */
 export const setUserProperty = (propertyName: string, value: string | number | boolean) => {
-    console.log('[Analytics] User property:', propertyName, value);
+
 
     // TODO: Integrate with your analytics service
     // Examples:

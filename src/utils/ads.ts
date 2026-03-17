@@ -9,21 +9,21 @@ import mobileAds, {
 } from 'react-native-google-mobile-ads';
 import { Platform } from 'react-native';
 
-// Ad Unit IDs - Replace with your actual AdMob ad unit IDs
+
 const AD_UNITS = {
     BANNER: Platform.select({
         android: 'ca-app-pub-5397047296907599/3691898228',
-        ios: 'ca-app-pub-5397047296907599/3691898228',
+        ios: 'ca-app-pub-3940256099942544/2934735716',
         default: 'ca-app-pub-5397047296907599/3691898228',
     }),
     INTERSTITIAL: Platform.select({
         android: 'ca-app-pub-5397047296907599/5343164894',
-        ios: 'ca-app-pub-5397047296907599/5343164894',
+        ios: 'ca-app-pub-3940256099942544/4411468910',
         default: 'ca-app-pub-5397047296907599/5343164894',
     }),
     REWARDED: Platform.select({
         android: 'ca-app-pub-5397047296907599/2717001554',
-        ios: 'ca-app-pub-5397047296907599/2717001554',
+        ios: 'ca-app-pub-3940256099942544/1712485313',
         default: 'ca-app-pub-5397047296907599/2717001554',
     }),
 };
@@ -32,9 +32,8 @@ let interstitialAd: InterstitialAd | null = null;
 let rewardedAd: RewardedAd | null = null;
 let isAdInitialized = false;
 
-// Track last interstitial show time to implement frequency capping
 let lastInterstitialTime = 0;
-const INTERSTITIAL_COOLDOWN = 120000; // 2 minutes in milliseconds
+const INTERSTITIAL_COOLDOWN = 120000;
 
 /**
  * Initialize AdMob
@@ -42,10 +41,10 @@ const INTERSTITIAL_COOLDOWN = 120000; // 2 minutes in milliseconds
  */
 export const initAds = async (): Promise<boolean> => {
     try {
-        console.log('[Ads] Initializing AdMob...');
+
         await mobileAds().initialize();
         isAdInitialized = true;
-        console.log('[Ads] AdMob initialized successfully');
+
 
         // Preload interstitial ad
         loadInterstitialAd();
@@ -77,7 +76,7 @@ export const loadInterstitialAd = () => {
         interstitialAd = InterstitialAd.createForAdRequest(AD_UNITS.INTERSTITIAL);
 
         interstitialAd.addAdEventListener(AdEventType.LOADED, () => {
-            console.log('[Ads] Interstitial ad loaded');
+
         });
 
         interstitialAd.addAdEventListener(AdEventType.ERROR, (error) => {
@@ -85,7 +84,7 @@ export const loadInterstitialAd = () => {
         });
 
         interstitialAd.addAdEventListener(AdEventType.CLOSED, () => {
-            console.log('[Ads] Interstitial ad closed');
+
             // Preload next ad
             loadInterstitialAd();
         });
@@ -104,14 +103,14 @@ export const loadInterstitialAd = () => {
 export const showInterstitialAd = async (isPremium: boolean = false): Promise<boolean> => {
     // Don't show ads to premium users
     if (isPremium) {
-        console.log('[Ads] Premium user, skipping interstitial ad');
+
         return false;
     }
 
     // Check cooldown period
     const now = Date.now();
     if (now - lastInterstitialTime < INTERSTITIAL_COOLDOWN) {
-        console.log('[Ads] Interstitial ad on cooldown');
+
         return false;
     }
 
@@ -126,7 +125,7 @@ export const showInterstitialAd = async (isPremium: boolean = false): Promise<bo
         if (loaded) {
             await interstitialAd.show();
             lastInterstitialTime = now;
-            console.log('[Ads] Interstitial ad shown');
+
             return true;
         } else {
             console.warn('[Ads] Interstitial ad not ready');
@@ -153,11 +152,11 @@ export const loadRewardedAd = () => {
         rewardedAd = RewardedAd.createForAdRequest(AD_UNITS.REWARDED);
 
         rewardedAd.addAdEventListener(RewardedAdEventType.LOADED, () => {
-            console.log('[Ads] Rewarded ad loaded');
+
         });
 
         rewardedAd.addAdEventListener(RewardedAdEventType.EARNED_REWARD, (reward) => {
-            console.log('[Ads] User earned reward:', reward);
+
         });
 
         rewardedAd.load();
@@ -188,7 +187,7 @@ export const showRewardedAd = async (): Promise<boolean> => {
                 });
 
                 rewardedAd!.addAdEventListener(AdEventType.CLOSED, () => {
-                    console.log('[Ads] Rewarded ad closed, reward earned:', rewarded);
+
                     loadRewardedAd(); // Preload next ad
                     resolve(rewarded);
                 });

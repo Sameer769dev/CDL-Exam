@@ -1,61 +1,40 @@
-import React from 'react';
-import { View, StyleSheet } from 'react-native';
-import { BannerAd, BannerAdSize } from 'react-native-google-mobile-ads';
+import React, { useState } from 'react';
+import { View, Platform, ViewStyle } from 'react-native';
+import { BannerAd, BannerAdSize, TestIds } from 'react-native-google-mobile-ads';
 import { useUser } from '../context/UserContext';
-import { getBannerAdUnitId } from '../utils/ads';
+import { getBannerAdUnitId, shouldShowAds } from '../utils/ads';
 
-interface BannerAdComponentProps {
-    position?: 'top' | 'bottom';
+interface BannerAdProps {
     size?: BannerAdSize;
+    style?: ViewStyle;
+    position?: 'top' | 'bottom'; // Added to match usage in index.tsx, though currently handled by parent layout
 }
 
-/**
- * Banner Ad Component
- * Automatically hides for premium users
- */
-export default function BannerAdComponent({
-    position = 'bottom',
-    size = BannerAdSize.BANNER
-}: BannerAdComponentProps) {
+export const BannerAdComponent: React.FC<BannerAdProps> = ({ size = BannerAdSize.ANCHORED_ADAPTIVE_BANNER, style }) => {
     const { isPremium } = useUser();
+    const [adLoaded, setAdLoaded] = useState(false);
 
-    // Don't show ads to premium users
-    if (isPremium) {
+    if (!shouldShowAds(isPremium)) {
+        return null;
+    }
+
+    if (Platform.OS === 'web') {
+        // Placeholder for Web AdSense or similar
+        // For now, we don't show anything on web to avoid errors
         return null;
     }
 
     return (
-        <View style={[
-            styles.container,
-            position === 'top' ? styles.top : styles.bottom
-        ]}>
+        <View style={{ alignItems: 'center', justifyContent: 'center', width: '100%' }}>
             <BannerAd
                 unitId={getBannerAdUnitId()}
                 size={size}
                 requestOptions={{
-                    requestNonPersonalizedAdsOnly: false,
+                    requestNonPersonalizedAdsOnly: true,
                 }}
-                onAdLoaded={() => {
-                    console.log('[BannerAd] Ad loaded');
-                }}
-                onAdFailedToLoad={(error) => {
-                    console.error('[BannerAd] Ad failed to load:', error);
-                }}
+                onAdLoaded={() => setAdLoaded(true)}
+                onAdFailedToLoad={(error) => console.error('Ad failed to load', error)}
             />
         </View>
     );
-}
-
-const styles = StyleSheet.create({
-    container: {
-        width: '100%',
-        alignItems: 'center',
-        backgroundColor: '#1e293b', // slate-800
-    },
-    top: {
-        paddingTop: 8,
-    },
-    bottom: {
-        paddingBottom: 8,
-    },
-});
+};

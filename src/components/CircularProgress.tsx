@@ -1,71 +1,91 @@
 import React, { useEffect } from 'react';
-import { View, Text } from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
 import Svg, { Circle } from 'react-native-svg';
-import Animated, { useSharedValue, useAnimatedProps, withTiming, Easing } from 'react-native-reanimated';
+import Animated, {
+    useSharedValue,
+    useAnimatedProps,
+    withTiming,
+    withDelay,
+    useDerivedValue,
+} from 'react-native-reanimated';
 
 const AnimatedCircle = Animated.createAnimatedComponent(Circle);
 
 interface CircularProgressProps {
-    current: number;
-    total: number;
-    size?: number;
+    percentage: number;
+    radius?: number;
     strokeWidth?: number;
+    color?: string;
+    duration?: number;
+    textColor?: string;
+    max?: number;
 }
 
 export const CircularProgress: React.FC<CircularProgressProps> = ({
-    current,
-    total,
-    size = 60,
-    strokeWidth = 4
+    percentage,
+    radius = 60,
+    strokeWidth = 10,
+    color = '#3b82f6',
+    duration = 1000,
+    textColor,
+    max = 100,
 }) => {
-    const radius = (size - strokeWidth) / 2;
-    const circumference = radius * 2 * Math.PI;
-    const progress = useSharedValue(0);
+    const innerRadius = radius - strokeWidth / 2;
+    const circumference = 2 * Math.PI * innerRadius;
+    const animatedValue = useSharedValue(0);
 
     useEffect(() => {
-        progress.value = withTiming(current / total, {
-            duration: 700,
-            easing: Easing.out(Easing.cubic)
-        });
-    }, [current, total]);
+        animatedValue.value = withDelay(500, withTiming(percentage, { duration }));
+    }, [percentage, duration]);
 
-    const animatedProps = useAnimatedProps(() => ({
-        strokeDashoffset: circumference * (1 - progress.value),
-    }));
+    const animatedProps = useAnimatedProps(() => {
+        const strokeDashoffset =
+            circumference - (circumference * animatedValue.value) / max;
+        return {
+            strokeDashoffset,
+        };
+    });
 
     return (
-        <View className="items-center justify-center mb-6">
-            <View style={{ width: size, height: size }} className="items-center justify-center relative">
-                <Svg width={size} height={size} viewBox={`0 0 ${size} ${size}`}>
-                    {/* Background Circle */}
-                    <Circle
-                        cx={size / 2}
-                        cy={size / 2}
-                        r={radius}
-                        stroke="#e2e8f0" // slate-200
-                        strokeWidth={strokeWidth}
-                        fill="transparent"
-                    />
-                    {/* Progress Circle */}
-                    <AnimatedCircle
-                        cx={size / 2}
-                        cy={size / 2}
-                        r={radius}
-                        stroke="#3b82f6" // blue-500
-                        strokeWidth={strokeWidth}
-                        fill="transparent"
-                        strokeDasharray={circumference}
-                        animatedProps={animatedProps}
-                        strokeLinecap="round"
-                        rotation="-90"
-                        origin={`${size / 2}, ${size / 2}`}
-                    />
-                </Svg>
-                <View className="absolute inset-0 items-center justify-center">
-                    <Text className="text-slate-900 dark:text-white font-bold text-sm">
-                        {current}/{total}
-                    </Text>
-                </View>
+        <View style={{ width: radius * 2, height: radius * 2, justifyContent: 'center', alignItems: 'center' }}>
+            <Svg width={radius * 2} height={radius * 2}>
+                {/* Background Circle */}
+                <Circle
+                    cx={radius}
+                    cy={radius}
+                    r={innerRadius}
+                    stroke={color}
+                    strokeWidth={strokeWidth}
+                    strokeOpacity={0.2}
+                    fill="transparent"
+                />
+                {/* Foreground Circle */}
+                <AnimatedCircle
+                    cx={radius}
+                    cy={radius}
+                    r={innerRadius}
+                    stroke={color}
+                    strokeWidth={strokeWidth}
+                    fill="transparent"
+                    strokeDasharray={circumference}
+                    animatedProps={animatedProps}
+                    strokeLinecap="round"
+                    rotation="-90"
+                    origin={`${radius}, ${radius}`}
+                />
+            </Svg>
+
+            {/* Percentage Text */}
+            <View style={[StyleSheet.absoluteFill, { justifyContent: 'center', alignItems: 'center' }]}>
+                <Text
+                    style={{
+                        fontSize: radius * 0.5,
+                        fontWeight: '900',
+                        color: textColor || color,
+                    }}
+                >
+                    {Math.round(percentage)}%
+                </Text>
             </View>
         </View>
     );

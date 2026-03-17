@@ -75,7 +75,7 @@ We may update this Privacy Policy from time to time. We will notify you of any c
 
 If you have questions about this Privacy Policy, please contact us at:
 
-**Email**: support@protimeworld.com  
+**Email**: cdlexampreps10@gmail.com  
 **App**: CDL Hazmat & Brakes 2025
 
 ## Third-Party Links

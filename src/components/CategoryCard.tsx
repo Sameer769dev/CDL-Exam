@@ -1,13 +1,21 @@
 import React from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
-import { Lock, BadgeCheck } from 'lucide-react-native';
+import { Lock, BadgeCheck, ChevronRight, Trophy } from 'lucide-react-native';
 import { Category } from '../types/quiz';
+import { useTheme } from '../context/ThemeContext';
+import { useCategoryStats } from '../hooks/useCategoryStats';
+import { AccuracyBadge } from './progress/AccuracyBadge';
+import { HighScoreBadge } from './progress/HighScoreBadge';
+import { CategoryInfo } from './progress/CategoryInfo'; // NEW
+import { getCategoryHistory } from '../utils/progressComparison'; // NEW
+import { useUser } from '../context/UserContext'; // NEW
 
 interface CategoryCardProps {
     category: Category;
     progress?: number; // 0-100
     isLocked: boolean;
     onPress: () => void;
+    mode?: 'quiz' | 'flashcards';
 }
 
 export const CategoryCard = React.memo(({
@@ -15,61 +23,124 @@ export const CategoryCard = React.memo(({
     progress = 0,
     isLocked,
     onPress,
+    mode = 'quiz'
 }: CategoryCardProps) => {
+    const { isDark } = useTheme();
+    const { performance } = useCategoryStats(category.id);
+    const { studySessions, mistakeBank } = useUser(); // NEW
+    const history = getCategoryHistory(category.id, studySessions); // NEW
+
     return (
         <TouchableOpacity
             onPress={onPress}
-            className="bg-white dark:bg-slate-800 rounded-2xl mb-3 shadow-sm active:opacity-90 overflow-hidden border border-slate-100 dark:border-slate-700"
-            style={{ height: 80 }}
+            className="bg-white dark:bg-slate-800 rounded-2xl mb-4 shadow-md active:scale-[0.98] overflow-hidden border-2 border-slate-100 dark:border-slate-700"
+            style={{
+                minHeight: 88,
+                shadowColor: isDark ? '#000' : '#64748b',
+                shadowOffset: { width: 0, height: 2 },
+                shadowOpacity: isDark ? 0.3 : 0.1,
+                shadowRadius: 8,
+                elevation: 3,
+            }}
         >
-            <View className="flex-1 flex-row items-center px-4 relative">
-                {/* Category Icon */}
+            <View className="flex-1 flex-row items-center px-5 py-4 relative">
+                {/* Category Icon - Larger and more prominent */}
                 <View
-                    className="w-10 h-10 rounded-full items-center justify-center mr-4"
-                    style={{ backgroundColor: `${category.color}15` }}
+                    className="w-14 h-14 rounded-2xl items-center justify-center mr-4 shadow-sm"
+                    style={{
+                        backgroundColor: isLocked ? '#e2e8f0' : `${category.color}20`,
+                        borderWidth: 2,
+                        borderColor: isLocked ? '#cbd5e1' : `${category.color}40`,
+                    }}
                 >
                     <View
-                        className="w-5 h-5 rounded-full opacity-80"
-                        style={{ backgroundColor: category.color }}
+                        className="w-6 h-6 rounded-full"
+                        style={{
+                            backgroundColor: isLocked ? '#94a3b8' : category.color,
+                            opacity: isLocked ? 0.4 : 1,
+                        }}
                     />
                 </View>
 
                 {/* Content */}
                 <View className="flex-1 justify-center">
                     <View className="flex-row items-center justify-between">
-                        <View className="flex-1 mr-2">
+                        <View className="flex-1 mr-3">
                             <Text
-                                className={`text-base font-bold text-slate-900 dark:text-white leading-tight ${isLocked ? 'opacity-40 blur-sm' : ''}`}
+                                className={`text-lg font-bold leading-tight mb-1 ${isLocked
+                                    ? 'text-slate-400 dark:text-slate-500'
+                                    : 'text-slate-900 dark:text-white'
+                                    }`}
                                 numberOfLines={1}
                             >
                                 {category.name}
                             </Text>
-                            <Text
-                                className={`text-xs text-slate-500 dark:text-slate-400 mt-0.5 ${isLocked ? 'opacity-40 blur-sm' : ''}`}
-                            >
-                                {category.totalQuestions} Questions
-                            </Text>
+                            <View className="flex-row items-center">
+                                <Text
+                                    className={`text-sm font-medium ${isLocked
+                                        ? 'text-slate-400 dark:text-slate-500'
+                                        : 'text-slate-600 dark:text-slate-300'
+                                        }`}
+                                >
+                                    {category.totalQuestions} Questions
+                                </Text>
+                                {progress > 0 && !isLocked && (
+                                    <Text className="text-sm font-semibold text-blue-600 dark:text-blue-400 ml-2">
+                                        • {Math.round(progress)}% {mode === 'flashcards' ? 'Mastered' : 'Complete'}
+                                    </Text>
+                                )}
+                            </View>
+
+                            {/* Performance Badges - Quiz Only */}
+                            {!isLocked && mode === 'quiz' && performance && performance.questionsAttempted > 0 && (
+                                <View className="flex-row items-center gap-2 mt-2">
+                                    <AccuracyBadge accuracy={performance.accuracy} size="small" />
+                                    {performance.highScore > 0 && (
+                                        <HighScoreBadge score={performance.highScore} size="small" />
+                                    )}
+                                </View>
+                            )}
+
+                            {/* Category Info - NEW */}
+                            {!isLocked && (
+                                <View className="mt-3">
+                                    <CategoryInfo
+                                        lastAttemptDate={history.lastAttemptDate}
+                                        timeSpent={history.totalTime}
+                                        mistakeCount={mode === 'flashcards' ? 0 : (mistakeBank[category.id]?.length || 0)}
+                                        compact
+                                    />
+                                </View>
+                            )}
                         </View>
 
-                        {/* Status Icon */}
+                        {/* Status Icon - Larger and more visible */}
                         {isLocked ? (
-                            <View className="absolute inset-0 items-center justify-center">
-                                <View className="bg-slate-100/80 dark:bg-slate-800/80 p-2 rounded-full backdrop-blur-sm">
-                                    <Lock size={18} color="#94a3b8" />
-                                </View>
+                            <View className="flex-row items-center bg-amber-500/10 px-3 py-1.5 rounded-full border border-amber-500/20">
+                                <Lock size={14} color="#fbbf24" strokeWidth={2.5} style={{ marginRight: 6 }} />
+                                <Text className="text-amber-500 font-bold text-[10px] tracking-widest uppercase">
+                                    PRO
+                                </Text>
                             </View>
                         ) : progress === 100 ? (
-                            <BadgeCheck size={20} color="#16a34a" strokeWidth={2} />
-                        ) : null}
+                            <View className="flex-row items-center bg-amber-500/10 px-3 py-1.5 rounded-full border border-amber-500/20">
+                                <Trophy size={14} color="#fbbf24" strokeWidth={2.5} style={{ marginRight: 6 }} />
+                                <Text className="text-amber-500 font-bold text-[10px] tracking-widest uppercase">
+                                    MASTERED
+                                </Text>
+                            </View>
+                        ) : (
+                            <ChevronRight size={20} color={isDark ? '#94a3b8' : '#64748b'} strokeWidth={2.5} />
+                        )}
                     </View>
                 </View>
             </View>
 
-            {/* Bottom Progress Bar */}
+            {/* Bottom Progress Bar - Thicker and more visible */}
             {!isLocked && progress > 0 && (
-                <View className="absolute bottom-0 left-0 right-0 h-[3px] bg-slate-100 dark:bg-slate-700">
+                <View className="h-1.5 bg-slate-100 dark:bg-slate-700">
                     <View
-                        className="h-full"
+                        className="h-full rounded-full"
                         style={{
                             width: `${progress}%`,
                             backgroundColor: category.color,

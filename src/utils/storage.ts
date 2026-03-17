@@ -3,6 +3,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 // Storage keys
 const STORAGE_KEYS = {
     USER_PROGRESS: '@cdl_prep:user_progress',
+    FLASHCARD_PROGRESS: '@cdl_prep:flashcard_progress',
     HIGH_SCORES: '@cdl_prep:high_scores',
     WRONG_ANSWERS: '@cdl_prep:wrong_answers',
     UNLOCKED_CATEGORIES: '@cdl_prep:unlocked_categories',
@@ -13,6 +14,13 @@ const STORAGE_KEYS = {
     REMINDER_SETTINGS: '@cdl_prep:reminder_settings',
     THEME_PREFERENCE: '@cdl_prep:theme_preference',
     HAS_COMPLETED_ONBOARDING: '@cdl_prep:has_completed_onboarding',
+    SESSION_COUNT: '@cdl_prep:session_count',
+    ACTIVE_SESSION: '@cdl_prep:active_session',
+    CATEGORY_COMPLETION: '@cdl_prep:category_completion',
+    USER_PROFILE: '@cdl_prep:user_profile',
+    DAILY_GOAL: '@cdl_prep:daily_goal',
+    EXAM_CREDITS: '@cdl_prep:exam_credits',
+    LAST_MONTHLY_GRANT: '@cdl_prep:last_monthly_grant',
 } as const;
 
 // Types
@@ -21,6 +29,14 @@ export interface UserProgress {
         questionsAttempted: number;
         questionsCorrect: number;
         lastAttemptDate: string;
+    };
+}
+
+export interface FlashcardProgress {
+    [categoryId: string]: {
+        cardsReviewed: number;
+        cardsMastered: number;
+        lastReviewDate: string;
     };
 }
 
@@ -44,7 +60,7 @@ export interface StudySession {
     questionsAttempted: number;
     questionsCorrect: number;
     timeSpent: number; // in seconds
-    mode: 'quiz' | 'flashcards' | 'exam' | 'mistake_bank';
+    mode: 'quiz' | 'flashcards' | 'exam' | 'mistake_bank' | 'bookmarks';
 }
 
 export interface StudyStreak {
@@ -60,6 +76,38 @@ export interface CategoryStats {
     accuracy: number;
     lastAttemptDate: string;
     sessionsCount: number;
+}
+
+export interface ActiveSession {
+    categoryId: string;
+    mode: 'quiz' | 'flashcards' | 'mistake_bank' | 'bookmarks';
+    questionIds: number[];
+    currentIndex: number;
+    answers: Record<number, boolean>; // QuestionID -> Correct/Incorrect
+    startTime: number;
+    lastUpdated: string;
+}
+
+export interface CategoryCompletion {
+    [categoryId: string]: {
+        completedQuestionIds: number[]; // IDs of questions answered correctly
+        lastQuestionIndex: number; // For sequential study mode
+    };
+}
+
+export interface UserProfile {
+    name: string;
+    avatar: string; // Emoji character
+    targetState?: string; // US State code (e.g., 'CA', 'TX')
+    examDate?: string; // ISO date string
+    examMode?: 'full_support' | 'no_explanations' | 'exam_style';
+    studyTime?: 'morning' | 'afternoon' | 'evening' | 'night' | 'no_preference';
+    experienceLevel?: '0-2' | '2-4' | '4-6' | '6+';
+}
+
+export interface DailyGoal {
+    questionsPerDay: number;
+    lastUpdated: string;
 }
 
 // User Progress
@@ -96,6 +144,45 @@ export const updateCategoryProgress = async (
         await saveUserProgress(progress);
     } catch (error) {
         console.error('Error updating category progress:', error);
+    }
+};
+
+// Flashcard Progress
+export const getFlashcardProgress = async (): Promise<FlashcardProgress> => {
+    try {
+        const data = await AsyncStorage.getItem(STORAGE_KEYS.FLASHCARD_PROGRESS);
+        return data ? JSON.parse(data) : {};
+    } catch (error) {
+        console.error('Error getting flashcard progress:', error);
+        return {};
+    }
+};
+
+export const saveFlashcardProgress = async (progress: FlashcardProgress): Promise<void> => {
+    try {
+        await AsyncStorage.setItem(STORAGE_KEYS.FLASHCARD_PROGRESS, JSON.stringify(progress));
+    } catch (error) {
+        console.error('Error saving flashcard progress:', error);
+    }
+};
+
+export const updateFlashcardProgress = async (
+    categoryId: string,
+    cardsReviewed: number,
+    cardsMastered: number
+): Promise<void> => {
+    try {
+        const progress = await getFlashcardProgress();
+        const existing = progress[categoryId] || { cardsReviewed: 0, cardsMastered: 0 };
+
+        progress[categoryId] = {
+            cardsReviewed: Math.max(existing.cardsReviewed, cardsReviewed),
+            cardsMastered: Math.max(existing.cardsMastered, cardsMastered),
+            lastReviewDate: new Date().toISOString()
+        };
+        await saveFlashcardProgress(progress);
+    } catch (error) {
+        console.error('Error updating flashcard progress:', error);
     }
 };
 
@@ -232,7 +319,9 @@ export const unlockCategory = async (categoryId: string): Promise<void> => {
 export const getStudySessions = async (): Promise<StudySession[]> => {
     try {
         const data = await AsyncStorage.getItem(STORAGE_KEYS.STUDY_SESSIONS);
-        return data ? JSON.parse(data) : [];
+        const sessions = data ? JSON.parse(data) : [];
+        // Filter out any sessions that might be corrupted (missing date)
+        return sessions.filter((s: StudySession) => s && s.date);
     } catch (error) {
         console.error('Error getting study sessions:', error);
         return [];
@@ -430,6 +519,8 @@ export const getBookmarkedQuestions = async (): Promise<number[]> => {
 export const toggleBookmark = async (questionId: number): Promise<boolean> => {
     try {
         const bookmarks = await getBookmarkedQuestions();
+        console.log('[Bookmark] Before toggle - Question ID:', questionId, 'Current bookmarks:', bookmarks);
+
         const index = bookmarks.indexOf(questionId);
         let isBookmarked = false;
 
@@ -437,13 +528,21 @@ export const toggleBookmark = async (questionId: number): Promise<boolean> => {
             // Remove bookmark
             bookmarks.splice(index, 1);
             isBookmarked = false;
+            console.log('[Bookmark] Removed bookmark for question:', questionId);
         } else {
             // Add bookmark
             bookmarks.push(questionId);
             isBookmarked = true;
+            console.log('[Bookmark] Added bookmark for question:', questionId);
         }
 
+        console.log('[Bookmark] After toggle - New bookmarks array:', bookmarks);
         await AsyncStorage.setItem(STORAGE_KEYS.BOOKMARKED_QUESTIONS, JSON.stringify(bookmarks));
+
+        // Verify what was saved
+        const saved = await AsyncStorage.getItem(STORAGE_KEYS.BOOKMARKED_QUESTIONS);
+        console.log('[Bookmark] Verified saved data:', saved);
+
         return isBookmarked;
     } catch (error) {
         console.error('Error toggling bookmark:', error);
@@ -464,16 +563,28 @@ export const isBookmarked = async (questionId: number): Promise<boolean> => {
 // Reminder Settings
 export interface ReminderSettings {
     enabled: boolean;
-    time: string; // ISO string
+    times: string[]; // Array of ISO strings
 }
 
 export const getReminderSettings = async (): Promise<ReminderSettings> => {
     try {
         const data = await AsyncStorage.getItem(STORAGE_KEYS.REMINDER_SETTINGS);
-        return data ? JSON.parse(data) : { enabled: false, time: new Date().toISOString() };
+        if (!data) return { enabled: false, times: [] };
+
+        const parsed = JSON.parse(data);
+
+        // Migration: Handle old format (single time)
+        if (parsed.time && !parsed.times) {
+            return {
+                enabled: parsed.enabled,
+                times: [parsed.time]
+            };
+        }
+
+        return parsed;
     } catch (error) {
         console.error('Error getting reminder settings:', error);
-        return { enabled: false, time: new Date().toISOString() };
+        return { enabled: false, times: [] };
     }
 };
 
@@ -526,11 +637,184 @@ export const setHasCompletedOnboarding = async (completed: boolean): Promise<voi
     }
 };
 
-// Clear all data (for testing/reset)
-export const clearAllData = async (): Promise<void> => {
+// ==================== Session Counting ====================
+
+export const getSessionCount = async (): Promise<number> => {
     try {
-        await AsyncStorage.multiRemove(Object.values(STORAGE_KEYS));
+        const value = await AsyncStorage.getItem(STORAGE_KEYS.SESSION_COUNT);
+        return value ? parseInt(value, 10) : 0;
     } catch (error) {
-        console.error('Error clearing all data:', error);
+        console.error('Error getting session count:', error);
+        return 0;
+    }
+};
+
+export const incrementSessionCount = async (): Promise<number> => {
+    try {
+        const current = await getSessionCount();
+        const next = current + 1;
+        await AsyncStorage.setItem(STORAGE_KEYS.SESSION_COUNT, next.toString());
+        return next;
+    } catch (error) {
+        console.error('Error incrementing session count:', error);
+        return 0;
+    }
+};
+
+// ==================== Active Session Persistence ====================
+
+export const getActiveSession = async (): Promise<ActiveSession | null> => {
+    try {
+        const data = await AsyncStorage.getItem(STORAGE_KEYS.ACTIVE_SESSION);
+        return data ? JSON.parse(data) : null;
+    } catch (error) {
+        console.error('Error getting active session:', error);
+        return null;
+    }
+};
+
+export const saveActiveSession = async (session: ActiveSession): Promise<void> => {
+    try {
+        await AsyncStorage.setItem(STORAGE_KEYS.ACTIVE_SESSION, JSON.stringify(session));
+    } catch (error) {
+        console.error('Error saving active session:', error);
+    }
+};
+
+export const clearActiveSession = async (): Promise<void> => {
+    try {
+        await AsyncStorage.removeItem(STORAGE_KEYS.ACTIVE_SESSION);
+    } catch (error) {
+        console.error('Error clearing active session:', error);
+    }
+};
+
+// ==================== Category Completion Tracking ====================
+
+export const getCategoryCompletion = async (): Promise<CategoryCompletion> => {
+    try {
+        const data = await AsyncStorage.getItem(STORAGE_KEYS.CATEGORY_COMPLETION);
+        return data ? JSON.parse(data) : {};
+    } catch (error) {
+        console.error('Error getting category completion:', error);
+        return {};
+    }
+};
+
+export const updateCategoryCompletion = async (
+    categoryId: string,
+    newCompletedIds: number[]
+): Promise<void> => {
+    try {
+        const completion = await getCategoryCompletion();
+        const existing = completion[categoryId] || { completedQuestionIds: [], lastQuestionIndex: 0 };
+
+        // Merge unique IDs
+        const updatedIds = Array.from(new Set([...existing.completedQuestionIds, ...newCompletedIds]));
+
+        completion[categoryId] = {
+            ...existing,
+            completedQuestionIds: updatedIds
+        };
+
+        await AsyncStorage.setItem(STORAGE_KEYS.CATEGORY_COMPLETION, JSON.stringify(completion));
+    } catch (error) {
+        console.error('Error updating category completion:', error);
+    }
+};
+
+// ==================== User Profile ====================
+
+export const getUserProfile = async (): Promise<UserProfile | null> => {
+    try {
+        const data = await AsyncStorage.getItem(STORAGE_KEYS.USER_PROFILE);
+        return data ? JSON.parse(data) : null;
+    } catch (error) {
+        console.error('Error getting user profile:', error);
+        return null;
+    }
+};
+
+export const saveUserProfile = async (profile: UserProfile): Promise<void> => {
+    try {
+        await AsyncStorage.setItem(STORAGE_KEYS.USER_PROFILE, JSON.stringify(profile));
+    } catch (error) {
+        console.error('Error saving user profile:', error);
+    }
+};
+
+// ==================== Daily Goal ====================
+
+export const getDailyGoal = async (): Promise<DailyGoal> => {
+    try {
+        const data = await AsyncStorage.getItem(STORAGE_KEYS.DAILY_GOAL);
+        return data ? JSON.parse(data) : { questionsPerDay: 10, lastUpdated: new Date().toISOString() };
+    } catch (error) {
+        console.error('Error getting daily goal:', error);
+        return { questionsPerDay: 10, lastUpdated: new Date().toISOString() };
+    }
+};
+
+export const saveDailyGoal = async (goal: DailyGoal): Promise<void> => {
+    try {
+        await AsyncStorage.setItem(STORAGE_KEYS.DAILY_GOAL, JSON.stringify(goal));
+    } catch (error) {
+        console.error('Error saving daily goal:', error);
+    }
+};
+
+// ==================== Exam Credits ====================
+
+export const getExamCredits = async (): Promise<number> => {
+    try {
+        const value = await AsyncStorage.getItem(STORAGE_KEYS.EXAM_CREDITS);
+        return value ? parseInt(value, 10) : 0;
+    } catch (error) {
+        console.error('Error getting exam credits:', error);
+        return 0;
+    }
+};
+
+export const addExamCredit = async (amount: number = 1): Promise<number> => {
+    try {
+        const current = await getExamCredits();
+        const next = current + amount;
+        await AsyncStorage.setItem(STORAGE_KEYS.EXAM_CREDITS, next.toString());
+        return next;
+    } catch (error) {
+        console.error('Error adding exam credit:', error);
+        return 0;
+    }
+};
+
+export const useExamCredit = async (): Promise<boolean> => {
+    try {
+        const current = await getExamCredits();
+        if (current > 0) {
+            const next = current - 1;
+            await AsyncStorage.setItem(STORAGE_KEYS.EXAM_CREDITS, next.toString());
+            return true;
+        }
+        return false;
+    } catch (error) {
+        console.error('Error using exam credit:', error);
+        return false;
+    }
+};
+
+export const getLastMonthlyGrantDate = async (): Promise<string | null> => {
+    try {
+        return await AsyncStorage.getItem(STORAGE_KEYS.LAST_MONTHLY_GRANT);
+    } catch (error) {
+        console.error('Error getting last monthly grant date:', error);
+        return null;
+    }
+};
+
+export const setLastMonthlyGrantDate = async (date: string): Promise<void> => {
+    try {
+        await AsyncStorage.setItem(STORAGE_KEYS.LAST_MONTHLY_GRANT, date);
+    } catch (error) {
+        console.error('Error setting last monthly grant date:', error);
     }
 };
