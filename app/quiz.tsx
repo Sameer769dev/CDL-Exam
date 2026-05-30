@@ -16,9 +16,7 @@ import { getQuestionsByCategory, getQuestionsByIds, getAllQuestions, getCategory
 import { Question } from "../src/types/quiz";
 import { useUser } from "../src/context/UserContext";
 import { useTheme } from "../src/context/ThemeContext";
-import { showInterstitialAd } from "../src/utils/ads";
 import { CustomAlert } from "../src/components/CustomAlert";
-import { BannerAdComponent } from "../src/components/BannerAd";
 
 export default function QuizScreen() {
     const router = useRouter();
@@ -269,10 +267,11 @@ export default function QuizScreen() {
                 });
             }
         } else {
-            // Quiz finished
+            // Quiz finished — navigate first, then show interstitial at the
+            // natural break point (results screen). Showing an ad BEFORE
+            // navigation would block the UI transition, which violates AdMob
+            // best-practice (ads must appear at natural content breaks).
             const timeSpent = Math.floor((Date.now() - startTimeRef.current) / 1000);
-
-            await showInterstitialAd(isPremium);
 
             router.replace({
                 pathname: "/results",
@@ -281,7 +280,8 @@ export default function QuizScreen() {
                     total: totalQuestions,
                     categoryId: categoryId,
                     mode: mode,
-                    timeSpent: timeSpent.toString()
+                    timeSpent: timeSpent.toString(),
+                    showAd: isPremium ? 'false' : 'true',
                 },
             });
 
@@ -433,10 +433,8 @@ export default function QuizScreen() {
                 type={alertConfig.type}
             />
 
-            {/* Banner Ad */}
-            <View className="items-center pb-2">
-                <BannerAdComponent />
-            </View>
+            {/* No banner ad inside the quiz — AdMob policy prohibits ads
+                 that could be accidentally tapped during active gameplay. */}
         </SafeAreaView >
     );
 }

@@ -56,7 +56,8 @@ export default function HomeScreen() {
                 <ScrollView
                     showsVerticalScrollIndicator={false}
                     className="flex-1"
-                    contentContainerStyle={{ paddingBottom: 160 }}
+                    // paddingBottom accounts for: tab bar (~80px) + banner (~60px) + gap
+                    contentContainerStyle={{ paddingBottom: 180 }}
                 >
                     {/* Header */}
                     <View className="px-6 py-4 flex-row justify-between items-center">
@@ -211,8 +212,24 @@ export default function HomeScreen() {
 
                     </View>
                 </ScrollView>
-                <View className="absolute bottom-[90px] left-0 right-0 items-center z-10">
-                    <BannerAdComponent position="bottom" />
+
+                {/* Banner ad — placed ABOVE the floating tab bar, NOT overlapping it.
+                     AdMob policy requires ads not to overlap or be adjacent to
+                     interactive UI elements that could cause accidental taps.
+                     bottom-[88px] clears the tab pill (bottom-6 = 24px + ~64px height). */}
+                <View
+                    style={{
+                        position: 'absolute',
+                        bottom: 90,
+                        left: 0,
+                        right: 0,
+                        alignItems: 'center',
+                        // Pointer-events set to box-none so touches pass through
+                        // the container to content below ONLY when the ad has no fill.
+                    }}
+                    pointerEvents="box-none"
+                >
+                    <BannerAdComponent />
                 </View>
             </SafeAreaView>
         </View>

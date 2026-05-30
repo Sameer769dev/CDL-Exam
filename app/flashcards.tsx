@@ -18,7 +18,7 @@ import { getQuestionsByCategory, getCategoryById } from "../src/utils/dataLoader
 import { Question } from "../src/types/quiz";
 import { useUser } from "../src/context/UserContext";
 import { useTheme } from "../src/context/ThemeContext";
-import { showInterstitialAd } from "../src/utils/ads";
+// Interstitial ad is shown from results.tsx at the natural content break.
 import { CustomAlert } from "../src/components/CustomAlert";
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
@@ -221,8 +221,6 @@ export default function FlashcardsScreen() {
     const finishSession = async () => {
         const timeSpent = Math.floor((Date.now() - startTimeRef.current) / 1000);
 
-        await showInterstitialAd(isPremium);
-
         // Save Progress
         await Promise.all([
             trackSession({
@@ -236,6 +234,8 @@ export default function FlashcardsScreen() {
             finishActiveSession()
         ]);
 
+        // Navigate first, then let results.tsx show the interstitial at
+        // the natural content break — NOT blocking the transition here.
         router.replace({
             pathname: "/results",
             params: {
@@ -243,7 +243,8 @@ export default function FlashcardsScreen() {
                 total: questions.length,
                 categoryId: categoryId,
                 mode: 'flashcards',
-                timeSpent: timeSpent.toString()
+                timeSpent: timeSpent.toString(),
+                showAd: isPremium ? 'false' : 'true',
             },
         });
     };

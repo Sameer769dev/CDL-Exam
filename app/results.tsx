@@ -6,6 +6,7 @@ import { useTheme } from "../src/context/ThemeContext";
 import { CircularProgress } from "../src/components/CircularProgress";
 import { useUser } from "../src/context/UserContext";
 import { compareAttempt } from "../src/utils/progressComparison";
+import { showInterstitialAd } from "../src/utils/ads";
 import {
     Home,
     RotateCcw,
@@ -67,10 +68,21 @@ export default function ResultsScreen() {
     const categoryId = (params.categoryId as string) || 'general';
     const mode = (params.mode as string) || 'standard';
     const timeSpent = Number(params.timeSpent) || 0;
+    // showAd is set by quiz/flashcards to trigger the interstitial here,
+    // at the natural content break — NOT during active gameplay.
+    const shouldShowAd = params.showAd === 'true';
 
     // Computed
     const percentage = Math.round((score / total) * 100);
     const isPass = percentage >= 80;
+
+    useEffect(() => {
+        // Show interstitial ad at the natural break point (results screen).
+        // Only fires once, and only when the quiz/flashcard screen requested it.
+        if (shouldShowAd) {
+            showInterstitialAd(false).catch(() => { /* non-critical */ });
+        }
+    }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
     useEffect(() => {
         if (isPass) {

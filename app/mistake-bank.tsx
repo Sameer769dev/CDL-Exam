@@ -163,7 +163,7 @@ export default function MistakeBankScreen() {
                                     ) : (
                                         <>
                                             <PlayCircle size={20} color="white" className="mr-2" />
-                                            <Text className="text-white font-bold text-lg">Watch Ad to</Text>
+                                            <Text className="text-white font-bold text-lg">Watch Ad to Unlock</Text>
                                         </>
                                     )}
                                 </TouchableOpacity>

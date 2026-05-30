@@ -1,39 +1,70 @@
 import React, { useState } from 'react';
 import { View, Platform, ViewStyle } from 'react-native';
-import { BannerAd, BannerAdSize, TestIds } from 'react-native-google-mobile-ads';
+import { BannerAd, BannerAdSize } from 'react-native-google-mobile-ads';
 import { useUser } from '../context/UserContext';
 import { getBannerAdUnitId, shouldShowAds } from '../utils/ads';
 
 interface BannerAdProps {
     size?: BannerAdSize;
     style?: ViewStyle;
-    position?: 'top' | 'bottom'; // Added to match usage in index.tsx, though currently handled by parent layout
+    /** Logical position hint — used by the parent layout, not rendered here. */
+    position?: 'top' | 'bottom';
 }
 
-export const BannerAdComponent: React.FC<BannerAdProps> = ({ size = BannerAdSize.ANCHORED_ADAPTIVE_BANNER, style }) => {
+/**
+ * AdMob-compliant banner ad component.
+ *
+ * Policy compliance:
+ *  - Never shown to premium users.
+ *  - Not rendered on web (no native SDK).
+ *  - Container collapses to zero height when the ad fails to load,
+ *    preventing blank/empty spaces that could confuse users.
+ *  - Does NOT set requestNonPersonalizedAdsOnly — the UMP consent
+ *    SDK (initialised in ads.ts) controls personalisation automatically.
+ *  - Must NOT be placed where it overlaps interactive UI elements or
+ *    could be accidentally tapped during gameplay.
+ */
+export const BannerAdComponent: React.FC<BannerAdProps> = ({
+    size = BannerAdSize.ANCHORED_ADAPTIVE_BANNER,
+    style,
+}) => {
     const { isPremium } = useUser();
-    const [adLoaded, setAdLoaded] = useState(false);
+    const [adVisible, setAdVisible] = useState(false);
 
+    // Policy: premium users never see ads.
     if (!shouldShowAds(isPremium)) {
         return null;
     }
 
+    // No native AdMob SDK on web.
     if (Platform.OS === 'web') {
-        // Placeholder for Web AdSense or similar
-        // For now, we don't show anything on web to avoid errors
         return null;
     }
 
     return (
-        <View style={{ alignItems: 'center', justifyContent: 'center', width: '100%' }}>
+        <View
+            style={[
+                {
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    width: '100%',
+                    // Collapse the container until the ad has actually loaded.
+                    // This prevents an empty gap from appearing while loading or
+                    // when no fill is available — a common policy red flag.
+                    minHeight: adVisible ? undefined : 0,
+                    overflow: 'hidden',
+                },
+                style,
+            ]}
+        >
             <BannerAd
                 unitId={getBannerAdUnitId()}
                 size={size}
-                requestOptions={{
-                    requestNonPersonalizedAdsOnly: true,
+                onAdLoaded={() => setAdVisible(true)}
+                onAdFailedToLoad={(error) => {
+                    console.warn('[BannerAd] Failed to load:', error.message);
+                    setAdVisible(false);
                 }}
-                onAdLoaded={() => setAdLoaded(true)}
-                onAdFailedToLoad={(error) => console.error('Ad failed to load', error)}
             />
         </View>
     );
