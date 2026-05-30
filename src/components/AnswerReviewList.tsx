@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
-import { View, Text, TouchableOpacity } from 'react-native';
-import { ChevronDown, ChevronUp, CheckCircle, XCircle } from 'lucide-react-native';
+import { View, Text, TouchableOpacity, Image } from 'react-native';
+import { ChevronDown, ChevronUp, CheckCircle, XCircle, Sparkles } from 'lucide-react-native';
 import Animated, { FadeInDown, Layout } from 'react-native-reanimated';
 import { useTheme } from '../context/ThemeContext';
+import { AITutorModal } from './AITutorModal';
 
 interface ReviewData {
     id: number;
@@ -10,6 +11,7 @@ interface ReviewData {
     options: string[];
     correct_answer: string;
     explanation: string;
+    imageUrl?: string;
     userAnswer: string | null;
 }
 
@@ -20,6 +22,7 @@ interface AnswerReviewListProps {
 export function AnswerReviewList({ data }: AnswerReviewListProps) {
     const { isDark } = useTheme();
     const [expandedIds, setExpandedIds] = useState<Set<number>>(new Set());
+    const [tutorQuestion, setTutorQuestion] = useState<ReviewData | null>(null);
 
     const toggleExpand = (id: number) => {
         setExpandedIds(prev => {
@@ -94,6 +97,15 @@ export function AnswerReviewList({ data }: AnswerReviewListProps) {
 
                         {isExpanded && (
                             <View className="px-4 pb-4 pt-2 border-t border-slate-100 dark:border-slate-700/50">
+                                {item.imageUrl && (
+                                    <View className="mb-4 rounded-xl overflow-hidden border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800">
+                                        <Image
+                                            source={{ uri: item.imageUrl }}
+                                            style={{ width: '100%', height: 160 }}
+                                            resizeMode="contain"
+                                        />
+                                    </View>
+                                )}
                                 <View className="space-y-2 mb-4">
                                     {item.options.map((option, idx) => {
                                         const isThisCorrect = option === item.correct_answer;
@@ -119,11 +131,23 @@ export function AnswerReviewList({ data }: AnswerReviewListProps) {
                                 </View>
                                 
                                 {item.explanation && (
-                                    <View className="bg-blue-50 dark:bg-blue-900/20 p-4 rounded-xl">
+                                    <View className="bg-blue-50 dark:bg-blue-900/20 p-4 rounded-xl mt-4">
                                         <Text className="text-blue-800 dark:text-blue-300 font-bold mb-1">Explanation</Text>
-                                        <Text className="text-slate-700 dark:text-slate-300 leading-relaxed text-sm">
+                                        <Text className="text-slate-700 dark:text-slate-300 leading-relaxed text-sm mb-4">
                                             {item.explanation}
                                         </Text>
+
+                                        {!isCorrect && item.userAnswer !== null && (
+                                            <TouchableOpacity 
+                                                onPress={() => setTutorQuestion(item)}
+                                                className="bg-white/80 dark:bg-slate-800/80 p-3 rounded-xl border border-blue-200 dark:border-blue-900 flex-row items-center justify-center mt-2"
+                                            >
+                                                <Sparkles size={16} color="#0d9488" className="mr-2" />
+                                                <Text className="text-teal-700 dark:text-teal-400 font-bold">
+                                                    Ask AI Instructor why
+                                                </Text>
+                                            </TouchableOpacity>
+                                        )}
                                     </View>
                                 )}
                             </View>
@@ -131,6 +155,16 @@ export function AnswerReviewList({ data }: AnswerReviewListProps) {
                     </Animated.View>
                 );
             })}
+
+            {tutorQuestion && (
+                <AITutorModal
+                    visible={!!tutorQuestion}
+                    onClose={() => setTutorQuestion(null)}
+                    questionText={tutorQuestion.question}
+                    userAnswer={tutorQuestion.userAnswer || "No Answer"}
+                    correctAnswer={tutorQuestion.correct_answer}
+                />
+            )}
         </View>
     );
 }

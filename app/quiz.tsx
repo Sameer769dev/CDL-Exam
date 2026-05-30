@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useRef, useCallback } from "react";
-import { View, Text, ScrollView, TouchableOpacity, ActivityIndicator, BackHandler } from "react-native";
+import { View, Text, ScrollView, TouchableOpacity, ActivityIndicator, BackHandler, Image, Modal } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Stack, useRouter, useLocalSearchParams } from "expo-router";
-import { MoveRight, Lightbulb, X, Clock } from "lucide-react-native";
+import { MoveRight, Lightbulb, X, Clock, Sparkles } from "lucide-react-native";
 import Animated, {
     FadeInDown,
     FadeOut,
@@ -17,6 +17,7 @@ import { QuizProgress } from "../src/components/QuizProgress";
 import { OptionButton } from "../src/components/OptionButton";
 import { BookmarkButton } from "../src/components/BookmarkButton";
 import { MasteryBadge } from "../src/components/MasteryBadge";
+import { AITutorModal } from "../src/components/AITutorModal";
 import {
     getQuestionsByCategory,
     getQuestionsByIds,
@@ -25,6 +26,8 @@ import {
     getAccessibleQuestionCount,
     shuffleAllOptions,
 } from "../src/utils/dataLoader";
+import { fetchDynamicQuestions } from "../src/utils/aiClient";
+import { getCachedDynamicQuestions, saveDynamicQuestions } from "../src/utils/aiCache";
 import { Question } from "../src/types/quiz";
 import { useUser } from "../src/context/UserContext";
 import { useTheme } from "../src/context/ThemeContext";
@@ -62,14 +65,21 @@ export default function QuizScreen() {
 
     const [questions, setQuestions] = useState<Question[]>([]);
     const [loading, setLoading] = useState(true);
+    const [aiGenerating, setAiGenerating] = useState(false);
     const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
     const [score, setScore] = useState(0);
     const [selectedOption, setSelectedOption] = useState<string | null>(null);
     const [isAnswered, setIsAnswered] = useState(false);
-    const [sessionAnswers, setSessionAnswers] = useState<Record<number, boolean>>({});
+    const [sessionAnswers, setSessionAnswers] = useState<Record<number | string, boolean>>({});
     // Track user's chosen answer text per question id (for review screen)
-    const [userAnswerMap, setUserAnswerMap] = useState<Record<number, string>>({});
+    const [userAnswerMap, setUserAnswerMap] = useState<Record<number | string, string>>({});
     const startTimeRef = useRef<number>(Date.now());
+    
+    // AI Tutor Modal
+    const [tutorVisible, setTutorVisible] = useState(false);
+
+    // Image Zoom Modal
+    const [zoomVisible, setZoomVisible] = useState(false);
 
     // Timed mode state
     const [timeLeft, setTimeLeft] = useState(TIMED_MODE_SECONDS);
@@ -174,11 +184,30 @@ export default function QuizScreen() {
         } else if (effectiveMode === 'bookmarks') {
             if (categoryId === 'all') {
                 const allQuestions = getAllQuestions();
-                data = allQuestions.filter(q => bookmarks.includes(q.id));
+                data = allQuestions.filter(q => (bookmarks as (number | string)[]).includes(q.id));
             } else {
-                data = getQuestionsByIds(categoryId, bookmarks);
+                data = getQuestionsByIds(categoryId, bookmarks as (number | string)[]);
             }
             data = data.sort(() => Math.random() - 0.5);
+        } else if (effectiveMode === 'ai_endless') {
+            setAiGenerating(true);
+            try {
+                // Try cache first
+                let aiQuestions = await getCachedDynamicQuestions(categoryId, 10);
+                if (aiQuestions.length < 5) {
+                    // Fetch new from API if cache is low
+                    const fetched = await fetchDynamicQuestions(categoryId, 10);
+                    await saveDynamicQuestions(fetched);
+                    aiQuestions = [...aiQuestions, ...fetched].slice(0, 10);
+                }
+                data = aiQuestions;
+            } catch (error) {
+                console.error("AI Generation failed, falling back to standard questions", error);
+                const allCategoryQuestions = getQuestionsByCategory(categoryId);
+                data = await getSmartQuestions(categoryId, allCategoryQuestions, 10);
+            } finally {
+                setAiGenerating(false);
+            }
         } else {
             const allCategoryQuestions = getQuestionsByCategory(categoryId);
             const category = getCategoryById(categoryId);
@@ -242,6 +271,17 @@ export default function QuizScreen() {
         setLoading(false);
         if (isTimedMode) startTimer();
     };
+
+    if (aiGenerating && loading) {
+        return (
+            <SafeAreaView className="flex-1 bg-slate-50 dark:bg-slate-900 justify-center items-center">
+                <ActivityIndicator size="large" color="#3b82f6" />
+                <Text className="mt-4 text-slate-600 dark:text-slate-400 font-medium">
+                    The AI Instructor is writing your unique questions...
+                </Text>
+            </SafeAreaView>
+        );
+    }
 
     const currentQuestion = questions[currentQuestionIndex];
     const totalQuestions = questions.length;
@@ -324,6 +364,7 @@ export default function QuizScreen() {
                 options: q.options,
                 correct_answer: q.correct_answer,
                 explanation: q.explanation,
+                imageUrl: q.imageUrl,
                 userAnswer: userAnswerMap[q.id] || null,
             }));
 
@@ -454,12 +495,29 @@ export default function QuizScreen() {
                                             </Text>
                                         </View>
                                     )}
-                                    <MasteryBadge level={questionMastery[currentQuestion.id]?.difficulty || 'new'} />
+                                    <MasteryBadge level={(questionMastery as any)[currentQuestion.id]?.difficulty || 'new'} />
                                 </View>
 
-                                <Text className="text-[22px] font-bold text-slate-900 dark:text-white mb-8 leading-relaxed tracking-tight text-center">
+                                <Text className="text-[22px] font-bold text-slate-900 dark:text-white mb-6 leading-relaxed tracking-tight text-center">
                                     {currentQuestion.question}
                                 </Text>
+
+                                {currentQuestion.imageUrl ? (
+                                    <TouchableOpacity 
+                                        activeOpacity={0.8}
+                                        onPress={() => setZoomVisible(true)}
+                                        className="mb-6 rounded-2xl overflow-hidden border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800"
+                                    >
+                                        <Image
+                                            source={{ uri: currentQuestion.imageUrl }}
+                                            className="w-full h-48"
+                                            resizeMode="contain"
+                                        />
+                                        <View className="absolute bottom-2 right-2 bg-black/60 px-2 py-1 rounded-md">
+                                            <Text className="text-white text-xs font-bold">Tap to Zoom</Text>
+                                        </View>
+                                    </TouchableOpacity>
+                                ) : null}
 
                                 <View className="mb-8">
                                     {currentQuestion.options.map((option, index) => (
@@ -494,9 +552,22 @@ export default function QuizScreen() {
                                         <Lightbulb size={20} color="#2563eb" className="mr-2" />
                                         <Text className="text-blue-800 dark:text-blue-300 font-bold">Explanation</Text>
                                     </View>
-                                    <Text className="text-slate-700 dark:text-slate-300 leading-relaxed font-normal text-base">
+                                    <Text className="text-slate-700 dark:text-slate-300 leading-relaxed font-normal text-base mb-4">
                                         {currentQuestion.explanation}
                                     </Text>
+                                    
+                                    {/* Show AI Tutor button if they got it wrong */}
+                                    {selectedOption !== currentQuestion.correct_answer && (
+                                        <TouchableOpacity 
+                                            onPress={() => setTutorVisible(true)}
+                                            className="bg-white/80 dark:bg-slate-800/80 p-3 rounded-xl border border-blue-200 dark:border-blue-900 flex-row items-center justify-center mt-2"
+                                        >
+                                            <Sparkles size={16} color="#0d9488" className="mr-2" />
+                                            <Text className="text-teal-700 dark:text-teal-400 font-bold">
+                                                Ask AI Instructor why
+                                            </Text>
+                                        </TouchableOpacity>
+                                    )}
                                 </Animated.View>
                             )}
                         </ScrollView>
@@ -530,6 +601,40 @@ export default function QuizScreen() {
                 onSecondaryPress={alertConfig.onSecondaryPress}
                 type={alertConfig.type}
             />
+
+            {isAnswered && (
+                <AITutorModal 
+                    visible={tutorVisible}
+                    onClose={() => setTutorVisible(false)}
+                    questionText={currentQuestion.question}
+                    userAnswer={selectedOption || "Time Expired"}
+                    correctAnswer={currentQuestion.correct_answer}
+                />
+            )}
+
+            {/* Image Zoom Modal */}
+            <Modal
+                animationType="fade"
+                transparent={true}
+                visible={zoomVisible}
+                onRequestClose={() => setZoomVisible(false)}
+            >
+                <View className="flex-1 bg-black/90 justify-center items-center p-4">
+                    <TouchableOpacity 
+                        className="absolute top-12 right-6 z-10 p-2 bg-white/20 rounded-full"
+                        onPress={() => setZoomVisible(false)}
+                    >
+                        <X size={24} color="white" />
+                    </TouchableOpacity>
+                    {currentQuestion?.imageUrl && (
+                        <Image
+                            source={{ uri: currentQuestion.imageUrl }}
+                            className="w-full h-[70%]"
+                            resizeMode="contain"
+                        />
+                    )}
+                </View>
+            </Modal>
         </SafeAreaView>
     );
 }

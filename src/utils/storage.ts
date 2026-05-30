@@ -51,7 +51,7 @@ export interface HighScores {
 }
 
 export interface WrongAnswers {
-    [categoryId: string]: number[]; // Array of question IDs
+    [categoryId: string]: (number | string)[]; // Array of question IDs
 }
 
 export interface StudySession {
@@ -82,16 +82,16 @@ export interface CategoryStats {
 export interface ActiveSession {
     categoryId: string;
     mode: 'quiz' | 'flashcards' | 'mistake_bank' | 'bookmarks';
-    questionIds: number[];
+    questionIds: (number | string)[];
     currentIndex: number;
-    answers: Record<number, boolean>; // QuestionID -> Correct/Incorrect
+    answers: Record<number | string, boolean>; // QuestionID -> Correct/Incorrect
     startTime: number;
     lastUpdated: string;
 }
 
 export interface CategoryCompletion {
     [categoryId: string]: {
-        completedQuestionIds: number[]; // IDs of questions answered correctly
+        completedQuestionIds: (number | string)[]; // IDs of questions answered correctly
         lastQuestionIndex: number; // For sequential study mode
     };
 }

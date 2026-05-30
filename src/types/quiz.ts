@@ -10,12 +10,15 @@ export interface Category {
 }
 
 export interface Question {
-    id: number;
+    id: number | string;
     categoryId: string;
     question: string;
     options: string[];
     correct_answer: string;
     explanation: string;
+    isDynamic?: boolean;
+    imageId?: string;
+    imageUrl?: string;
 }
 
 export interface QuizData {

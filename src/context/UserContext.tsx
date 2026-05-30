@@ -66,12 +66,12 @@ interface UserContextType {
     updateProgress: (categoryId: string, attempted: number, correct: number) => Promise<void>;
     updateFlashcardProgress: (categoryId: string, reviewed: number, mastered: number) => Promise<void>;
     saveScore: (categoryId: string, score: number, total: number) => Promise<void>;
-    addToMistakeBank: (categoryId: string, questionId: number) => Promise<void>;
-    removeFromMistakeBank: (categoryId: string, questionId: number) => Promise<void>;
+    addToMistakeBank: (categoryId: string, questionId: number | string) => Promise<void>;
+    removeFromMistakeBank: (categoryId: string, questionId: number | string) => Promise<void>;
     refreshData: () => Promise<void>;
-    bookmarks: number[];
-    toggleBookmark: (questionId: number) => Promise<void>;
-    isBookmarked: (questionId: number) => boolean;
+    bookmarks: (number | string)[];
+    toggleBookmark: (questionId: number | string) => Promise<void>;
+    isBookmarked: (questionId: number | string) => boolean;
     reminderEnabled: boolean;
     reminderTimes: Date[];
     updateReminderSettings: (enabled: boolean, times: Date[]) => Promise<void>;
@@ -88,7 +88,7 @@ interface UserContextType {
     updateDailyGoal: (goal: DailyGoal) => Promise<void>;
     hasCompletedOnboarding: boolean;
     questionMastery: QuestionMastery;
-    updateQuestionMastery: (questionId: number, isCorrect: boolean) => Promise<void>;
+    updateQuestionMastery: (questionId: number | string, isCorrect: boolean) => Promise<void>;
 }
 
 const UserContext = createContext<UserContextType | undefined>(undefined);
@@ -141,7 +141,8 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
                 dailyGoalData,
                 onboardingStatus,
                 credits,
-                lastMonthlyGrant
+                lastMonthlyGrant,
+                questionMasteryData
             ] = await Promise.all([
                 getPremiumStatus(),
                 getUserProgress(),
@@ -205,7 +206,7 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
             setDailyGoal(dailyGoalData || { questionsPerDay: 10, lastUpdated: new Date().toISOString() });
             setHasCompletedOnboardingState(!!onboardingStatus);
             setExamCredits(currentCredits);
-            setQuestionMastery(arguments[0][16] || {}); // 16th element in Promise.all array
+            setQuestionMastery(questionMasteryData || {});
 
             setReminderEnabled(reminderData.enabled);
             setReminderTimes(reminderData.times.map(t => new Date(t)));
@@ -353,7 +354,7 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
         }
     };
 
-    const addToMistakeBank = async (categoryId: string, questionId: number) => {
+    const addToMistakeBank = async (categoryId: string, questionId: number | string) => {
         const currentMistakes = mistakeBank[categoryId] || [];
         if (!currentMistakes.includes(questionId)) {
             const newMistakes = {
@@ -365,7 +366,7 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
         }
     };
 
-    const removeFromMistakeBank = async (categoryId: string, questionId: number) => {
+    const removeFromMistakeBank = async (categoryId: string, questionId: number | string) => {
         const currentMistakes = mistakeBank[categoryId] || [];
         const newMistakes = {
             ...mistakeBank,
@@ -375,7 +376,7 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
         await removeWrongAnswerFromStorage(categoryId, questionId);
     };
 
-    const toggleBookmark = async (questionId: number) => {
+    const toggleBookmark = async (questionId: number | string) => {
         console.log('[UserContext] Toggle bookmark called for question:', questionId);
         console.log('[UserContext] Current bookmarks state:', bookmarks);
 
@@ -404,7 +405,7 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
         }
     };
 
-    const isBookmarked = (questionId: number) => {
+    const isBookmarked = (questionId: number | string) => {
         return bookmarks.includes(questionId);
     };
 

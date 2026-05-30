@@ -95,9 +95,9 @@ export const getAllQuestions = (): Question[] => {
 };
 
 // Get questions by IDs (for mistake bank)
-export const getQuestionsByIds = (categoryId: string, questionIds: number[]): Question[] => {
+export const getQuestionsByIds = (categoryId: string, questionIds: (number | string)[]): Question[] => {
     const allQuestions = getQuestionsByCategory(categoryId);
-    return allQuestions.filter(q => questionIds.includes(q.id));
+    return allQuestions.filter(q => questionIds.includes(q.id as number));
 };
 
 // Check if a category is available (not premium or user has premium)

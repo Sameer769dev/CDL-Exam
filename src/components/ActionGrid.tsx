@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
-import { BrainCircuit, Layers, AlertOctagon, Award, Lock } from 'lucide-react-native';
+import { BrainCircuit, Layers, AlertOctagon, Award, Lock, Sparkles } from 'lucide-react-native';
 import { useRouter } from 'expo-router';
 import Animated, { FadeInUp } from 'react-native-reanimated';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -42,6 +42,14 @@ export const ActionGrid = () => {
             iconColor: '#ffffff',
             path: '/exam-intro',
             delay: 400
+        },
+        {
+            title: 'AI Endless Mode',
+            icon: Sparkles,
+            gradient: ['#0f766e', '#0d9488'] as const, // Teal
+            iconColor: '#ffffff',
+            path: '/categories?mode=ai_endless',
+            delay: 500
         }
     ];
 
@@ -72,13 +80,19 @@ export const ActionGrid = () => {
                     gradientColors = ['#334155', '#1e293b']; // Metallic / Dark Charcoal
                     shadowColor = 'shadow-slate-500/30';
                     accentColor = '#cbd5e1';
+                } else if (action.title === 'AI Endless Mode') {
+                    gradientColors = ['#0f766e', '#0d9488']; // Teal AI Glow
+                    shadowColor = 'shadow-teal-500/40';
+                    accentColor = '#5eead4';
                 }
+
+                const isFullWidth = action.title === 'AI Endless Mode';
 
                 return (
                     <Animated.View
                         key={index}
                         entering={FadeInUp.delay(action.delay).springify()}
-                        className="w-[48%]"
+                        className={isFullWidth ? "w-full" : "w-[48%]"}
                     >
                         <TouchableOpacity
                             onPress={() => {

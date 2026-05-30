@@ -49,7 +49,7 @@ export default function FlashcardsScreen() {
     const [isFlipped, setIsFlipped] = useState(false);
     const [masteredCount, setMasteredCount] = useState(0);
     const [studyAgainCount, setStudyAgainCount] = useState(0);
-    const [sessionAnswers, setSessionAnswers] = useState<Record<number, boolean>>({});
+    const [sessionAnswers, setSessionAnswers] = useState<Record<number | string, boolean>>({});
     const startTimeRef = useRef<number>(Date.now());
 
     // Alert State
@@ -192,9 +192,9 @@ export default function FlashcardsScreen() {
             syncActiveSession({
                 categoryId,
                 mode: 'flashcards',
-                questionIds: questions.map(q => q.id),
+                questionIds: questions.map(q => q.id) as (number | string)[],
                 currentIndex: currentIndex + 1,
-                answers: newAnswers,
+                answers: newAnswers as Record<number | string, boolean>,
                 startTime: startTimeRef.current,
                 lastUpdated: new Date().toISOString()
             }),

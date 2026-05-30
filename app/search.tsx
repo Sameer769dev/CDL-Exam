@@ -26,7 +26,7 @@ export default function SearchScreen() {
                 const mapped = categoryQuestions.map(q => ({
                     question: q,
                     categoryId: category.id,
-                    categoryName: category.title
+                    categoryName: category.name
                 }));
                 questions = [...questions, ...mapped];
             });

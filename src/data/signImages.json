@@ -1,0 +1,42 @@
+[
+  {
+    "id": "stop_sign",
+    "name": "Stop Sign",
+    "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f9/STOP_sign.jpg/640px-STOP_sign.jpg"
+  },
+  {
+    "id": "yield_sign",
+    "name": "Yield Sign",
+    "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/75/MUTCD_R1-2.svg/640px-MUTCD_R1-2.svg.png"
+  },
+  {
+    "id": "speed_limit_55",
+    "name": "Speed Limit 55",
+    "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/87/MUTCD_R2-1_55.svg/640px-MUTCD_R2-1_55.svg.png"
+  },
+  {
+    "id": "railroad_crossing",
+    "name": "Railroad Crossing",
+    "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/cd/MUTCD_W10-1.svg/640px-MUTCD_W10-1.svg.png"
+  },
+  {
+    "id": "steep_downgrade",
+    "name": "Steep Downgrade (Trucks)",
+    "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d6/MUTCD_W7-1.svg/640px-MUTCD_W7-1.svg.png"
+  },
+  {
+    "id": "low_clearance",
+    "name": "Low Clearance (12'-6\")",
+    "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/fb/MUTCD_W12-2.svg/640px-MUTCD_W12-2.svg.png"
+  },
+  {
+    "id": "no_trucks",
+    "name": "No Trucks",
+    "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/07/MUTCD_R5-2.svg/640px-MUTCD_R5-2.svg.png"
+  },
+  {
+    "id": "weigh_station",
+    "name": "Weigh Station 1 Mile",
+    "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/74/MUTCD_D8-1.svg/640px-MUTCD_D8-1.svg.png"
+  }
+]

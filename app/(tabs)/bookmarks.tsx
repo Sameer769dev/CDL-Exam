@@ -20,7 +20,7 @@ export default function BookmarksScreen() {
 
     const loadBookmarkedQuestions = () => {
         const allQuestions = getAllQuestions();
-        const filtered = allQuestions.filter(q => bookmarks.includes(q.id));
+        const filtered = allQuestions.filter(q => (bookmarks as (number | string)[]).includes(q.id));
         setBookmarkedQuestions(filtered);
     };
 
@@ -58,7 +58,7 @@ export default function BookmarksScreen() {
                         </Text>
                     </View>
                     <TouchableOpacity
-                        onPress={() => handleRemoveBookmark(item.id)}
+                        onPress={() => handleRemoveBookmark(item.id as number)}
                         className="p-3 bg-red-50 dark:bg-red-900/20 rounded-full"
                         hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
                     >
