@@ -70,10 +70,10 @@
     ],
     "extra": {
       "router": {}
+    },
+    "react-native-google-mobile-ads": {
+      "android_app_id": "ca-app-pub-5397047296907599~7797119607",
+      "ios_app_id": "ca-app-pub-5397047296907599~7797119607"
     }
-  },
-  "react-native-google-mobile-ads": {
-    "android_app_id": "ca-app-pub-5397047296907599~7797119607",
-    "ios_app_id": "ca-app-pub-5397047296907599~7797119607"
   }
 }
