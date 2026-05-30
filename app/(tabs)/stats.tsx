@@ -15,6 +15,9 @@ import { StudyHistoryChart } from '../../src/components/progress/StudyHistoryCha
 import { CategoryPerformanceCard } from '../../src/components/progress/CategoryPerformanceCard';
 import { WeakAreasCard } from '../../src/components/progress/WeakAreasCard';
 import { ProgressRing } from '../../src/components/progress/ProgressRing';
+import { HeatmapGrid } from '../../src/components/analytics/HeatmapGrid';
+import { WeeklyBarChart } from '../../src/components/analytics/WeeklyBarChart';
+import { PredictionScore } from '../../src/components/analytics/PredictionScore';
 
 export default function ProgressDashboard() {
     const { isPremium } = useUser();
@@ -101,9 +104,24 @@ export default function ProgressDashboard() {
                                 <StudyHistoryChart />
                             </View>
 
+                            {/* Weekly Bar Chart */}
+                            <View className="px-6 mb-6">
+                                <WeeklyBarChart />
+                            </View>
+
+                            {/* Heatmap Grid */}
+                            <View className="px-6 mb-6">
+                                <HeatmapGrid />
+                            </View>
+
                             {/* Weak Areas */}
                             <View className="px-6 mb-6">
                                 <WeakAreasCard maxItems={5} />
+                            </View>
+
+                            {/* Pass Prediction Score */}
+                            <View className="px-6 mb-6">
+                                <PredictionScore />
                             </View>
 
                             {/* Category Performance */}

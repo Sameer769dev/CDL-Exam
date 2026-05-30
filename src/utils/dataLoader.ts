@@ -1,4 +1,17 @@
 import { Category, Question } from '../types/quiz';
+
+// ─── Option Shuffling ────────────────────────────────────────────────────────
+// Randomises the order of answer options while keeping correct_answer unchanged
+// (correct_answer is matched by string value, not index — so this is safe).
+export function shuffleQuestionOptions(question: Question): Question {
+    const shuffled = [...question.options].sort(() => Math.random() - 0.5);
+    return { ...question, options: shuffled };
+}
+
+// Shuffle an array of questions' options in one pass
+export function shuffleAllOptions(questions: Question[]): Question[] {
+    return questions.map(shuffleQuestionOptions);
+}
 import categoriesData from '../data/categories.json';
 import airBrakesData from '../data/air_brakes_data.json';
 import generalKnowledgeData from '../data/general_knowledge_data.json';
@@ -117,14 +130,16 @@ export const getAccessibleQuestionCount = (
 };
 
 // Generate a random set of questions for the exam simulator
+// Options are shuffled so the correct answer is never in the same position.
 export const generateExamQuestions = (count: number = 50): Question[] => {
     const allQuestions = getAllQuestions();
 
-    // Fisher-Yates shuffle
+    // Fisher-Yates shuffle (question order)
     for (let i = allQuestions.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
         [allQuestions[i], allQuestions[j]] = [allQuestions[j], allQuestions[i]];
     }
 
-    return allQuestions.slice(0, count);
+    // Also shuffle each question's answer options
+    return shuffleAllOptions(allQuestions.slice(0, count));
 };

@@ -22,6 +22,7 @@ import Animated, { FadeInDown, FadeInUp, ZoomIn } from "react-native-reanimated"
 import { BannerAdComponent } from "../src/components/BannerAd";
 import { LinearGradient } from 'expo-linear-gradient';
 import * as StoreReview from "expo-store-review";
+import { AnswerReviewList } from "../src/components/AnswerReviewList";
 
 const { width } = Dimensions.get('window');
 
@@ -71,6 +72,16 @@ export default function ResultsScreen() {
     // showAd is set by quiz/flashcards to trigger the interstitial here,
     // at the natural content break — NOT during active gameplay.
     const shouldShowAd = params.showAd === 'true';
+    
+    // Parse Review Data
+    let reviewData = [];
+    try {
+        if (params.reviewData && typeof params.reviewData === 'string') {
+            reviewData = JSON.parse(params.reviewData);
+        }
+    } catch (e) {
+        console.error("Failed to parse review data", e);
+    }
 
     // Computed
     const percentage = Math.round((score / total) * 100);
@@ -301,8 +312,13 @@ Download CDL Prep 2025 now:
                         />
                     </View>
 
+                    {/* Review Section */}
+                    {reviewData.length > 0 && (
+                        <AnswerReviewList data={reviewData} />
+                    )}
+
                     {/* Action Buttons */}
-                    <View className="gap-3 mb-4">
+                    <View className="gap-3 mb-4 mt-6">
                         <TouchableOpacity
                             onPress={handleRetake}
                             activeOpacity={0.9}

@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import { View, Text, ScrollView, TouchableOpacity, ActivityIndicator, Alert } from "react-native";
+import { View, Text, ScrollView, TouchableOpacity, ActivityIndicator } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Stack, useRouter } from "expo-router";
 import { ArrowRight, Clock, X } from "lucide-react-native";
@@ -15,6 +15,9 @@ import { Question } from "../src/types/quiz";
 import { useUser } from "../src/context/UserContext";
 import { useTheme } from "../src/context/ThemeContext";
 import { trackExamSession } from "../src/utils/sessionTracking";
+import { CustomAlert } from "../src/components/CustomAlert";
+import { shuffleAllOptions } from "../src/utils/dataLoader";
+import { Flag } from "lucide-react-native";
 
 export default function ExamScreen() {
     const router = useRouter();
@@ -24,7 +27,20 @@ export default function ExamScreen() {
     const [loading, setLoading] = useState(true);
     const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
     const [answers, setAnswers] = useState<{ [key: number]: string }>({});
+    const [flaggedQuestions, setFlaggedQuestions] = useState<Set<number>>(new Set());
     const [timeLeft, setTimeLeft] = useState(60 * 60); // 60 minutes in seconds
+
+    // Alert State
+    const [alertVisible, setAlertVisible] = useState(false);
+    const [alertConfig, setAlertConfig] = useState({
+        title: '',
+        message: '',
+        primaryButtonText: '',
+        secondaryButtonText: '',
+        onPrimaryPress: () => { },
+        onSecondaryPress: () => { },
+        type: 'default' as 'default' | 'danger' | 'success'
+    });
 
     useEffect(() => {
         loadQuestions();
@@ -49,7 +65,8 @@ export default function ExamScreen() {
 
     const loadQuestions = () => {
         const data = generateExamQuestions(50);
-        setQuestions(data);
+        // Ensure options are shuffled for the exam as well
+        setQuestions(shuffleAllOptions(data));
         setLoading(false);
     };
 
@@ -66,6 +83,18 @@ export default function ExamScreen() {
         }));
     };
 
+    const toggleFlag = () => {
+        setFlaggedQuestions(prev => {
+            const next = new Set(prev);
+            if (next.has(currentQuestionIndex)) {
+                next.delete(currentQuestionIndex);
+            } else {
+                next.add(currentQuestionIndex);
+            }
+            return next;
+        });
+    };
+
     const handleNext = () => {
         if (currentQuestionIndex < questions.length - 1) {
             setCurrentQuestionIndex(prev => prev + 1);
@@ -79,14 +108,19 @@ export default function ExamScreen() {
         const total = questions.length;
 
         if (answeredCount < total) {
-            Alert.alert(
-                "Submit Exam?",
-                `You have answered ${answeredCount} out of ${total} questions. Are you sure you want to submit?`,
-                [
-                    { text: "Cancel", style: "cancel" },
-                    { text: "Submit", onPress: handleSubmit }
-                ]
-            );
+            setAlertConfig({
+                title: "Submit Exam?",
+                message: `You have answered ${answeredCount} out of ${total} questions. Are you sure you want to submit?`,
+                primaryButtonText: "Submit",
+                secondaryButtonText: "Cancel",
+                onPrimaryPress: () => {
+                    setAlertVisible(false);
+                    handleSubmit();
+                },
+                onSecondaryPress: () => setAlertVisible(false),
+                type: 'default'
+            });
+            setAlertVisible(true);
         } else {
             handleSubmit();
         }
@@ -104,9 +138,19 @@ export default function ExamScreen() {
         // Save score to 'exam_simulator' category
         await saveScore('exam_simulator', score, questions.length);
 
-        // Track exam session (NEW - fixes missing session save)
+        // Track exam session
         const timeSpent = 3600 - timeLeft; // seconds
         await trackExamSession(score, questions.length, timeSpent);
+
+        // Build review payload
+        const reviewData = questions.map((q, index) => ({
+            id: q.id,
+            question: q.question,
+            options: q.options,
+            correct_answer: q.correct_answer,
+            explanation: q.explanation,
+            userAnswer: answers[index] || null,
+        }));
 
         router.replace({
             pathname: "/results",
@@ -115,7 +159,8 @@ export default function ExamScreen() {
                 total: questions.length,
                 categoryId: 'exam_simulator',
                 mode: 'exam',
-                timeSpent: timeSpent.toString()
+                timeSpent: timeSpent.toString(),
+                reviewData: JSON.stringify(reviewData),
             },
         });
     };
@@ -143,14 +188,19 @@ export default function ExamScreen() {
                 <View className="flex-row justify-between items-center px-6 py-4 border-b border-slate-200 dark:border-slate-800">
                     <TouchableOpacity
                         onPress={() => {
-                            Alert.alert(
-                                "Quit Exam?",
-                                "Your progress will be lost.",
-                                [
-                                    { text: "Cancel", style: "cancel" },
-                                    { text: "Quit", style: "destructive", onPress: () => router.back() }
-                                ]
-                            );
+                            setAlertConfig({
+                                title: "Quit Exam?",
+                                message: "Your progress will be lost.",
+                                primaryButtonText: "Quit",
+                                secondaryButtonText: "Cancel",
+                                onPrimaryPress: () => {
+                                    setAlertVisible(false);
+                                    router.back();
+                                },
+                                onSecondaryPress: () => setAlertVisible(false),
+                                type: 'danger'
+                            });
+                            setAlertVisible(true);
                         }}
                         className="p-2 -ml-2 rounded-full active:bg-slate-100 dark:active:bg-slate-800"
                     >
@@ -183,9 +233,20 @@ export default function ExamScreen() {
                             <Text className="text-sm font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
                                 Question {currentQuestionIndex + 1} of {totalQuestions}
                             </Text>
-                            <Text className="text-sm font-bold text-slate-400 dark:text-slate-500">
-                                {Math.round(progress)}%
-                            </Text>
+                            <View className="flex-row items-center">
+                                <TouchableOpacity 
+                                    onPress={toggleFlag}
+                                    className={`mr-4 px-3 py-1.5 rounded-full flex-row items-center border ${flaggedQuestions.has(currentQuestionIndex) ? 'bg-amber-100 border-amber-300 dark:bg-amber-900/30 dark:border-amber-700/50' : 'bg-slate-100 border-slate-200 dark:bg-slate-800 dark:border-slate-700'}`}
+                                >
+                                    <Flag size={14} color={flaggedQuestions.has(currentQuestionIndex) ? '#d97706' : (isDark ? '#94a3b8' : '#64748b')} strokeWidth={flaggedQuestions.has(currentQuestionIndex) ? 3 : 2} className="mr-1.5" />
+                                    <Text className={`text-xs font-bold ${flaggedQuestions.has(currentQuestionIndex) ? 'text-amber-700 dark:text-amber-500' : 'text-slate-500 dark:text-slate-400'}`}>
+                                        {flaggedQuestions.has(currentQuestionIndex) ? 'Flagged' : 'Flag'}
+                                    </Text>
+                                </TouchableOpacity>
+                                <Text className="text-sm font-bold text-slate-400 dark:text-slate-500">
+                                    {Math.round(progress)}%
+                                </Text>
+                            </View>
                         </View>
 
                         <Animated.View
@@ -226,6 +287,16 @@ export default function ExamScreen() {
                     </TouchableOpacity>
                 </View>
             </SafeAreaView>
+            <CustomAlert
+                visible={alertVisible}
+                title={alertConfig.title}
+                message={alertConfig.message}
+                primaryButtonText={alertConfig.primaryButtonText}
+                secondaryButtonText={alertConfig.secondaryButtonText}
+                onPrimaryPress={alertConfig.onPrimaryPress}
+                onSecondaryPress={alertConfig.onSecondaryPress}
+                type={alertConfig.type}
+            />
         </View>
     );
 }

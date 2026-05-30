@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { View, ScrollView, Text, Image, TouchableOpacity } from 'react-native';
-import { Calendar } from 'lucide-react-native';
+import { Calendar, Search } from 'lucide-react-native';
 import { getAvatarSource } from '../../src/utils/avatars';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Stack, useRouter, useLocalSearchParams } from 'expo-router';
@@ -16,6 +16,7 @@ import { ProgressStatsCard } from '../../src/components/progress/ProgressStatsCa
 import { WeakAreasCard } from '../../src/components/progress/WeakAreasCard';
 import { TimeDisplay } from '../../src/components/progress/TimeDisplay';
 import { useProgressStats } from '../../src/hooks/useProgressStats';
+import { DailyChallengeCard } from '../../src/components/DailyChallengeCard';
 
 export default function HomeScreen() {
     const router = useRouter();
@@ -79,6 +80,13 @@ export default function HomeScreen() {
                         </View>
                         <View className="flex-row items-center gap-3">
                             <TouchableOpacity
+                                onPress={() => router.push('/search')}
+                                activeOpacity={0.8}
+                                className="w-10 h-10 bg-white dark:bg-slate-800 rounded-full items-center justify-center border border-slate-200 dark:border-slate-700 shadow-sm"
+                            >
+                                <Search size={20} color={isDark ? '#e2e8f0' : '#475569'} />
+                            </TouchableOpacity>
+                            <TouchableOpacity
                                 onPress={() => router.push('/settings')}
                                 activeOpacity={0.8}
                                 className="w-12 h-12 bg-slate-200 dark:bg-slate-800 rounded-full items-center justify-center border-2 border-white dark:border-slate-700 shadow-sm overflow-hidden"
@@ -132,6 +140,9 @@ export default function HomeScreen() {
                                 </TouchableOpacity>
                             </View>
                         )}
+
+                        {/* Daily Challenge Card - NEW */}
+                        <DailyChallengeCard />
 
                         {/* Action Grid */}
                         <View className="mb-8 px-6">

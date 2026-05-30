@@ -167,14 +167,17 @@ export default function FlashcardsScreen() {
         flipRotation.value = withSpring(isFlipped ? 0 : 180, { damping: 12, stiffness: 90 });
     };
 
-    const handleSwipe = async (direction: 'left' | 'right') => {
-        const isRight = direction === 'right';
+    const handleSwipe = async (direction: 'left' | 'right' | 'middle') => {
+        const isRight = direction === 'right' || direction === 'middle'; // Both count as 'correct' for now in stats, but could be separated later
         const newMasteredCount = isRight ? masteredCount + 1 : masteredCount;
 
         // Update stats
-        if (isRight) {
+        if (direction === 'right') {
             setMasteredCount(prev => prev + 1);
             Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
+        } else if (direction === 'middle') {
+            setMasteredCount(prev => prev + 1);
+            Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success); // or warning
         } else {
             setStudyAgainCount(prev => prev + 1);
             Haptics.notificationAsync(Haptics.NotificationFeedbackType.Warning);
@@ -199,7 +202,12 @@ export default function FlashcardsScreen() {
         ]);
 
         // Animate out
-        translateX.value = withTiming(isRight ? SCREEN_WIDTH * 1.5 : -SCREEN_WIDTH * 1.5, { duration: 300 }, () => {
+        const targetX = direction === 'right' ? SCREEN_WIDTH * 1.5 : (direction === 'left' ? -SCREEN_WIDTH * 1.5 : 0);
+        const targetY = direction === 'middle' ? SCREEN_WIDTH * 1.5 : 0;
+        
+        translateX.value = withTiming(targetX, { duration: 300 });
+        // We can just fade out or translate down for middle
+        cardOpacity.value = withTiming(0, { duration: 300 }, () => {
             runOnJS(nextCard)();
         });
     };
@@ -280,13 +288,13 @@ export default function FlashcardsScreen() {
 
     const frontStyle = useAnimatedStyle(() => ({
         transform: [{ rotateY: `${interpolate(flipRotation.value, [0, 180], [0, 180])}deg` }],
-        opacity: interpolate(flipRotation.value, [85, 95], [1, 0]),
+        opacity: interpolate(flipRotation.value, [85, 95], [1, 0]) * cardOpacity.value,
         zIndex: flipRotation.value < 90 ? 1 : 0,
     }));
 
     const backStyle = useAnimatedStyle(() => ({
         transform: [{ rotateY: `${interpolate(flipRotation.value, [0, 180], [180, 360])}deg` }],
-        opacity: interpolate(flipRotation.value, [85, 95], [0, 1]),
+        opacity: interpolate(flipRotation.value, [85, 95], [0, 1]) * cardOpacity.value,
         zIndex: flipRotation.value < 90 ? 0 : 1,
     }));
 
@@ -367,13 +375,26 @@ export default function FlashcardsScreen() {
                             {/* Back Side */}
                             <Animated.View
                                 style={[backStyle, { position: 'absolute', width: '100%', height: '100%' }]}
-                                className="bg-blue-50 dark:bg-slate-800 rounded-3xl shadow-xl p-8 items-center justify-center border border-blue-100 dark:border-slate-700"
+                                className="bg-blue-50 dark:bg-slate-800 rounded-3xl shadow-xl p-6 items-center justify-center border border-blue-100 dark:border-slate-700"
                             >
-                                <Text className="text-xl font-semibold text-center text-blue-900 dark:text-blue-100 mb-6">
-                                    {currentQuestion.correct_answer}
+                                <Text className="text-lg font-bold text-center text-slate-800 dark:text-white mb-6">
+                                    {currentQuestion.question}
                                 </Text>
-                                <View className="w-full h-[1px] bg-blue-200 dark:bg-slate-600 mb-6" />
-                                <Text className="text-slate-600 dark:text-slate-300 text-center leading-relaxed">
+                                
+                                <View className="w-full space-y-2 mb-4">
+                                    {currentQuestion.options.map((option, idx) => {
+                                        const isCorrect = option === currentQuestion.correct_answer;
+                                        return (
+                                            <View key={idx} className={`p-3 rounded-xl border ${isCorrect ? 'bg-green-100 border-green-300 dark:bg-green-900/40 dark:border-green-700' : 'bg-white border-slate-200 dark:bg-slate-700 dark:border-slate-600'}`}>
+                                                <Text className={`font-medium ${isCorrect ? 'text-green-800 dark:text-green-300' : 'text-slate-600 dark:text-slate-300'}`}>
+                                                    {option}
+                                                </Text>
+                                            </View>
+                                        );
+                                    })}
+                                </View>
+                                
+                                <Text className="text-slate-600 dark:text-slate-300 text-center leading-relaxed text-sm">
                                     {currentQuestion.explanation}
                                 </Text>
                             </Animated.View>
@@ -383,31 +404,36 @@ export default function FlashcardsScreen() {
             </View>
 
             {/* Controls */}
-            <View className="px-8 pb-8 pt-4 flex-row justify-between items-center">
-                <TouchableOpacity
-                    onPress={() => handleSwipe('left')}
-                    className="w-16 h-16 rounded-full bg-red-100 dark:bg-red-900/30 items-center justify-center border border-red-200 dark:border-red-800 active:scale-95 transition-all"
-                >
-                    <XIcon size={32} color="#ef4444" />
-                </TouchableOpacity>
-
+            <View className="px-6 pb-8 pt-4 flex-row justify-between items-center">
                 <View className="items-center">
-                    <Text className="text-slate-400 dark:text-slate-500 text-xs font-medium mb-1">
-                        SWIPE
-                    </Text>
-                    <View className="flex-row space-x-1">
-                        <View className="w-1 h-1 rounded-full bg-slate-300 dark:bg-slate-600" />
-                        <View className="w-1 h-1 rounded-full bg-slate-300 dark:bg-slate-600" />
-                        <View className="w-1 h-1 rounded-full bg-slate-300 dark:bg-slate-600" />
-                    </View>
+                    <TouchableOpacity
+                        onPress={() => handleSwipe('left')}
+                        className="w-16 h-16 rounded-full bg-red-100 dark:bg-red-900/30 items-center justify-center border border-red-200 dark:border-red-800 active:scale-95 transition-all mb-2"
+                    >
+                        <XIcon size={32} color="#ef4444" />
+                    </TouchableOpacity>
+                    <Text className="text-xs font-bold text-red-500 uppercase">Need Practice</Text>
                 </View>
 
-                <TouchableOpacity
-                    onPress={() => handleSwipe('right')}
-                    className="w-16 h-16 rounded-full bg-green-100 dark:bg-green-900/30 items-center justify-center border border-green-200 dark:border-green-800 active:scale-95 transition-all"
-                >
-                    <Check size={32} color="#22c55e" />
-                </TouchableOpacity>
+                <View className="items-center">
+                    <TouchableOpacity
+                        onPress={() => handleSwipe('middle')}
+                        className="w-16 h-16 rounded-full bg-amber-100 dark:bg-amber-900/30 items-center justify-center border border-amber-200 dark:border-amber-800 active:scale-95 transition-all mb-2"
+                    >
+                        <RotateCcw size={28} color="#f59e0b" />
+                    </TouchableOpacity>
+                    <Text className="text-xs font-bold text-amber-500 uppercase">Almost</Text>
+                </View>
+
+                <View className="items-center">
+                    <TouchableOpacity
+                        onPress={() => handleSwipe('right')}
+                        className="w-16 h-16 rounded-full bg-green-100 dark:bg-green-900/30 items-center justify-center border border-green-200 dark:border-green-800 active:scale-95 transition-all mb-2"
+                    >
+                        <Check size={32} color="#22c55e" />
+                    </TouchableOpacity>
+                    <Text className="text-xs font-bold text-green-500 uppercase">Got It</Text>
+                </View>
             </View>
             <CustomAlert
                 visible={alertVisible}

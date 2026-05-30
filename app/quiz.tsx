@@ -1,28 +1,45 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 import { View, Text, ScrollView, TouchableOpacity, ActivityIndicator, BackHandler } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Stack, useRouter, useLocalSearchParams } from "expo-router";
-import { MoveRight, Lightbulb, X, RotateCcw } from "lucide-react-native";
+import { MoveRight, Lightbulb, X, Clock } from "lucide-react-native";
 import Animated, {
     FadeInDown,
     FadeOut,
-    FadeIn
+    FadeIn,
+    useSharedValue,
+    useAnimatedStyle,
+    withTiming,
+    Easing,
 } from "react-native-reanimated";
 import * as Haptics from 'expo-haptics';
 import { QuizProgress } from "../src/components/QuizProgress";
 import { OptionButton } from "../src/components/OptionButton";
 import { BookmarkButton } from "../src/components/BookmarkButton";
-import { getQuestionsByCategory, getQuestionsByIds, getAllQuestions, getCategoryById, getAccessibleQuestionCount } from "../src/utils/dataLoader";
+import { MasteryBadge } from "../src/components/MasteryBadge";
+import {
+    getQuestionsByCategory,
+    getQuestionsByIds,
+    getAllQuestions,
+    getCategoryById,
+    getAccessibleQuestionCount,
+    shuffleAllOptions,
+} from "../src/utils/dataLoader";
 import { Question } from "../src/types/quiz";
 import { useUser } from "../src/context/UserContext";
 import { useTheme } from "../src/context/ThemeContext";
 import { CustomAlert } from "../src/components/CustomAlert";
+
+// Seconds allowed per question in timed mode
+const TIMED_MODE_SECONDS = 30;
 
 export default function QuizScreen() {
     const router = useRouter();
     const params = useLocalSearchParams();
     const categoryId = (params.categoryId as string) || 'air_brakes';
     const mode = (params.mode as string) || 'standard';
+    // timed mode is standard + per-question countdown
+    const isTimedMode = mode === 'timed';
 
     const {
         updateProgress,
@@ -36,7 +53,9 @@ export default function QuizScreen() {
         activeSession,
         syncActiveSession,
         finishActiveSession,
-        getSmartQuestions
+        getSmartQuestions,
+        questionMastery,
+        updateQuestionMastery
     } = useUser();
 
     const { isDark } = useTheme();
@@ -48,7 +67,14 @@ export default function QuizScreen() {
     const [selectedOption, setSelectedOption] = useState<string | null>(null);
     const [isAnswered, setIsAnswered] = useState(false);
     const [sessionAnswers, setSessionAnswers] = useState<Record<number, boolean>>({});
+    // Track user's chosen answer text per question id (for review screen)
+    const [userAnswerMap, setUserAnswerMap] = useState<Record<number, string>>({});
     const startTimeRef = useRef<number>(Date.now());
+
+    // Timed mode state
+    const [timeLeft, setTimeLeft] = useState(TIMED_MODE_SECONDS);
+    const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
+    const timerProgress = useSharedValue(1); // 1 = full, 0 = empty
 
     // Alert State
     const [alertVisible, setAlertVisible] = useState(false);
@@ -68,12 +94,7 @@ export default function QuizScreen() {
             handleQuit();
             return true;
         };
-
-        const backHandler = BackHandler.addEventListener(
-            "hardwareBackPress",
-            backAction
-        );
-
+        const backHandler = BackHandler.addEventListener("hardwareBackPress", backAction);
         return () => backHandler.remove();
     }, []);
 
@@ -85,6 +106,7 @@ export default function QuizScreen() {
             secondaryButtonText: "Cancel",
             onPrimaryPress: () => {
                 setAlertVisible(false);
+                stopTimer();
                 router.back();
             },
             onSecondaryPress: () => setAlertVisible(false),
@@ -97,53 +119,88 @@ export default function QuizScreen() {
         loadQuestions();
     }, [categoryId, mode]);
 
+    // ─── Timer helpers ─────────────────────────────────────────────────────────
+    const stopTimer = useCallback(() => {
+        if (timerRef.current) {
+            clearInterval(timerRef.current);
+            timerRef.current = null;
+        }
+    }, []);
+
+    const startTimer = useCallback(() => {
+        if (!isTimedMode) return;
+        stopTimer();
+        setTimeLeft(TIMED_MODE_SECONDS);
+        timerProgress.value = withTiming(0, {
+            duration: TIMED_MODE_SECONDS * 1000,
+            easing: Easing.linear,
+        });
+        timerRef.current = setInterval(() => {
+            setTimeLeft(prev => {
+                if (prev <= 1) {
+                    stopTimer();
+                    // Time up — auto-mark as wrong
+                    handleTimeUp();
+                    return 0;
+                }
+                return prev - 1;
+            });
+        }, 1000);
+    }, [isTimedMode, stopTimer]);
+
+    // Cleanup timer on unmount
+    useEffect(() => () => stopTimer(), []);
+
+    const handleTimeUp = useCallback(() => {
+        // Same flow as selecting a wrong answer
+        Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error).catch(() => { });
+        setIsAnswered(true);
+        setSelectedOption(null); // null = time expired
+    }, []);
+
+    const timerBarStyle = useAnimatedStyle(() => ({
+        width: `${timerProgress.value * 100}%`,
+    }));
+
+    // ─── Load questions ────────────────────────────────────────────────────────
     const loadQuestions = async () => {
         let data: Question[] = [];
+        const effectiveMode = isTimedMode ? 'standard' : mode;
 
-        if (mode === 'mistake_bank') {
+        if (effectiveMode === 'mistake_bank') {
             const mistakeIds = mistakeBank[categoryId] || [];
             data = getQuestionsByIds(categoryId, mistakeIds);
-            // Shuffle mistakes
             data = data.sort(() => Math.random() - 0.5);
-        } else if (mode === 'bookmarks') {
+        } else if (effectiveMode === 'bookmarks') {
             if (categoryId === 'all') {
                 const allQuestions = getAllQuestions();
                 data = allQuestions.filter(q => bookmarks.includes(q.id));
             } else {
                 data = getQuestionsByIds(categoryId, bookmarks);
             }
-            // Shuffle bookmarks
             data = data.sort(() => Math.random() - 0.5);
         } else {
-            // Standard Quiz - Use Smart Ordering
             const allCategoryQuestions = getQuestionsByCategory(categoryId);
-
-            // Enforce Freemium Limits
             const category = getCategoryById(categoryId);
             if (category) {
                 const accessibleCount = getAccessibleQuestionCount(category, isPremium);
-                // Limit the pool of available questions
-                // We slice the array to simulate restricted access
                 const accessibleQuestions = allCategoryQuestions.slice(0, accessibleCount);
-
                 const smartQuestions = await getSmartQuestions(categoryId, accessibleQuestions, 10);
                 data = smartQuestions;
             } else {
-                // Fallback if category not found (shouldn't happen)
                 const smartQuestions = await getSmartQuestions(categoryId, allCategoryQuestions, 10);
                 data = smartQuestions;
             }
         }
 
-        // Check for active session resume (Common for Quiz and Mistake Bank)
-        // We don't resume bookmarks mode as it's usually quick/random
-        // Check for active session resume (Common for Quiz and Mistake Bank)
-        // We don't resume bookmarks mode as it's usually quick/random
-        const isStandardQuiz = mode === 'standard' && activeSession?.mode === 'quiz';
+        // ✅ SHUFFLE OPTIONS — correct answer matched by string value, not index
+        data = shuffleAllOptions(data);
+
+        // Check for active session resume
+        const isStandardQuiz = (mode === 'standard' || isTimedMode) && activeSession?.mode === 'quiz';
         const isMistakeBank = mode === 'mistake_bank' && activeSession?.mode === 'mistake_bank';
 
         if (activeSession && activeSession.categoryId === categoryId && (isStandardQuiz || isMistakeBank)) {
-            // Ask user if they want to resume
             setAlertConfig({
                 title: "Resume Session?",
                 message: mode === 'mistake_bank'
@@ -153,69 +210,62 @@ export default function QuizScreen() {
                 secondaryButtonText: "Start Over",
                 onPrimaryPress: async () => {
                     setAlertVisible(false);
-
-                    // If resuming, we need to load the specific questions from the session
-                    // For standard quiz, getSmartQuestions might return different ones, so we rely on session.questionIds
-                    // For mistake bank, we also want the exact same order
-
                     const allQuestions = getAllQuestions();
-                    const sessionQuestions = allQuestions.filter(q => activeSession.questionIds.includes(q.id));
-                    // Sort by the saved order
+                    const sessionQuestions = shuffleAllOptions(
+                        allQuestions.filter(q => activeSession.questionIds.includes(q.id))
+                    );
                     sessionQuestions.sort((a, b) => {
                         return activeSession.questionIds.indexOf(a.id) - activeSession.questionIds.indexOf(b.id);
                     });
-
                     setQuestions(sessionQuestions);
                     setCurrentQuestionIndex(activeSession.currentIndex);
                     setSessionAnswers(activeSession.answers);
-
-                    // Calculate current score from answers
                     const currentScore = Object.values(activeSession.answers).filter(v => v).length;
                     setScore(currentScore);
-
                     setLoading(false);
+                    if (isTimedMode) startTimer();
                 },
                 onSecondaryPress: async () => {
                     setAlertVisible(false);
-                    await finishActiveSession(); // Clear old session
-                    // Use the data loaded above (new session)
+                    await finishActiveSession();
                     setQuestions(data);
                     setLoading(false);
+                    if (isTimedMode) startTimer();
                 },
                 type: 'default'
             });
             setAlertVisible(true);
-            return; // Wait for user response
+            return;
         }
 
         setQuestions(data);
         setLoading(false);
+        if (isTimedMode) startTimer();
     };
 
     const currentQuestion = questions[currentQuestionIndex];
     const totalQuestions = questions.length;
 
-    const handleOptionSelect = React.useCallback((option: string) => {
+    // ─── Answer selection ──────────────────────────────────────────────────────
+    const handleOptionSelect = useCallback((option: string) => {
         if (isAnswered) return;
+        stopTimer();
 
-        // Immediate UI updates
         setSelectedOption(option);
         setIsAnswered(true);
 
         const isCorrect = option === currentQuestion.correct_answer;
-
         if (isCorrect) {
-            setScore((prev) => prev + 1);
+            setScore(prev => prev + 1);
             Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light).catch(() => { });
         } else {
             Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error).catch(() => { });
         }
 
-        // Update Session State
         const newAnswers = { ...sessionAnswers, [currentQuestion.id]: isCorrect };
         setSessionAnswers(newAnswers);
+        setUserAnswerMap(prev => ({ ...prev, [currentQuestion.id]: option }));
 
-        // Background operations
         setTimeout(() => {
             Promise.all([
                 isCorrect && mode === 'mistake_bank'
@@ -223,15 +273,10 @@ export default function QuizScreen() {
                     : !isCorrect
                         ? addToMistakeBank(categoryId, currentQuestion.id)
                         : Promise.resolve(),
-                mode === 'standard'
-                    ? updateProgress(
-                        categoryId,
-                        currentQuestionIndex + 1,
-                        isCorrect ? score + 1 : score
-                    )
+                (mode === 'standard' || isTimedMode)
+                    ? updateProgress(categoryId, currentQuestionIndex + 1, isCorrect ? score + 1 : score)
                     : Promise.resolve(),
-                // Sync Active Session (Debounced/Immediate)
-                mode === 'standard'
+                (mode === 'standard' || isTimedMode)
                     ? syncActiveSession({
                         categoryId,
                         mode: 'quiz',
@@ -241,21 +286,21 @@ export default function QuizScreen() {
                         startTime: startTimeRef.current,
                         lastUpdated: new Date().toISOString()
                     })
-                    : Promise.resolve()
+                    : Promise.resolve(),
+                updateQuestionMastery(currentQuestion.id, isCorrect)
             ]).catch(error => console.error('Background save error:', error));
         }, 0);
-    }, [isAnswered, currentQuestion, mode, categoryId, currentQuestionIndex, score, removeFromMistakeBank, addToMistakeBank, updateProgress, syncActiveSession, sessionAnswers, questions]);
+    }, [isAnswered, currentQuestion, mode, isTimedMode, categoryId, currentQuestionIndex, score, stopTimer]);
 
+    // ─── Navigate to next question ─────────────────────────────────────────────
     const handleNext = async () => {
         if (currentQuestionIndex < totalQuestions - 1) {
-            // Immediate navigation
             const nextIndex = currentQuestionIndex + 1;
             setCurrentQuestionIndex(nextIndex);
             setSelectedOption(null);
             setIsAnswered(false);
 
-            // Update index in storage
-            if (mode === 'standard') {
+            if (mode === 'standard' || isTimedMode) {
                 syncActiveSession({
                     categoryId,
                     mode: 'quiz',
@@ -266,12 +311,21 @@ export default function QuizScreen() {
                     lastUpdated: new Date().toISOString()
                 });
             }
+            // Restart per-question timer
+            if (isTimedMode) startTimer();
         } else {
-            // Quiz finished — navigate first, then show interstitial at the
-            // natural break point (results screen). Showing an ad BEFORE
-            // navigation would block the UI transition, which violates AdMob
-            // best-practice (ads must appear at natural content breaks).
+            stopTimer();
             const timeSpent = Math.floor((Date.now() - startTimeRef.current) / 1000);
+
+            // Build review payload — compact JSON of each question's data
+            const reviewData = questions.map(q => ({
+                id: q.id,
+                question: q.question,
+                options: q.options,
+                correct_answer: q.correct_answer,
+                explanation: q.explanation,
+                userAnswer: userAnswerMap[q.id] || null,
+            }));
 
             router.replace({
                 pathname: "/results",
@@ -282,10 +336,10 @@ export default function QuizScreen() {
                     mode: mode,
                     timeSpent: timeSpent.toString(),
                     showAd: isPremium ? 'false' : 'true',
+                    reviewData: JSON.stringify(reviewData),
                 },
             });
 
-            // Save Final Results & Clear Active Session
             Promise.all([
                 trackSession({
                     categoryId: categoryId,
@@ -294,10 +348,10 @@ export default function QuizScreen() {
                     timeSpent: timeSpent,
                     mode: mode === 'mistake_bank' ? 'mistake_bank' : 'quiz'
                 }),
-                mode === 'standard'
+                (mode === 'standard' || isTimedMode)
                     ? saveScore(categoryId, score, totalQuestions)
                     : Promise.resolve(),
-                mode === 'standard'
+                (mode === 'standard' || isTimedMode)
                     ? finishActiveSession()
                     : Promise.resolve()
             ]).catch(error => console.error('Save results error:', error));
@@ -311,6 +365,7 @@ export default function QuizScreen() {
         return "disabled";
     };
 
+    // ─── Render ────────────────────────────────────────────────────────────────
     return (
         <SafeAreaView className="flex-1 bg-slate-50 dark:bg-slate-900" edges={['top', 'bottom']}>
             <Stack.Screen options={{
@@ -332,7 +387,7 @@ export default function QuizScreen() {
                     </Text>
                     <TouchableOpacity
                         onPress={() => router.back()}
-                        className="bg-blue-600 py-4 px-8 rounded-[24px] active:scale-95 transition-all"
+                        className="bg-blue-600 py-4 px-8 rounded-[24px]"
                     >
                         <Text className="text-white font-bold">Go Back</Text>
                     </TouchableOpacity>
@@ -348,6 +403,16 @@ export default function QuizScreen() {
                             <X size={24} color={isDark ? "#94a3b8" : "#475569"} />
                         </TouchableOpacity>
 
+                        {/* Timed mode: live countdown badge */}
+                        {isTimedMode && (
+                            <View className={`flex-row items-center px-3 py-1.5 rounded-full ${timeLeft <= 10 ? 'bg-red-100 dark:bg-red-900/30' : 'bg-slate-100 dark:bg-slate-800'}`}>
+                                <Clock size={14} color={timeLeft <= 10 ? '#ef4444' : (isDark ? '#94a3b8' : '#64748b')} />
+                                <Text className={`ml-1.5 font-bold text-sm tabular-nums ${timeLeft <= 10 ? 'text-red-500' : 'text-slate-600 dark:text-slate-300'}`}>
+                                    {timeLeft}s
+                                </Text>
+                            </View>
+                        )}
+
                         <View className="flex-row items-center gap-2">
                             <BookmarkButton
                                 questionId={currentQuestion.id}
@@ -356,6 +421,16 @@ export default function QuizScreen() {
                             />
                         </View>
                     </View>
+
+                    {/* Timed mode progress bar */}
+                    {isTimedMode && (
+                        <View className="h-1.5 bg-slate-200 dark:bg-slate-800 mx-6 rounded-full overflow-hidden mb-1">
+                            <Animated.View
+                                style={[timerBarStyle, { height: '100%', borderRadius: 9999 }]}
+                                className={timeLeft <= 10 ? 'bg-red-500' : 'bg-blue-500'}
+                            />
+                        </View>
+                    )}
 
                     <View className="flex-1">
                         <ScrollView
@@ -371,6 +446,17 @@ export default function QuizScreen() {
                                 entering={FadeInDown.springify().damping(20).mass(0.8)}
                                 exiting={FadeOut.duration(200)}
                             >
+                                <View className="flex-row items-center justify-center mb-3">
+                                    {isTimedMode && (
+                                        <View className="bg-violet-100 dark:bg-violet-900/30 px-3 py-1 rounded-full mr-2">
+                                            <Text className="text-violet-700 dark:text-violet-300 text-xs font-bold uppercase tracking-wider">
+                                                ⚡ Timed Mode
+                                            </Text>
+                                        </View>
+                                    )}
+                                    <MasteryBadge level={questionMastery[currentQuestion.id]?.difficulty || 'new'} />
+                                </View>
+
                                 <Text className="text-[22px] font-bold text-slate-900 dark:text-white mb-8 leading-relaxed tracking-tight text-center">
                                     {currentQuestion.question}
                                 </Text>
@@ -385,6 +471,18 @@ export default function QuizScreen() {
                                         />
                                     ))}
                                 </View>
+
+                                {/* Time expired — show correct answer immediately */}
+                                {isAnswered && selectedOption === null && (
+                                    <Animated.View
+                                        entering={FadeIn.duration(300)}
+                                        className="bg-red-50 dark:bg-red-900/20 p-4 rounded-2xl border border-red-100 dark:border-red-800 mb-4"
+                                    >
+                                        <Text className="text-red-700 dark:text-red-300 font-bold text-sm">
+                                            ⏱ Time's up! The correct answer is shown in green.
+                                        </Text>
+                                    </Animated.View>
+                                )}
                             </Animated.View>
 
                             {isAnswered && (
@@ -407,7 +505,7 @@ export default function QuizScreen() {
                             <View className="absolute bottom-6 left-6 right-6">
                                 <TouchableOpacity
                                     onPress={handleNext}
-                                    className="bg-blue-600 py-4 rounded-[32px] flex-row items-center justify-center shadow-lg shadow-blue-500/30 active:bg-blue-700 active:scale-95 transition-all"
+                                    className="bg-blue-600 py-4 rounded-[32px] flex-row items-center justify-center shadow-lg shadow-blue-500/30 active:bg-blue-700"
                                 >
                                     <Text className="text-white font-bold text-lg mr-2">
                                         {currentQuestionIndex < totalQuestions - 1
@@ -432,9 +530,6 @@ export default function QuizScreen() {
                 onSecondaryPress={alertConfig.onSecondaryPress}
                 type={alertConfig.type}
             />
-
-            {/* No banner ad inside the quiz — AdMob policy prohibits ads
-                 that could be accidentally tapped during active gameplay. */}
-        </SafeAreaView >
+        </SafeAreaView>
     );
 }

@@ -21,6 +21,7 @@ const STORAGE_KEYS = {
     DAILY_GOAL: '@cdl_prep:daily_goal',
     EXAM_CREDITS: '@cdl_prep:exam_credits',
     LAST_MONTHLY_GRANT: '@cdl_prep:last_monthly_grant',
+    QUESTION_MASTERY: '@cdl_prep:question_mastery',
 } as const;
 
 // Types
@@ -108,6 +109,15 @@ export interface UserProfile {
 export interface DailyGoal {
     questionsPerDay: number;
     lastUpdated: string;
+}
+
+export interface QuestionMastery {
+    [questionId: number]: {
+        attempts: number;
+        correct: number;
+        lastSeen: string; // ISO date
+        difficulty: 'new' | 'learning' | 'mastered';
+    };
 }
 
 // User Progress
@@ -799,6 +809,26 @@ export const useExamCredit = async (): Promise<boolean> => {
     } catch (error) {
         console.error('Error using exam credit:', error);
         return false;
+    }
+};
+
+// ==================== Question Mastery ====================
+
+export const getQuestionMastery = async (): Promise<QuestionMastery> => {
+    try {
+        const data = await AsyncStorage.getItem(STORAGE_KEYS.QUESTION_MASTERY);
+        return data ? JSON.parse(data) : {};
+    } catch (error) {
+        console.error('Error getting question mastery:', error);
+        return {};
+    }
+};
+
+export const saveQuestionMastery = async (mastery: QuestionMastery): Promise<void> => {
+    try {
+        await AsyncStorage.setItem(STORAGE_KEYS.QUESTION_MASTERY, JSON.stringify(mastery));
+    } catch (error) {
+        console.error('Error saving question mastery:', error);
     }
 };
 

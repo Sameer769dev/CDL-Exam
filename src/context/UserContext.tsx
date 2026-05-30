@@ -41,7 +41,10 @@ import {
     getHasCompletedOnboarding,
     getExamCredits,
     addExamCredit,
-    useExamCredit
+    useExamCredit,
+    getQuestionMastery,
+    saveQuestionMastery,
+    QuestionMastery
 } from '../utils/storage';
 import { checkPurchaseStatus, purchaseProduct, restorePurchases as restoreBillingPurchases, PRODUCT_IDS, SubscriptionType } from '../utils/billing';
 import { setUserPremiumStatus } from '../utils/analytics';
@@ -84,6 +87,8 @@ interface UserContextType {
     dailyGoal: DailyGoal;
     updateDailyGoal: (goal: DailyGoal) => Promise<void>;
     hasCompletedOnboarding: boolean;
+    questionMastery: QuestionMastery;
+    updateQuestionMastery: (questionId: number, isCorrect: boolean) => Promise<void>;
 }
 
 const UserContext = createContext<UserContextType | undefined>(undefined);
@@ -107,6 +112,7 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
     const [dailyGoal, setDailyGoal] = useState<DailyGoal>({ questionsPerDay: 10, lastUpdated: new Date().toISOString() });
     const [hasCompletedOnboarding, setHasCompletedOnboardingState] = useState(false);
     const [examCredits, setExamCredits] = useState(0);
+    const [questionMastery, setQuestionMastery] = useState<QuestionMastery>({});
 
     useEffect(() => {
         loadData();
@@ -152,7 +158,8 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
                 getDailyGoal(),
                 getHasCompletedOnboarding(),
                 getExamCredits(),
-                import('../utils/storage').then(m => m.getLastMonthlyGrantDate())
+                import('../utils/storage').then(m => m.getLastMonthlyGrantDate()),
+                getQuestionMastery()
             ]);
 
             // Migration: Check both Google Play and local storage (for RevenueCat users)
@@ -198,6 +205,7 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
             setDailyGoal(dailyGoalData || { questionsPerDay: 10, lastUpdated: new Date().toISOString() });
             setHasCompletedOnboardingState(!!onboardingStatus);
             setExamCredits(currentCredits);
+            setQuestionMastery(arguments[0][16] || {}); // 16th element in Promise.all array
 
             setReminderEnabled(reminderData.enabled);
             setReminderTimes(reminderData.times.map(t => new Date(t)));
@@ -219,16 +227,33 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
                 throw new Error('Premium product not available');
             }
 
+            const initialPremium = await import('../utils/storage').then(m => m.getPremiumStatus());
+
             // Purchase premium via Google Play Billing
-            await purchaseProduct(product);
+            const requestSent = await purchaseProduct(product);
+            
+            if (!requestSent) {
+                throw new Error('Purchase cancelled or failed');
+            }
 
-            // Note: purchaseProduct returns null immediately. 
-            // The actual purchase completion is handled by the listener in billing.ts
-            // which updates the local storage.
-            // We can optionally poll here or just return and let the UI handle the "pending" state.
-
-            // For now, we'll just return. The UI calling this should probably show a loader 
-            // or handle the "check status" logic if it wants immediate feedback.
+            // Wait for the background billing listener to process the transaction and update storage
+            return new Promise<void>((resolve, reject) => {
+                let attempts = 0;
+                const interval = setInterval(async () => {
+                    attempts++;
+                    const currentPremium = await import('../utils/storage').then(m => m.getPremiumStatus());
+                    
+                    if (currentPremium && !initialPremium) {
+                        clearInterval(interval);
+                        setIsPremium(true);
+                        setUserPremiumStatus(true);
+                        resolve();
+                    } else if (attempts > 60) { // 2 minutes max
+                        clearInterval(interval);
+                        reject(new Error('Purchase timed out. If you were charged, try restarting the app.'));
+                    }
+                }, 2000);
+            });
 
         } catch (error) {
             console.error('[UserContext] Purchase failed:', error);
@@ -278,6 +303,35 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
         // Reload to get updated progress
         const updated = await getFlashcardProgress();
         setFlashcardProgress(updated);
+    };
+
+    const updateQuestionMastery = async (questionId: number, isCorrect: boolean) => {
+        const existing = questionMastery[questionId] || { attempts: 0, correct: 0, lastSeen: new Date().toISOString(), difficulty: 'new' };
+        
+        const attempts = existing.attempts + 1;
+        const correct = existing.correct + (isCorrect ? 1 : 0);
+        const accuracy = attempts > 0 ? (correct / attempts) : 0;
+        
+        let difficulty: 'new' | 'learning' | 'mastered' = 'learning';
+        
+        if (attempts >= 3 && accuracy >= 0.8) {
+            difficulty = 'mastered';
+        } else if (attempts === 0) {
+            difficulty = 'new';
+        }
+        
+        const newMasteryState = {
+            ...questionMastery,
+            [questionId]: {
+                attempts,
+                correct,
+                lastSeen: new Date().toISOString(),
+                difficulty
+            }
+        };
+        
+        setQuestionMastery(newMasteryState);
+        await saveQuestionMastery(newMasteryState);
     };
 
     const saveScore = async (categoryId: string, score: number, total: number) => {
@@ -432,36 +486,68 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
         if (activeSession && activeSession.categoryId === categoryId) {
             // Return questions in the saved order
             const sessionQuestions = allQuestions.filter(q => activeSession.questionIds.includes(q.id));
-            // Sort by the saved order
             sessionQuestions.sort((a, b) => {
                 return activeSession.questionIds.indexOf(a.id) - activeSession.questionIds.indexOf(b.id);
             });
             return sessionQuestions;
         }
 
-        // 2. Filter out completed questions
-        const completedIds = categoryCompletion[categoryId]?.completedQuestionIds || [];
-        const uncompletedQuestions = allQuestions.filter(q => !completedIds.includes(q.id));
-
-        // 3. Prioritize uncompleted
+        // 2. Adaptive Difficulty / Spaced Repetition Logic
+        // We categorize questions based on their mastery level.
+        const categorized = {
+            new: [] as any[],
+            learning: [] as any[],
+            mastered: [] as any[]
+        };
+        
+        allQuestions.forEach(q => {
+            const mastery = questionMastery[q.id];
+            if (!mastery || mastery.difficulty === 'new') {
+                categorized.new.push(q);
+            } else if (mastery.difficulty === 'learning') {
+                categorized.learning.push(q);
+            } else {
+                categorized.mastered.push(q);
+            }
+        });
+        
+        // Shuffle each bucket
+        const shuffle = (arr: any[]) => arr.sort(() => Math.random() - 0.5);
+        shuffle(categorized.new);
+        shuffle(categorized.learning);
+        shuffle(categorized.mastered);
+        
         let selected: any[] = [];
-
-        if (uncompletedQuestions.length >= count) {
-            // We have enough new questions
-            selected = uncompletedQuestions.sort(() => Math.random() - 0.5).slice(0, count);
-        } else {
-            // Mix of new and review
-            selected = [...uncompletedQuestions];
-            const remainingCount = count - selected.length;
-            const reviewQuestions = allQuestions
-                .filter(q => completedIds.includes(q.id))
-                .sort(() => Math.random() - 0.5)
-                .slice(0, remainingCount);
-
-            selected = [...selected, ...reviewQuestions];
+        
+        // Strategy: 
+        // 50% from 'learning' (things user is struggling with)
+        // 40% from 'new' (unseen questions)
+        // 10% from 'mastered' (review/reinforcement)
+        
+        const targetLearning = Math.floor(count * 0.5);
+        const targetNew = Math.floor(count * 0.4);
+        
+        // Try to fill learning bucket
+        selected.push(...categorized.learning.splice(0, targetLearning));
+        
+        // Try to fill new bucket
+        selected.push(...categorized.new.splice(0, targetNew));
+        
+        // Fill remainder with whatever is available, prioritizing learning -> new -> mastered
+        while (selected.length < count) {
+            if (categorized.learning.length > 0) {
+                selected.push(categorized.learning.shift());
+            } else if (categorized.new.length > 0) {
+                selected.push(categorized.new.shift());
+            } else if (categorized.mastered.length > 0) {
+                selected.push(categorized.mastered.shift());
+            } else {
+                break; // No more questions
+            }
         }
-
-        return selected;
+        
+        // Final shuffle so the distribution isn't predictable
+        return shuffle(selected);
     };
 
     const updateUserProfile = async (profile: UserProfile) => {
@@ -485,8 +571,33 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
                 return false;
             }
 
-            const success = await purchaseProduct(product);
-            return success;
+            const initialCredits = await import('../utils/storage').then(m => m.getExamCredits());
+
+            const requestSent = await purchaseProduct(product);
+            
+            if (!requestSent) {
+                return false; // User cancelled or error
+            }
+
+            // Wait for the background billing listener to process the transaction and update storage
+            return new Promise<boolean>((resolve) => {
+                let attempts = 0;
+                const interval = setInterval(async () => {
+                    attempts++;
+                    const currentCredits = await import('../utils/storage').then(m => m.getExamCredits());
+                    
+                    if (currentCredits > initialCredits) {
+                        clearInterval(interval);
+                        setExamCredits(currentCredits);
+                        resolve(true);
+                    } else if (attempts > 60) { // 2 minutes max
+                        clearInterval(interval);
+                        console.error('Purchase timed out');
+                        resolve(false);
+                    }
+                }, 2000);
+            });
+            
         } catch (error) {
             console.error('Error purchasing exam attempt:', error);
             return false;
@@ -538,7 +649,9 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
             subscriptionType,
             examCredits,
             purchaseExamAttempt,
-            spendExamCredit
+            spendExamCredit,
+            questionMastery,
+            updateQuestionMastery
         }}>
             {children}
         </UserContext.Provider>
