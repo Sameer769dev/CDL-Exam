@@ -5,7 +5,7 @@ import { useUser } from '../context/UserContext';
 import * as Haptics from 'expo-haptics';
 
 interface BookmarkButtonProps {
-    questionId: number;
+    questionId: number | string;
     size?: number;
     color?: string;
     activeColor?: string;

@@ -100,7 +100,7 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
     const [flashcardProgress, setFlashcardProgress] = useState<FlashcardProgress>({});
     const [highScores, setHighScores] = useState<HighScores>({});
     const [mistakeBank, setMistakeBank] = useState<WrongAnswers>({});
-    const [bookmarks, setBookmarks] = useState<number[]>([]);
+    const [bookmarks, setBookmarks] = useState<(number | string)[]>([]);
     const [studySessions, setStudySessions] = useState<any[]>([]);
     const [studyStreak, setStudyStreak] = useState<any>(null);
     const [activeSession, setActiveSession] = useState<ActiveSession | null>(null);
@@ -306,7 +306,7 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
         setFlashcardProgress(updated);
     };
 
-    const updateQuestionMastery = async (questionId: number, isCorrect: boolean) => {
+    const updateQuestionMastery = async (questionId: number | string, isCorrect: boolean) => {
         const existing = questionMastery[questionId] || { attempts: 0, correct: 0, lastSeen: new Date().toISOString(), difficulty: 'new' };
         
         const attempts = existing.attempts + 1;

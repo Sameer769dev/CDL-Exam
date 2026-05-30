@@ -112,7 +112,7 @@ export interface DailyGoal {
 }
 
 export interface QuestionMastery {
-    [questionId: number]: {
+    [questionId: string]: {
         attempts: number;
         correct: number;
         lastSeen: string; // ISO date
@@ -242,7 +242,7 @@ export const getWrongAnswers = async (): Promise<WrongAnswers> => {
     }
 };
 
-export const addWrongAnswer = async (categoryId: string, questionId: number): Promise<void> => {
+export const addWrongAnswer = async (categoryId: string, questionId: number | string): Promise<void> => {
     try {
         const wrongAnswers = await getWrongAnswers();
         if (!wrongAnswers[categoryId]) {
@@ -257,7 +257,7 @@ export const addWrongAnswer = async (categoryId: string, questionId: number): Pr
     }
 };
 
-export const removeWrongAnswer = async (categoryId: string, questionId: number): Promise<void> => {
+export const removeWrongAnswer = async (categoryId: string, questionId: number | string): Promise<void> => {
     try {
         const wrongAnswers = await getWrongAnswers();
         if (wrongAnswers[categoryId]) {
@@ -516,7 +516,7 @@ export const getOverallStats = async (): Promise<OverallStats> => {
 };
 
 // Bookmarked Questions
-export const getBookmarkedQuestions = async (): Promise<number[]> => {
+export const getBookmarkedQuestions = async (): Promise<(number | string)[]> => {
     try {
         const data = await AsyncStorage.getItem(STORAGE_KEYS.BOOKMARKED_QUESTIONS);
         return data ? JSON.parse(data) : [];
@@ -526,7 +526,7 @@ export const getBookmarkedQuestions = async (): Promise<number[]> => {
     }
 };
 
-export const toggleBookmark = async (questionId: number): Promise<boolean> => {
+export const toggleBookmark = async (questionId: number | string): Promise<boolean> => {
     try {
         const bookmarks = await getBookmarkedQuestions();
         console.log('[Bookmark] Before toggle - Question ID:', questionId, 'Current bookmarks:', bookmarks);
@@ -560,7 +560,7 @@ export const toggleBookmark = async (questionId: number): Promise<boolean> => {
     }
 };
 
-export const isBookmarked = async (questionId: number): Promise<boolean> => {
+export const isBookmarked = async (questionId: number | string): Promise<boolean> => {
     try {
         const bookmarks = await getBookmarkedQuestions();
         return bookmarks.includes(questionId);
