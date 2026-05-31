@@ -178,6 +178,18 @@ export default function AboutScreen() {
                             question="How do I reset my progress?"
                             answer="Currently, you can reset individual category progress by reinstalling the app. A dedicated reset feature is coming in the next update."
                         />
+                        <FAQItem
+                            question="Are DMV knowledge tests refundable?"
+                            answer="No — CDL knowledge test fees are non-refundable in almost every US state. If you fail, you pay again to retest. We built the Cross-Verify Readiness tool (tap 'Verify DMV Readiness' in the Study tab) to help you confirm you're exam-ready before you spend money at the DMV."
+                        />
+                        <FAQItem
+                            question="Where can I find the official CDL handbook for my state?"
+                            answer="Our Cross-Verify Readiness screen links directly to the official free PDF handbook for all 50 US states. Every question in this app is sourced from the same federal CDL manual that each state's DMV exam is based on."
+                        />
+                        <FAQItem
+                            question="How accurate are your practice questions?"
+                            answer="Our questions are written from the FMCSA-approved federal CDL manual — the same document all 50 states use as the basis for their knowledge exams. There is no public API with official test questions (the real questions are kept confidential to prevent cheating), but studying the official manual content gives you the highest possible chance of passing."
+                        />
                     </View>
 
                     {/* Legal */}

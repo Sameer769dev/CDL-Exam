@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { View, ScrollView, Text, Image, TouchableOpacity } from 'react-native';
-import { Calendar, Search } from 'lucide-react-native';
+import { Calendar, Search, ShieldCheck, ChevronRight } from 'lucide-react-native';
+import { LinearGradient } from 'expo-linear-gradient';
 import { getAvatarSource } from '../../src/utils/avatars';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Stack, useRouter, useLocalSearchParams } from 'expo-router';
@@ -143,6 +144,46 @@ export default function HomeScreen() {
 
                         {/* Daily Challenge Card - NEW */}
                         <DailyChallengeCard />
+
+                        {/* ── Cross-Verify Readiness Banner ── */}
+                        <View className="mb-6 px-6">
+                            <TouchableOpacity
+                                onPress={() => router.push('/cross-verify')}
+                                activeOpacity={0.9}
+                            >
+                                <LinearGradient
+                                    colors={['#dc2626', '#b91c1c']}
+                                    start={{ x: 0, y: 0 }}
+                                    end={{ x: 1, y: 1 }}
+                                    className="rounded-3xl p-5 overflow-hidden relative"
+                                    style={{ shadowColor: '#dc2626', shadowOffset: { width: 0, height: 6 }, shadowOpacity: 0.35, shadowRadius: 16, elevation: 8 }}
+                                >
+                                    {/* decorative circles */}
+                                    <View className="absolute top-0 right-0 w-36 h-36 bg-white/10 rounded-full -mr-12 -mt-12" />
+                                    <View className="absolute bottom-0 left-0 w-24 h-24 bg-white/5 rounded-full -ml-8 -mb-8" />
+
+                                    <View className="flex-row items-center relative z-10">
+                                        <View className="bg-white/20 w-11 h-11 rounded-2xl items-center justify-center mr-4 border border-white/20">
+                                            <ShieldCheck size={22} color="white" />
+                                        </View>
+                                        <View className="flex-1 mr-3">
+                                            <View className="flex-row items-center mb-1">
+                                                <View className="bg-white/20 px-2 py-0.5 rounded-md mr-2">
+                                                    <Text className="text-white text-[10px] font-black uppercase tracking-widest">⚠️ Important</Text>
+                                                </View>
+                                            </View>
+                                            <Text className="text-white font-black text-base leading-tight">
+                                                DMV exams are non-refundable!
+                                            </Text>
+                                            <Text className="text-red-200 text-xs font-medium mt-0.5">
+                                                Cross-verify your readiness before you pay
+                                            </Text>
+                                        </View>
+                                        <ChevronRight size={20} color="rgba(255,255,255,0.7)" />
+                                    </View>
+                                </LinearGradient>
+                            </TouchableOpacity>
+                        </View>
 
                         {/* Action Grid */}
                         <View className="mb-8 px-6">

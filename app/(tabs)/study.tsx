@@ -11,7 +11,8 @@ import {
     Layers,
     LayoutGrid,
     BrainCircuit,
-    Crown
+    Crown,
+    ShieldCheck
 } from 'lucide-react-native';
 import { useTheme } from '../../src/context/ThemeContext';
 import { useUser } from '../../src/context/UserContext';
@@ -233,7 +234,7 @@ export default function StudyScreen() {
                         {/* Mistakes */}
                         <TouchableOpacity
                             onPress={() => router.push('/mistake-bank')}
-                            className="bg-white dark:bg-slate-800 p-4 rounded-2xl border border-slate-100 dark:border-slate-700 flex-row items-center justify-between active:scale-[0.98]"
+                            className="bg-white dark:bg-slate-800 p-4 rounded-2xl mb-3 border border-slate-100 dark:border-slate-700 flex-row items-center justify-between active:scale-[0.98]"
                         >
                             <View className="flex-row items-center">
                                 <View className="bg-red-50 dark:bg-red-900/20 w-12 h-12 rounded-2xl items-center justify-center mr-4">
@@ -249,6 +250,28 @@ export default function StudyScreen() {
                                 </View>
                             </View>
                             <ChevronRight size={20} color={isDark ? '#94a3b8' : '#cbd5e1'} strokeWidth={2.5} />
+                        </TouchableOpacity>
+
+                        {/* Cross-Verify Readiness */}
+                        <TouchableOpacity
+                            onPress={() => router.push('/cross-verify' as any)}
+                            className="bg-red-600 p-4 rounded-2xl flex-row items-center justify-between active:opacity-90"
+                            style={{ shadowColor: '#dc2626', shadowOffset: { width: 0, height: 4 }, shadowOpacity: 0.25, shadowRadius: 12, elevation: 5 }}
+                        >
+                            <View className="flex-row items-center">
+                                <View className="bg-white/20 w-12 h-12 rounded-2xl items-center justify-center mr-4 border border-white/20">
+                                    <ShieldCheck size={22} color="white" strokeWidth={2.5} />
+                                </View>
+                                <View>
+                                    <Text className="text-base font-bold text-white">
+                                        Verify DMV Readiness
+                                    </Text>
+                                    <Text className="text-sm text-red-200 font-medium">
+                                        Check fees & official handbook
+                                    </Text>
+                                </View>
+                            </View>
+                            <ChevronRight size={20} color="rgba(255,255,255,0.7)" strokeWidth={2.5} />
                         </TouchableOpacity>
                     </View>
 

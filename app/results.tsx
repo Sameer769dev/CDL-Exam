@@ -16,7 +16,8 @@ import {
     Share2,
     ChevronRight,
     Trophy,
-    TrendingUp
+    TrendingUp,
+    ShieldCheck
 } from "lucide-react-native";
 import Animated, { FadeInDown, FadeInUp, ZoomIn } from "react-native-reanimated";
 import { BannerAdComponent } from "../src/components/BannerAd";
@@ -319,6 +320,23 @@ Download CDL Prep 2025 now:
 
                     {/* Action Buttons */}
                     <View className="gap-3 mb-4 mt-6">
+                        {/* ── Cross-Verify nudge ── */}
+                        <View className="bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-2xl p-4 mb-1">
+                            <View className="flex-row items-center mb-2">
+                                <ShieldCheck size={18} color="#d97706" style={{ marginRight: 8 }} />
+                                <Text className="text-amber-800 dark:text-amber-300 font-black text-sm">Before you book your DMV appointment</Text>
+                            </View>
+                            <Text className="text-amber-700 dark:text-amber-400 text-xs leading-relaxed mb-3">
+                                CDL knowledge tests are <Text className="font-black">non-refundable</Text>. Check your state’s handbook, fees, and your real pass probability — for free.
+                            </Text>
+                            <TouchableOpacity
+                                onPress={() => router.push('/cross-verify' as any)}
+                                className="bg-amber-500 rounded-xl py-2.5 flex-row items-center justify-center active:opacity-80"
+                            >
+                                <ShieldCheck size={16} color="white" style={{ marginRight: 6 }} />
+                                <Text className="text-white font-black text-sm">Cross-Verify My Readiness →</Text>
+                            </TouchableOpacity>
+                        </View>
                         <TouchableOpacity
                             onPress={handleRetake}
                             activeOpacity={0.9}
