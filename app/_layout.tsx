@@ -1,5 +1,6 @@
 import { Stack, useRouter, useSegments } from "expo-router";
 import { UserProvider } from "../src/context/UserContext";
+import { GameProvider } from "../src/context/GameContext";
 import { ProgressTrackingProvider } from "../src/context/ProgressTrackingContext";
 import { ThemeProvider, useTheme } from "../src/context/ThemeContext";
 
@@ -88,9 +89,11 @@ export default function Layout() {
         <GestureHandlerRootView style={{ flex: 1 }}>
             <ThemeProvider>
                 <UserProvider>
-                    <ProgressTrackingProvider>
-                        <OnboardingCheck />
-                    </ProgressTrackingProvider>
+                    <GameProvider>
+                        <ProgressTrackingProvider>
+                            <OnboardingCheck />
+                        </ProgressTrackingProvider>
+                    </GameProvider>
                 </UserProvider>
             </ThemeProvider>
         </GestureHandlerRootView>
@@ -139,22 +142,7 @@ function OnboardingCheck() {
 
     const handleSession = async () => {
         try {
-            // Increment session count
-            const count = await incrementSessionCount();
-
-
-            // Check if we should show paywall (every 3rd session)
-            // Skip session 1 as onboarding handles that
-            if (count > 1 && count % 3 === 0) {
-                const isPremium = await getPremiumStatus();
-                if (!isPremium) {
-
-                    // Small delay to let the app load first
-                    setTimeout(() => {
-                        router.push('/paywall');
-                    }, 1000);
-                }
-            }
+            await incrementSessionCount();
         } catch (error) {
             console.error('[App] Error handling session:', error);
         }

@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "CDL Hazmat & Brakes 2025",
+    "name": "CDL Practice Test 2026 – Prep & Permit",
     "slug": "cdl-hazmat-brakes",
     "version": "1.0.7",
     "platforms": [
@@ -10,12 +10,12 @@
     ],
     "orientation": "portrait",
     "icon": "./assets/icon.png",
-    "userInterfaceStyle": "light",
+    "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "splash": {
       "image": "./assets/splash-icon.png",
       "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#0f172a"
     },
     "ios": {
       "supportsTablet": true
@@ -23,10 +23,10 @@
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#ffffff"
+        "backgroundColor": "#0f172a"
       },
       "edgeToEdgeEnabled": true,
-      "predictiveBackGestureEnabled": false,
+      "predictiveBackGestureEnabled": true,
       "package": "com.protimeworld.cdl",
       "versionCode": 9,
       "permissions": [

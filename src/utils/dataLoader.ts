@@ -13,14 +13,44 @@ export function shuffleAllOptions(questions: Question[]): Question[] {
     return questions.map(shuffleQuestionOptions);
 }
 import categoriesData from '../data/categories.json';
-import airBrakesData from '../data/air_brakes_data.json';
-import generalKnowledgeData from '../data/general_knowledge_data.json';
-import hazmatData from '../data/hazmat_data.json';
-import tankerData from '../data/tanker_data.json';
-import doublesTriplesData from '../data/doubles_triples_data.json';
-import passengerTransportData from '../data/passenger_transport_data.json';
-import schoolBusData from '../data/school_bus_data.json';
-import combinationVehiclesData from '../data/combination_vehicles_data.json';
+
+// ─── Lazy question banks ──────────────────────────────────────────────────────────
+// Each bank is only required (parsed) the first time it is needed, then cached.
+// This keeps ~2.6 MB of JSON off the startup path.
+const BANK_LOADERS: Record<string, () => any[]> = {
+    air_brakes: () => require('../data/air_brakes_data.json'),
+    general_knowledge: () => require('../data/general_knowledge_data.json'),
+    hazmat: () => require('../data/hazmat_data.json'),
+    tanker: () => require('../data/tanker_data.json'),
+    doubles_triples: () => require('../data/doubles_triples_data.json'),
+    passenger_transport: () => require('../data/passenger_transport_data.json'),
+    school_bus: () => require('../data/school_bus_data.json'),
+    combination_vehicles: () => require('../data/combination_vehicles_data.json'),
+};
+
+const bankCache = new Map<string, Question[]>();
+const idIndexCache = new Map<string, Map<number | string, Question>>();
+
+function loadBank(categoryId: string): Question[] {
+    let bank = bankCache.get(categoryId);
+    if (!bank) {
+        const loader = BANK_LOADERS[categoryId];
+        bank = loader
+            ? (loader().map((q: any) => ({ ...q, categoryId })) as Question[])
+            : [];
+        bankCache.set(categoryId, bank);
+    }
+    return bank;
+}
+
+function loadIdIndex(categoryId: string): Map<number | string, Question> {
+    let index = idIndexCache.get(categoryId);
+    if (!index) {
+        index = new Map(loadBank(categoryId).map(q => [q.id, q] as const));
+        idIndexCache.set(categoryId, index);
+    }
+    return index;
+}
 
 // Load all categories
 export const getCategories = (): Category[] => {
@@ -32,60 +62,10 @@ export const getCategoryById = (categoryId: string): Category | undefined => {
     return categoriesData.find((cat: any) => cat.id === categoryId) as Category | undefined;
 };
 
-// Load questions for a specific category
+// Load questions for a specific category.
+// Returns a shallow copy of the cached array so callers may sort/splice safely.
 export const getQuestionsByCategory = (categoryId: string): Question[] => {
-    switch (categoryId) {
-        case 'air_brakes':
-            return airBrakesData.map((q: any) => ({
-                ...q,
-                categoryId: 'air_brakes',
-            })) as Question[];
-
-        case 'general_knowledge':
-            return generalKnowledgeData.map((q: any) => ({
-                ...q,
-                categoryId: 'general_knowledge',
-            })) as Question[];
-
-        case 'hazmat':
-            return hazmatData.map((q: any) => ({
-                ...q,
-                categoryId: 'hazmat',
-            })) as Question[];
-
-        case 'tanker':
-            return tankerData.map((q: any) => ({
-                ...q,
-                categoryId: 'tanker',
-            })) as Question[];
-
-        case 'doubles_triples':
-            return doublesTriplesData.map((q: any) => ({
-                ...q,
-                categoryId: 'doubles_triples',
-            })) as Question[];
-
-        case 'passenger_transport':
-            return passengerTransportData.map((q: any) => ({
-                ...q,
-                categoryId: 'passenger_transport',
-            })) as Question[];
-
-        case 'school_bus':
-            return schoolBusData.map((q: any) => ({
-                ...q,
-                categoryId: 'school_bus',
-            })) as Question[];
-
-        case 'combination_vehicles':
-            return combinationVehiclesData.map((q: any) => ({
-                ...q,
-                categoryId: 'combination_vehicles',
-            })) as Question[];
-
-        default:
-            return [];
-    }
+    return loadBank(categoryId).slice();
 };
 
 // Get all questions across all categories
@@ -94,10 +74,15 @@ export const getAllQuestions = (): Question[] => {
     return categories.flatMap(cat => getQuestionsByCategory(cat.id));
 };
 
-// Get questions by IDs (for mistake bank)
+// Get questions by IDs (for mistake bank / bookmarks) — O(n) via cached id index
 export const getQuestionsByIds = (categoryId: string, questionIds: (number | string)[]): Question[] => {
-    const allQuestions = getQuestionsByCategory(categoryId);
-    return allQuestions.filter(q => questionIds.includes(q.id as number));
+    const index = loadIdIndex(categoryId);
+    const result: Question[] = [];
+    for (const id of new Set(questionIds)) {
+        const q = index.get(id);
+        if (q) result.push(q);
+    }
+    return result;
 };
 
 // Check if a category is available (not premium or user has premium)

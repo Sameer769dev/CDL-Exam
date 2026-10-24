@@ -1,55 +1,78 @@
 import React from 'react';
-import { View, TouchableOpacity, Platform } from 'react-native';
+import { View, Text, TouchableOpacity, Platform } from 'react-native';
 import { Home, BookOpen, Activity, User, Bookmark } from 'lucide-react-native';
 import { BottomTabBarProps } from '@react-navigation/bottom-tabs';
 import Animated, {
     useAnimatedStyle,
     withTiming,
-    ZoomIn
 } from 'react-native-reanimated';
+import * as Haptics from 'expo-haptics';
 import { useTheme } from '../context/ThemeContext';
 
+interface TabItemProps {
+    label: string;
+    icon: any;
+    isActive: boolean;
+    onPress: () => void;
+    onLongPress: () => void;
+    isDark: boolean;
+}
+
 const TabItem = ({
+    label,
     icon: Icon,
     isActive,
     onPress,
     onLongPress,
-    isDark
-}: {
-    icon: any,
-    isActive: boolean,
-    onPress: () => void,
-    onLongPress: () => void,
-    isDark: boolean
-}) => {
-    const animatedStyle = useAnimatedStyle(() => {
-        const backgroundColor = withTiming(isActive ? (isDark ? 'rgba(30, 58, 138, 0.2)' : '#eff6ff') : 'transparent', { duration: 200 });
+    isDark,
+}: TabItemProps) => {
+    const animatedContainerStyle = useAnimatedStyle(() => {
+        const backgroundColor = withTiming(
+            isActive
+                ? isDark
+                    ? 'rgba(59, 130, 246, 0.16)'
+                    : 'rgba(59, 130, 246, 0.10)'
+                : 'transparent',
+            { duration: 200 }
+        );
         return { backgroundColor };
     });
 
+    const activeColor = '#3B82F6';
+    const inactiveColor = isDark ? '#94A3B8' : '#64748B';
+
     return (
         <TouchableOpacity
-            onPress={onPress}
+            onPress={() => {
+                Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light).catch(() => {});
+                onPress();
+            }}
             onLongPress={onLongPress}
             activeOpacity={0.7}
             accessibilityRole="button"
+            accessibilityLabel={label}
             accessibilityState={isActive ? { selected: true } : {}}
+            className="flex-1 items-center justify-center py-1"
         >
             <Animated.View
-                className="items-center justify-center px-4 py-2 rounded-2xl"
-                style={animatedStyle}
+                className="items-center justify-center px-3 py-1.5 rounded-2xl min-w-[56px]"
+                style={animatedContainerStyle}
             >
                 <Icon
-                    size={24}
-                    color={isActive ? '#3B82F6' : isDark ? '#94A3B8' : '#64748B'}
+                    size={20}
+                    color={isActive ? activeColor : inactiveColor}
                     strokeWidth={isActive ? 2.5 : 2}
                 />
-                {isActive && (
-                    <Animated.View
-                        entering={ZoomIn.duration(200)}
-                        className="h-1 w-1 bg-blue-500 rounded-full mt-1"
-                    />
-                )}
+                <Text
+                    numberOfLines={1}
+                    className={`text-[11px] mt-1 font-semibold ${
+                        isActive
+                            ? 'text-blue-600 dark:text-blue-400 font-bold'
+                            : 'text-slate-500 dark:text-slate-400 font-medium'
+                    }`}
+                >
+                    {label}
+                </Text>
             </Animated.View>
         </TouchableOpacity>
     );
@@ -58,7 +81,6 @@ const TabItem = ({
 export const BottomNav = ({ state, descriptors, navigation }: BottomTabBarProps) => {
     const { isDark } = useTheme();
 
-    // Map route names to icons
     const getIcon = (routeName: string) => {
         switch (routeName) {
             case 'index': return Home;
@@ -71,15 +93,16 @@ export const BottomNav = ({ state, descriptors, navigation }: BottomTabBarProps)
     };
 
     return (
-        <View className="absolute bottom-6 left-6 right-6">
+        <View className="absolute bottom-5 left-4 right-4">
             <View
-                className="flex-row justify-between items-center bg-white/90 dark:bg-slate-900/90 p-4 rounded-3xl shadow-lg shadow-slate-200 dark:shadow-none border border-slate-200 dark:border-slate-800"
-                style={Platform.OS === 'ios' ? { shadowOpacity: 0.1, shadowRadius: 10 } : { elevation: 5 }}
+                className="flex-row justify-around items-center bg-white/95 dark:bg-slate-900/95 py-1.5 px-2 rounded-3xl shadow-xl shadow-slate-300/40 dark:shadow-none border border-slate-200/80 dark:border-slate-800"
+                style={Platform.OS === 'ios' ? { shadowOpacity: 0.12, shadowRadius: 16 } : { elevation: 8 }}
             >
                 {state.routes.map((route, index) => {
                     const { options } = descriptors[route.key];
                     const isFocused = state.index === index;
                     const Icon = getIcon(route.name);
+                    const label = (options.title ?? route.name) as string;
 
                     const onPress = () => {
                         const event = navigation.emit({
@@ -103,6 +126,7 @@ export const BottomNav = ({ state, descriptors, navigation }: BottomTabBarProps)
                     return (
                         <TabItem
                             key={route.key}
+                            label={label}
                             icon={Icon}
                             isActive={isFocused}
                             onPress={onPress}

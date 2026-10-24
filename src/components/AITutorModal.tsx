@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, Modal, TouchableOpacity, ActivityIndicator, ScrollView } from 'react-native';
 import { X, Sparkles, AlertCircle } from 'lucide-react-native';
 import { useTheme } from '../context/ThemeContext';
-import { fetchAITutorExplanation } from '../utils/aiClient';
+import { fetchAITutorExplanation, AIError } from '../utils/aiClient';
 
 interface AITutorModalProps {
     visible: boolean;
@@ -31,7 +31,7 @@ export function AITutorModal({ visible, onClose, questionText, userAnswer, corre
                 })
                 .catch(err => {
                     console.error("Failed to load AI Tutor:", err);
-                    setError("Could not connect to the AI Tutor. Please try again.");
+                    setError(err instanceof AIError ? err.message : "Could not connect to the AI Tutor. Please try again.");
                     setLoading(false);
                 });
         }

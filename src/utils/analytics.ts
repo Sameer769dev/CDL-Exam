@@ -1,10 +1,9 @@
 /**
- * Analytics utility for tracking monetization events
- * This is a simple implementation that logs to console
- * You can integrate with Firebase Analytics, Mixpanel, or other services
+ * Analytics utility for CDL Prep
+ * Handles monetization events, engagement milestones, and funnels.
  */
 
-export type MonetizationEvent =
+export type AppEvent =
     | 'paywall_viewed'
     | 'purchase_initiated'
     | 'purchase_completed'
@@ -16,49 +15,70 @@ export type MonetizationEvent =
     | 'ad_impression'
     | 'ad_clicked'
     | 'ad_failed'
-    | 'ad_closed';
+    | 'ad_closed'
+    // Engagement & Funnel Events
+    | 'onboarding_started'
+    | 'onboarding_step_completed'
+    | 'onboarding_completed'
+    | 'quiz_started'
+    | 'quiz_completed'
+    | 'question_answered'
+    | 'ai_tutor_queried'
+    | 'readiness_calculated'
+    | 'streak_updated'
+    | 'study_plan_viewed';
+
+export type MonetizationEvent = AppEvent; // backwards compatibility
 
 interface EventProperties {
-    [key: string]: string | number | boolean | undefined;
+    [key: string]: string | number | boolean | undefined | null;
 }
 
+type AnalyticsListener = (eventName: AppEvent, properties: EventProperties) => void;
+const listeners: AnalyticsListener[] = [];
+
 /**
- * Track a monetization event
+ * Register a listener (e.g. Firebase Analytics, PostHog, Mixpanel).
  */
-export const trackEvent = (eventName: MonetizationEvent, properties?: EventProperties) => {
-    const timestamp = new Date().toISOString();
-    const eventData = {
-        event: eventName,
-        timestamp,
-        ...properties,
-    };
-
-
-
-    // TODO: Integrate with your analytics service
-    // Examples:
-    // - Firebase Analytics: analytics().logEvent(eventName, properties)
-    // - Mixpanel: mixpanel.track(eventName, properties)
-    // - Amplitude: amplitude.logEvent(eventName, properties)
+export const registerAnalyticsProvider = (listener: AnalyticsListener) => {
+    listeners.push(listener);
 };
 
 /**
- * Track paywall view
+ * Track an application event
  */
+export const trackEvent = (eventName: AppEvent, properties?: EventProperties) => {
+    const timestamp = new Date().toISOString();
+    const cleanProps: EventProperties = {};
+    if (properties) {
+        for (const [k, v] of Object.entries(properties)) {
+            if (v !== undefined) cleanProps[k] = v;
+        }
+    }
+
+    if (__DEV__) {
+        console.log(`[Analytics] 📊 ${eventName}`, cleanProps);
+    }
+
+    for (const listener of listeners) {
+        try {
+            listener(eventName, { timestamp, ...cleanProps });
+        } catch (err) {
+            console.error(`[Analytics] Error in listener for ${eventName}:`, err);
+        }
+    }
+};
+
+// ─── Monetization & Ads ───────────────────────────────────────────────────────
+
 export const trackPaywallView = (source?: string) => {
     trackEvent('paywall_viewed', { source });
 };
 
-/**
- * Track purchase initiation
- */
 export const trackPurchaseInitiated = (productId: string, price?: string) => {
     trackEvent('purchase_initiated', { product_id: productId, price });
 };
 
-/**
- * Track successful purchase
- */
 export const trackPurchaseCompleted = (productId: string, price?: string, revenue?: number) => {
     trackEvent('purchase_completed', {
         product_id: productId,
@@ -68,23 +88,14 @@ export const trackPurchaseCompleted = (productId: string, price?: string, revenu
     });
 };
 
-/**
- * Track failed purchase
- */
 export const trackPurchaseFailed = (productId: string, error: string) => {
     trackEvent('purchase_failed', { product_id: productId, error });
 };
 
-/**
- * Track cancelled purchase
- */
 export const trackPurchaseCancelled = (productId: string) => {
     trackEvent('purchase_cancelled', { product_id: productId });
 };
 
-/**
- * Track restore purchases
- */
 export const trackRestorePurchases = (success: boolean, error?: string) => {
     if (success) {
         trackEvent('restore_success');
@@ -93,49 +104,58 @@ export const trackRestorePurchases = (success: boolean, error?: string) => {
     }
 };
 
-/**
- * Track ad impression
- */
 export const trackAdImpression = (adType: 'banner' | 'interstitial' | 'rewarded', adUnitId?: string) => {
     trackEvent('ad_impression', { ad_type: adType, ad_unit_id: adUnitId });
 };
 
-/**
- * Track ad click
- */
 export const trackAdClicked = (adType: 'banner' | 'interstitial' | 'rewarded') => {
     trackEvent('ad_clicked', { ad_type: adType });
 };
 
-/**
- * Track ad failure
- */
 export const trackAdFailed = (adType: 'banner' | 'interstitial' | 'rewarded', error: string) => {
     trackEvent('ad_failed', { ad_type: adType, error });
 };
 
-/**
- * Track ad closed
- */
 export const trackAdClosed = (adType: 'banner' | 'interstitial' | 'rewarded', rewarded?: boolean) => {
     trackEvent('ad_closed', { ad_type: adType, rewarded });
 };
 
-/**
- * Set user properties
- */
-export const setUserProperty = (propertyName: string, value: string | number | boolean) => {
+// ─── Engagement & Learning Funnel ─────────────────────────────────────────────
 
-
-    // TODO: Integrate with your analytics service
-    // Examples:
-    // - Firebase Analytics: analytics().setUserProperty(propertyName, value)
-    // - Mixpanel: mixpanel.getPeople().set(propertyName, value)
+export const trackQuizStarted = (categoryId: string, mode: string, questionCount: number) => {
+    trackEvent('quiz_started', { category_id: categoryId, mode, question_count: questionCount });
 };
 
-/**
- * Set premium status as user property
- */
+export const trackQuizCompleted = (categoryId: string, score: number, total: number, timeSpentSec: number) => {
+    const accuracy = total > 0 ? Math.round((score / total) * 100) : 0;
+    trackEvent('quiz_completed', {
+        category_id: categoryId,
+        score,
+        total,
+        accuracy_percent: accuracy,
+        time_spent_seconds: timeSpentSec,
+    });
+};
+
+export const trackAITutorQueried = (categoryId: string, isCorrect: boolean) => {
+    trackEvent('ai_tutor_queried', { category_id: categoryId, was_correct: isCorrect });
+};
+
+export const trackReadinessCalculated = (categoryId: string, scorePercent: number) => {
+    trackEvent('readiness_calculated', { category_id: categoryId, readiness_score: scorePercent });
+};
+
+// ─── User Properties ──────────────────────────────────────────────────────────
+
+const userProperties: Record<string, string | number | boolean> = {};
+
+export const setUserProperty = (propertyName: string, value: string | number | boolean) => {
+    userProperties[propertyName] = value;
+    if (__DEV__) {
+        console.log(`[Analytics] 👤 UserProperty [${propertyName}]:`, value);
+    }
+};
+
 export const setUserPremiumStatus = (isPremium: boolean) => {
     setUserProperty('is_premium', isPremium);
 };

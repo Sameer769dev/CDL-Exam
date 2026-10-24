@@ -18,6 +18,7 @@ import { useTheme } from '../../src/context/ThemeContext';
 import { useUser } from '../../src/context/UserContext';
 import { getCategories } from '../../src/utils/dataLoader';
 import { Category } from '../../src/types/quiz';
+import { HighwayCourseMap } from '../../src/components/highway/HighwayCourseMap';
 
 export default function StudyScreen() {
     const router = useRouter();
@@ -25,6 +26,7 @@ export default function StudyScreen() {
     const { progress, isPremium, studySessions, studyStreak } = useUser();
     const [categories, setCategories] = useState<Category[]>([]);
     const [lastStudied, setLastStudied] = useState<Category | null>(null);
+    const [viewMode, setViewMode] = useState<'highway' | 'categories'>('highway');
 
     useEffect(() => {
         const cats = getCategories();
@@ -52,20 +54,48 @@ export default function StudyScreen() {
             <Stack.Screen options={{ headerShown: false }} />
 
             <SafeAreaView className="flex-1" edges={['top']}>
-                <ScrollView
-                    showsVerticalScrollIndicator={false}
-                    className="flex-1"
-                    contentContainerStyle={{ paddingBottom: 140 }}
-                >
-                    {/* Header */}
-                    <View className="px-6 pt-6 pb-4">
-                        <Text className="text-3xl font-extrabold text-slate-900 dark:text-white mb-1">
-                            Study
-                        </Text>
-                        <Text className="text-base text-slate-600 dark:text-slate-300">
-                            Track your progress and continue learning
-                        </Text>
+                {/* Header with View Switcher */}
+                <View className="px-6 pt-4 pb-3 bg-white dark:bg-slate-900 border-b border-slate-200/80 dark:border-slate-800">
+                    <View className="flex-row items-center justify-between">
+                        <View>
+                            <Text className="text-2xl font-black text-slate-900 dark:text-white">
+                                CDL Pathway
+                            </Text>
+                            <Text className="text-xs text-slate-500 dark:text-slate-400 font-semibold">
+                                {viewMode === 'highway' ? 'Duolingo-style Career Map' : 'Endorsement Library'}
+                            </Text>
+                        </View>
+
+                        {/* View Switcher Pill */}
+                        <View className="flex-row bg-slate-100 dark:bg-slate-800 p-1 rounded-2xl border border-slate-200 dark:border-slate-700">
+                            <TouchableOpacity
+                                onPress={() => setViewMode('highway')}
+                                className={`px-3 py-1.5 rounded-xl ${viewMode === 'highway' ? 'bg-blue-600 shadow-sm' : ''}`}
+                            >
+                                <Text className={`text-xs font-bold ${viewMode === 'highway' ? 'text-white' : 'text-slate-600 dark:text-slate-400'}`}>
+                                    🛣️ Highway
+                                </Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity
+                                onPress={() => setViewMode('categories')}
+                                className={`px-3 py-1.5 rounded-xl ${viewMode === 'categories' ? 'bg-blue-600 shadow-sm' : ''}`}
+                            >
+                                <Text className={`text-xs font-bold ${viewMode === 'categories' ? 'text-white' : 'text-slate-600 dark:text-slate-400'}`}>
+                                    📚 Library
+                                </Text>
+                            </TouchableOpacity>
+                        </View>
                     </View>
+                </View>
+
+                {viewMode === 'highway' ? (
+                    <HighwayCourseMap />
+                ) : (
+                    <ScrollView
+                        showsVerticalScrollIndicator={false}
+                        className="flex-1"
+                        contentContainerStyle={{ paddingBottom: 140 }}
+                    >
 
                     {/* Continue Studying Card */}
                     {lastStudied && (
@@ -311,6 +341,7 @@ export default function StudyScreen() {
                         </View>
                     )}
                 </ScrollView>
+            )}
             </SafeAreaView>
 
 

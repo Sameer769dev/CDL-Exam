@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef, useCallback } from "react";
 import { View, Text, ScrollView, TouchableOpacity, ActivityIndicator, BackHandler, Image, Modal } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Stack, useRouter, useLocalSearchParams } from "expo-router";
-import { MoveRight, Lightbulb, X, Clock, Sparkles } from "lucide-react-native";
+import { MoveRight, Lightbulb, X, Clock, Sparkles, Volume2 } from "lucide-react-native";
 import Animated, {
     FadeInDown,
     FadeOut,
@@ -18,6 +18,7 @@ import { OptionButton } from "../src/components/OptionButton";
 import { BookmarkButton } from "../src/components/BookmarkButton";
 import { MasteryBadge } from "../src/components/MasteryBadge";
 import { AITutorModal } from "../src/components/AITutorModal";
+import { AudioPlayerModal } from "../src/components/AudioPlayerModal";
 import {
     getQuestionsByCategory,
     getQuestionsByIds,
@@ -26,10 +27,11 @@ import {
     getAccessibleQuestionCount,
     shuffleAllOptions,
 } from "../src/utils/dataLoader";
-import { fetchDynamicQuestions } from "../src/utils/aiClient";
+import { fetchDynamicQuestions, isAIConfigured } from "../src/utils/aiClient";
 import { getCachedDynamicQuestions, saveDynamicQuestions } from "../src/utils/aiCache";
 import { Question } from "../src/types/quiz";
 import { useUser } from "../src/context/UserContext";
+import { useGame } from "../src/context/GameContext";
 import { useTheme } from "../src/context/ThemeContext";
 import { CustomAlert } from "../src/components/CustomAlert";
 
@@ -62,6 +64,8 @@ export default function QuizScreen() {
     } = useUser();
 
     const { isDark } = useTheme();
+    const { consumeFuel, completeNode } = useGame();
+    const nodeId = params.nodeId as string | undefined;
 
     const [questions, setQuestions] = useState<Question[]>([]);
     const [loading, setLoading] = useState(true);
@@ -80,6 +84,9 @@ export default function QuizScreen() {
 
     // Image Zoom Modal
     const [zoomVisible, setZoomVisible] = useState(false);
+
+    // Audio Player Modal
+    const [audioModalVisible, setAudioModalVisible] = useState(false);
 
     // Timed mode state
     const [timeLeft, setTimeLeft] = useState(TIMED_MODE_SECONDS);
@@ -272,17 +279,6 @@ export default function QuizScreen() {
         if (isTimedMode) startTimer();
     };
 
-    if (aiGenerating && loading) {
-        return (
-            <SafeAreaView className="flex-1 bg-slate-50 dark:bg-slate-900 justify-center items-center">
-                <ActivityIndicator size="large" color="#3b82f6" />
-                <Text className="mt-4 text-slate-600 dark:text-slate-400 font-medium">
-                    The AI Instructor is writing your unique questions...
-                </Text>
-            </SafeAreaView>
-        );
-    }
-
     const currentQuestion = questions[currentQuestionIndex];
     const totalQuestions = questions.length;
 
@@ -300,6 +296,9 @@ export default function QuizScreen() {
             Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light).catch(() => { });
         } else {
             Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error).catch(() => { });
+            if (!isPremium) {
+                consumeFuel();
+            }
         }
 
         const newAnswers = { ...sessionAnswers, [currentQuestion.id]: isCorrect };
@@ -381,6 +380,12 @@ export default function QuizScreen() {
                 },
             });
 
+            if (nodeId) {
+                const accuracy = totalQuestions > 0 ? (score / totalQuestions) : 0;
+                const stars = accuracy >= 0.85 ? 3 : accuracy >= 0.7 ? 2 : 1;
+                completeNode(nodeId, stars, (score * 5) + 15, 10);
+            }
+
             Promise.all([
                 trackSession({
                     categoryId: categoryId,
@@ -407,6 +412,17 @@ export default function QuizScreen() {
     };
 
     // ─── Render ────────────────────────────────────────────────────────────────
+    // NOTE: must stay below every hook above (Rules of Hooks).
+    if (aiGenerating && loading) {
+        return (
+            <SafeAreaView className="flex-1 bg-slate-50 dark:bg-slate-900 justify-center items-center">
+                <ActivityIndicator size="large" color="#3b82f6" />
+                <Text className="mt-4 text-slate-600 dark:text-slate-400 font-medium">
+                    The AI Instructor is writing your unique questions...
+                </Text>
+            </SafeAreaView>
+        );
+    }
     return (
         <SafeAreaView className="flex-1 bg-slate-50 dark:bg-slate-900" edges={['top', 'bottom']}>
             <Stack.Screen options={{
@@ -454,7 +470,14 @@ export default function QuizScreen() {
                             </View>
                         )}
 
-                        <View className="flex-row items-center gap-2">
+                        <View className="flex-row items-center gap-1">
+                            <TouchableOpacity
+                                onPress={() => setAudioModalVisible(true)}
+                                className="p-2 rounded-full active:bg-slate-100 dark:active:bg-slate-800"
+                                accessibilityLabel="Hands-free audio mode"
+                            >
+                                <Volume2 size={22} color={isDark ? "#94a3b8" : "#475569"} />
+                            </TouchableOpacity>
                             <BookmarkButton
                                 questionId={currentQuestion.id}
                                 size={24}
@@ -557,7 +580,7 @@ export default function QuizScreen() {
                                     </Text>
                                     
                                     {/* Show AI Tutor button if they got it wrong */}
-                                    {selectedOption !== currentQuestion.correct_answer && (
+                                    {isAIConfigured() && selectedOption !== currentQuestion.correct_answer && (
                                         <TouchableOpacity 
                                             onPress={() => setTutorVisible(true)}
                                             className="bg-white/80 dark:bg-slate-800/80 p-3 rounded-xl border border-blue-200 dark:border-blue-900 flex-row items-center justify-center mt-2"
@@ -573,17 +596,57 @@ export default function QuizScreen() {
                         </ScrollView>
 
                         {isAnswered && (
-                            <View className="absolute bottom-6 left-6 right-6">
+                            <View className={`absolute bottom-0 left-0 right-0 p-5 rounded-t-[32px] border-t shadow-2xl ${
+                                selectedOption === currentQuestion.correct_answer
+                                    ? 'bg-emerald-500 dark:bg-emerald-600 border-emerald-400'
+                                    : 'bg-rose-500 dark:bg-rose-600 border-rose-400'
+                            }`}>
+                                <View className="flex-row items-center justify-between mb-3">
+                                    <View className="flex-row items-center flex-1 mr-3">
+                                        <View className="w-9 h-9 rounded-full bg-white/20 items-center justify-center mr-2.5">
+                                            <Text className="text-white text-base font-black">
+                                                {selectedOption === currentQuestion.correct_answer ? '✓' : '✕'}
+                                            </Text>
+                                        </View>
+                                        <View className="flex-1">
+                                            <Text className="text-white font-black text-lg leading-tight">
+                                                {selectedOption === currentQuestion.correct_answer
+                                                    ? 'Right on the money!'
+                                                    : 'Correct Solution:'}
+                                            </Text>
+                                            {selectedOption !== currentQuestion.correct_answer && (
+                                                <Text className="text-white/95 text-xs font-semibold mt-0.5" numberOfLines={2}>
+                                                    {currentQuestion.correct_answer}
+                                                </Text>
+                                            )}
+                                        </View>
+                                    </View>
+
+                                    {/* Quick Ask AI Mentor trigger */}
+                                    {selectedOption !== currentQuestion.correct_answer && (
+                                        <TouchableOpacity
+                                            onPress={() => setTutorVisible(true)}
+                                            className="bg-white/20 px-3 py-1.5 rounded-full border border-white/30 active:scale-95"
+                                        >
+                                            <Text className="text-white font-bold text-xs">
+                                                Ask Dan 🤖
+                                            </Text>
+                                        </TouchableOpacity>
+                                    )}
+                                </View>
+
                                 <TouchableOpacity
                                     onPress={handleNext}
-                                    className="bg-blue-600 py-4 rounded-[32px] flex-row items-center justify-center shadow-lg shadow-blue-500/30 active:bg-blue-700"
+                                    className="w-full bg-white py-3.5 rounded-2xl flex-row items-center justify-center shadow-lg active:opacity-90"
                                 >
-                                    <Text className="text-white font-bold text-lg mr-2">
+                                    <Text className={`font-black text-base mr-2 uppercase tracking-wider ${
+                                        selectedOption === currentQuestion.correct_answer ? 'text-emerald-700' : 'text-rose-700'
+                                    }`}>
                                         {currentQuestionIndex < totalQuestions - 1
-                                            ? "Next Question"
+                                            ? "Continue"
                                             : "See Results"}
                                     </Text>
-                                    <MoveRight size={24} color="white" strokeWidth={2.5} />
+                                    <MoveRight size={20} color={selectedOption === currentQuestion.correct_answer ? '#047857' : '#be123c'} strokeWidth={3} />
                                 </TouchableOpacity>
                             </View>
                         )}
@@ -635,6 +698,13 @@ export default function QuizScreen() {
                     )}
                 </View>
             </Modal>
+
+            <AudioPlayerModal
+                visible={audioModalVisible}
+                onClose={() => setAudioModalVisible(false)}
+                questions={questions}
+                initialIndex={currentQuestionIndex}
+            />
         </SafeAreaView>
     );
 }

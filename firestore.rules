@@ -1,0 +1,10 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Rate-limit counters are written only by Cloud Functions (Admin SDK bypasses rules).
+    // Lock everything else down until cloud sync is introduced.
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

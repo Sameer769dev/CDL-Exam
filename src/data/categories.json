@@ -4,7 +4,7 @@
         "name": "Air Brakes",
         "description": "Air brake system operation and safety",
         "isPremium": true,
-        "freeQuestionCount": 5,
+        "freeQuestionCount": 25,
         "icon": "gauge",
         "color": "#2563eb",
         "totalQuestions": 500
@@ -24,7 +24,7 @@
         "name": "Hazmat",
         "description": "Hazardous materials endorsement",
         "isPremium": true,
-        "freeQuestionCount": 5,
+        "freeQuestionCount": 25,
         "icon": "flame",
         "color": "#dc2626",
         "totalQuestions": 500
@@ -34,7 +34,7 @@
         "name": "Tanker Vehicles",
         "description": "Liquid transport endorsement",
         "isPremium": true,
-        "freeQuestionCount": 5,
+        "freeQuestionCount": 25,
         "icon": "droplets",
         "color": "#0891b2",
         "totalQuestions": 500
@@ -44,7 +44,7 @@
         "name": "Doubles/Triples",
         "description": "Multiple trailer endorsement",
         "isPremium": true,
-        "freeQuestionCount": 5,
+        "freeQuestionCount": 25,
         "icon": "layers",
         "color": "#7c3aed",
         "totalQuestions": 500
@@ -54,7 +54,7 @@
         "name": "Passenger Transport",
         "description": "Passenger vehicle endorsement",
         "isPremium": true,
-        "freeQuestionCount": 5,
+        "freeQuestionCount": 25,
         "icon": "users-round",
         "color": "#ea580c",
         "totalQuestions": 500
@@ -64,7 +64,7 @@
         "name": "School Bus",
         "description": "School bus endorsement",
         "isPremium": true,
-        "freeQuestionCount": 5,
+        "freeQuestionCount": 25,
         "icon": "bus-front",
         "color": "#eab308",
         "totalQuestions": 500
@@ -74,7 +74,7 @@
         "name": "Combination Vehicles",
         "description": "Tractor-trailer combinations",
         "isPremium": true,
-        "freeQuestionCount": 5,
+        "freeQuestionCount": 25,
         "icon": "boxes",
         "color": "#059669",
         "totalQuestions": 500
