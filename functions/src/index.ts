@@ -20,6 +20,7 @@ admin.initializeApp();
 
 const HF_TOKEN = defineSecret('HF_TOKEN');
 const GEMINI_API_KEY = defineSecret('GEMINI_API_KEY');
+const GROQ_API_KEY = defineSecret('GROQ_API_KEY');
 
 const HF_MODEL = defineString('HF_MODEL', { default: 'meta-llama/Llama-3.3-70B-Instruct:fastest' });
 const GEMINI_MODEL = defineString('GEMINI_MODEL', { default: 'gemini-flash-latest' });
@@ -30,7 +31,7 @@ type Endpoint = keyof typeof DAILY_LIMITS;
 
 const COMMON_OPTS = {
     region: 'us-central1',
-    secrets: [HF_TOKEN, GEMINI_API_KEY],
+    secrets: [HF_TOKEN, GEMINI_API_KEY, GROQ_API_KEY],
     maxInstances: 10,
     timeoutSeconds: 60,
     memory: '256MiB' as const,
@@ -88,13 +89,135 @@ async function enforceRateLimit(req: Request, endpoint: Endpoint): Promise<void>
     });
 }
 
+const GROQ_FREE_MODELS = [
+    'qwen/qwen3.8-27b',
+    'openai/gpt-oss-20b',
+    'openai/gpt-oss-120b',
+];
+
 /**
- * Universal LLM caller: Attempts Hugging Face Router first, falls back to Gemini if token missing.
+ * Executes inference on Groq Cloud with automatic 429 rate limit handling,
+ * retry-after exponential backoff, and multi-model quota rotation.
+ */
+async function callGroqWithRotation(
+    groqKey: string,
+    systemPrompt: string,
+    userPrompt: string,
+    jsonMode: boolean,
+): Promise<string | null> {
+    const finalUserPrompt = jsonMode && !userPrompt.toLowerCase().includes('json')
+        ? `${userPrompt} (Format response as valid json)`
+        : userPrompt;
+
+    for (let i = 0; i < GROQ_FREE_MODELS.length; i++) {
+        const model = GROQ_FREE_MODELS[i];
+        let attempt = 0;
+
+        while (attempt < 2) {
+            attempt++;
+            try {
+                const groqRes = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${groqKey.trim()}`,
+                        'User-Agent': 'CDL-Prep-App/1.0',
+                    },
+                    body: JSON.stringify({
+                        model,
+                        messages: [
+                            { role: 'system', content: systemPrompt },
+                            { role: 'user', content: finalUserPrompt }
+                        ],
+                        temperature: 0.7,
+                        max_tokens: 480, // Optimized to conserve 8K TPM quota
+                        ...(jsonMode ? { response_format: { type: 'json_object' } } : {})
+                    }),
+                });
+
+                // Telemetry headers from Groq
+                const remainingRPD = groqRes.headers.get('x-ratelimit-remaining-requests');
+                const remainingTPM = groqRes.headers.get('x-ratelimit-remaining-tokens');
+                const resetRequests = groqRes.headers.get('x-ratelimit-reset-requests');
+
+                if (groqRes.ok) {
+                    const data = (await groqRes.json()) as any;
+                    const text = data?.choices?.[0]?.message?.content;
+                    if (text && typeof text === 'string') {
+                        logger.info(`[Groq Success] Model: ${model}`, {
+                            remainingRPD,
+                            remainingTPM,
+                            resetRequests,
+                        });
+                        return text.trim();
+                    }
+                } else if (groqRes.status === 429) {
+                    const retryAfterSec = parseFloat(groqRes.headers.get('retry-after') || '0');
+                    logger.warn(`[Groq 429 Rate Limit] Model: ${model}, Retry-After: ${retryAfterSec}s, RemainingRPD: ${remainingRPD}`);
+
+                    // Short backoff (<= 1.5s): sleep and retry once
+                    if (retryAfterSec > 0 && retryAfterSec <= 1.5 && attempt === 1) {
+                        await new Promise(r => setTimeout(r, retryAfterSec * 1000));
+                        continue;
+                    }
+
+                    // Otherwise, rotate to next model in pool to triple quota!
+                    logger.info(`[Groq Quota Rotation] Rotating from ${model} to next model in pool...`);
+                    break;
+                } else {
+                    const errText = await groqRes.text().catch(() => '');
+                    logger.warn(`[Groq Error ${groqRes.status}] on ${model}: ${errText.slice(0, 160)}`);
+                    break;
+                }
+            } catch (err: any) {
+                logger.warn(`[Groq Network Exception] on ${model}:`, err?.message);
+                break;
+            }
+        }
+    }
+
+    return null;
+}
+
+/**
+ * Universal LLM caller: Attempts Free Groq first with multi-model rotation & 429 backoff,
+ * falls back to Hugging Face or Gemini if quotas are exhausted.
  */
 async function callLLM(systemPrompt: string, userPrompt: string, jsonMode: boolean = false): Promise<string> {
-    const hfToken = HF_TOKEN.value();
-    const geminiKey = GEMINI_API_KEY.value();
+    let hfToken = process.env.HF_TOKEN || '';
+    try {
+        if (!hfToken && typeof HF_TOKEN.value === 'function') {
+            hfToken = HF_TOKEN.value();
+        }
+    } catch {
+        // Secret not bound at runtime
+    }
 
+    let geminiKey = process.env.GEMINI_API_KEY || '';
+    try {
+        if (!geminiKey && typeof GEMINI_API_KEY.value === 'function') {
+            geminiKey = GEMINI_API_KEY.value();
+        }
+    } catch {
+        // Secret not bound at runtime
+    }
+
+    let groqKey = process.env.GROQ_API_KEY || '';
+    try {
+        if (!groqKey && typeof GROQ_API_KEY.value === 'function') {
+            groqKey = GROQ_API_KEY.value();
+        }
+    } catch {
+        // Secret not bound at runtime
+    }
+
+    // 1. Try 100% Free Groq with Multi-Model Rotation & 429 Backoff
+    if (groqKey && groqKey.trim().length > 0) {
+        const groqResult = await callGroqWithRotation(groqKey, systemPrompt, userPrompt, jsonMode);
+        if (groqResult) return groqResult;
+    }
+
+    // 2. Try Hugging Face Router
     if (hfToken && hfToken.trim().length > 0) {
         try {
             const hfRes = await fetch('https://router.huggingface.co/v1/chat/completions', {
@@ -205,11 +328,31 @@ Plain text only.`;
 
 // ─── Duolingo-Style Interactive Road Scenario ───────────────────────────────
 
+interface CachedScenarioItem {
+    scenario: any;
+    cachedAt: number;
+}
+const scenarioCachePool = new Map<string, CachedScenarioItem[]>();
+const SCENARIO_CACHE_TTL_MS = 20 * 60 * 1000; // 20 minutes TTL
+const MAX_CACHE_ITEMS_PER_CAT = 5;
+
 export const hfScenario = onRequest(
     COMMON_OPTS,
     handler('scenario', async (body) => {
         const categoryId = str(body.categoryId, 'categoryId', 64);
         const lang = langName(body.lang);
+        const cacheKey = `${categoryId}_${body.lang || 'en'}`;
+
+        // 1. Check in-memory rate conservation cache pool
+        const existing = scenarioCachePool.get(cacheKey) || [];
+        const now = Date.now();
+        const valid = existing.filter(item => now - item.cachedAt < SCENARIO_CACHE_TTL_MS);
+
+        if (valid.length >= 2 && Math.random() < 0.6) {
+            const randomIndex = Math.floor(Math.random() * valid.length);
+            logger.info(`[Scenario Cache Hit] Serving cached scenario for ${cacheKey}`);
+            return { scenario: valid[randomIndex].scenario };
+        }
 
         const system = `You are an expert CDL scenario designer for a Duolingo-style trucker learning game.
 Generate an engaging, interactive real-world road scenario in ${lang}.
@@ -234,6 +377,12 @@ Exactly one option must be true for isCorrect.`;
         const raw = await callLLM(system, prompt, true);
         try {
             const parsed = JSON.parse(raw);
+
+            // Cache in pool for quota smoothing
+            valid.push({ scenario: parsed, cachedAt: now });
+            if (valid.length > MAX_CACHE_ITEMS_PER_CAT) valid.shift();
+            scenarioCachePool.set(cacheKey, valid);
+
             return { scenario: parsed };
         } catch {
             throw new HttpError(502, 'Malformed scenario response from AI');

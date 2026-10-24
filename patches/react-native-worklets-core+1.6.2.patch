@@ -1,0 +1,94 @@
+diff --git a/node_modules/react-native-worklets-core/android/.gradle/9.2.0/checksums/checksums.lock b/node_modules/react-native-worklets-core/android/.gradle/9.2.0/checksums/checksums.lock
+new file mode 100644
+index 0000000..c696922
+Binary files /dev/null and b/node_modules/react-native-worklets-core/android/.gradle/9.2.0/checksums/checksums.lock differ
+diff --git a/node_modules/react-native-worklets-core/android/.gradle/9.2.0/fileChanges/last-build.bin b/node_modules/react-native-worklets-core/android/.gradle/9.2.0/fileChanges/last-build.bin
+new file mode 100644
+index 0000000..f76dd23
+Binary files /dev/null and b/node_modules/react-native-worklets-core/android/.gradle/9.2.0/fileChanges/last-build.bin differ
+diff --git a/node_modules/react-native-worklets-core/android/.gradle/9.2.0/fileHashes/fileHashes.bin b/node_modules/react-native-worklets-core/android/.gradle/9.2.0/fileHashes/fileHashes.bin
+new file mode 100644
+index 0000000..ad5e5e9
+Binary files /dev/null and b/node_modules/react-native-worklets-core/android/.gradle/9.2.0/fileHashes/fileHashes.bin differ
+diff --git a/node_modules/react-native-worklets-core/android/.gradle/9.2.0/fileHashes/fileHashes.lock b/node_modules/react-native-worklets-core/android/.gradle/9.2.0/fileHashes/fileHashes.lock
+new file mode 100644
+index 0000000..be51203
+Binary files /dev/null and b/node_modules/react-native-worklets-core/android/.gradle/9.2.0/fileHashes/fileHashes.lock differ
+diff --git a/node_modules/react-native-worklets-core/android/.gradle/9.2.0/gc.properties b/node_modules/react-native-worklets-core/android/.gradle/9.2.0/gc.properties
+new file mode 100644
+index 0000000..e69de29
+diff --git a/node_modules/react-native-worklets-core/android/.gradle/buildOutputCleanup/buildOutputCleanup.lock b/node_modules/react-native-worklets-core/android/.gradle/buildOutputCleanup/buildOutputCleanup.lock
+new file mode 100644
+index 0000000..ce31259
+Binary files /dev/null and b/node_modules/react-native-worklets-core/android/.gradle/buildOutputCleanup/buildOutputCleanup.lock differ
+diff --git a/node_modules/react-native-worklets-core/android/.gradle/buildOutputCleanup/cache.properties b/node_modules/react-native-worklets-core/android/.gradle/buildOutputCleanup/cache.properties
+new file mode 100644
+index 0000000..9749ff3
+--- /dev/null
++++ b/node_modules/react-native-worklets-core/android/.gradle/buildOutputCleanup/cache.properties
+@@ -0,0 +1,2 @@
++#Sat Oct 24 22:06:09 GMT+05:45 2026
++gradle.version=9.2.0
+diff --git a/node_modules/react-native-worklets-core/android/.gradle/vcs-1/gc.properties b/node_modules/react-native-worklets-core/android/.gradle/vcs-1/gc.properties
+new file mode 100644
+index 0000000..e69de29
+diff --git a/node_modules/react-native-worklets-core/android/build.gradle b/node_modules/react-native-worklets-core/android/build.gradle
+index b6af1c3..7c45303 100644
+--- a/node_modules/react-native-worklets-core/android/build.gradle
++++ b/node_modules/react-native-worklets-core/android/build.gradle
+@@ -70,6 +70,7 @@ task deleteCmakeCache() {
+ }
+ 
+ android {
++  ndkVersion getExtOrDefault("ndkVersion")
+   compileSdkVersion getExtOrIntegerDefault("compileSdkVersion")
+ 
+   defaultConfig {
+diff --git a/node_modules/react-native-worklets-core/android/build/intermediates/prefab_package_header_only/prefab_publication.json/debug b/node_modules/react-native-worklets-core/android/build/intermediates/prefab_package_header_only/prefab_publication.json/debug
+new file mode 100644
+index 0000000..d787e38
+--- /dev/null
++++ b/node_modules/react-native-worklets-core/android/build/intermediates/prefab_package_header_only/prefab_publication.json/debug
+@@ -0,0 +1,17 @@
++{
++  "installationFolder": "C:\\Users\\dhana\\Desktop\\CDL-Exam\\node_modules\\react-native-worklets-core\\android\\build\\intermediates\\prefab_package\\debug\\prefab",
++  "gradlePath": ":react-native-worklets-core",
++  "packageInfo": {
++    "packageName": "react-native-worklets-core",
++    "packageSchemaVersion": 2,
++    "packageDependencies": [],
++    "modules": [
++      {
++        "moduleName": "rnworklets",
++        "moduleHeaders": "C:\\Users\\dhana\\Desktop\\CDL-Exam\\node_modules\\react-native-worklets-core\\android\\build\\headers\\rnworklets",
++        "moduleExportLibraries": [],
++        "abis": []
++      }
++    ]
++  }
++}
+\ No newline at end of file
+diff --git a/node_modules/react-native-worklets-core/android/build/intermediates/prefab_package_header_only/prefab_publication.json/release b/node_modules/react-native-worklets-core/android/build/intermediates/prefab_package_header_only/prefab_publication.json/release
+new file mode 100644
+index 0000000..8fd09f0
+--- /dev/null
++++ b/node_modules/react-native-worklets-core/android/build/intermediates/prefab_package_header_only/prefab_publication.json/release
+@@ -0,0 +1,17 @@
++{
++  "installationFolder": "C:\\Users\\dhana\\Desktop\\CDL-Exam\\node_modules\\react-native-worklets-core\\android\\build\\intermediates\\prefab_package\\release\\prefab",
++  "gradlePath": ":react-native-worklets-core",
++  "packageInfo": {
++    "packageName": "react-native-worklets-core",
++    "packageSchemaVersion": 2,
++    "packageDependencies": [],
++    "modules": [
++      {
++        "moduleName": "rnworklets",
++        "moduleHeaders": "C:\\Users\\dhana\\Desktop\\CDL-Exam\\node_modules\\react-native-worklets-core\\android\\build\\headers\\rnworklets",
++        "moduleExportLibraries": [],
++        "abis": []
++      }
++    ]
++  }
++}
+\ No newline at end of file
