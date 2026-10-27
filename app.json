@@ -2,7 +2,7 @@
   "expo": {
     "name": "CDL Practice Test 2026 – Prep & Permit",
     "slug": "cdl-hazmat-brakes",
-    "version": "1.0.7",
+    "version": "1.0.8",
     "platforms": [
       "ios",
       "android",
@@ -28,7 +28,7 @@
       "edgeToEdgeEnabled": true,
       "predictiveBackGestureEnabled": true,
       "package": "com.protimeworld.cdl",
-      "versionCode": 9,
+      "versionCode": 10,
       "permissions": [
         "com.android.vending.BILLING"
       ]

@@ -556,7 +556,7 @@ export default function SettingsScreen() {
                                     </Text>
                                 </View>
                                 <Text className="text-slate-600 dark:text-slate-400 font-semibold">
-                                    1.0.6
+                                    1.0.8
                                 </Text>
                             </View>
                         </View>
