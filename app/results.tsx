@@ -61,7 +61,7 @@ export default function ResultsScreen() {
     const router = useRouter();
     const params = useLocalSearchParams();
     const { isDark } = useTheme();
-    const { highScores, studySessions } = useUser();
+    const { highScores, studySessions, isPremium } = useUser();
     const [isSharing, setIsSharing] = useState(false);
 
     // Params
@@ -92,7 +92,7 @@ export default function ResultsScreen() {
         // Show interstitial ad at the natural break point (results screen).
         // Only fires once, and only when the quiz/flashcard screen requested it.
         if (shouldShowAd) {
-            showInterstitialAd(false).catch(() => { /* non-critical */ });
+            showInterstitialAd(isPremium).catch(() => { /* non-critical */ });
         }
     }, []); // eslint-disable-line react-hooks/exhaustive-deps
 

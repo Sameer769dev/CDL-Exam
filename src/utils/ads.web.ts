@@ -19,6 +19,12 @@ export const showRewardedAd = async (): Promise<boolean> => {
     return false;
 };
 
+export const openAdInspector = async (): Promise<void> => {};
+
+export const showPrivacyOptions = async (): Promise<boolean> => {
+    return false;
+};
+
 export const shouldShowAds = (isPremium: boolean): boolean => {
     return false;
 };

@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, Modal } from 'react-native';
-import { Flame, Shield, Sparkles, Heart, Zap, X, Clock } from 'lucide-react-native';
+import { View, Text, TouchableOpacity, Modal, ActivityIndicator } from 'react-native';
+import { Flame, Shield, Sparkles, Heart, Zap, X, Clock, PlayCircle } from 'lucide-react-native';
 import * as Haptics from 'expo-haptics';
 import { useGame } from '../../context/GameContext';
 import { useUser } from '../../context/UserContext';
 import { useTheme } from '../../context/ThemeContext';
 import { useRouter } from 'expo-router';
 import { LeagueModal } from '../gamification/LeagueModal';
+import { showRewardedAd } from '../../utils/ads';
 
 export function GameStatsHeader() {
     const { gameState, timeUntilNextFuelSec, refuelAll, buyStreakFreeze } = useGame();
@@ -15,6 +16,23 @@ export function GameStatsHeader() {
     const router = useRouter();
     const [fuelModalVisible, setFuelModalVisible] = useState(false);
     const [leagueModalVisible, setLeagueModalVisible] = useState(false);
+    const [isWatchingAd, setIsWatchingAd] = useState(false);
+
+    const handleWatchAdToRefuel = async () => {
+        setIsWatchingAd(true);
+        try {
+            const rewarded = await showRewardedAd();
+            if (rewarded) {
+                refuelAll();
+                Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success).catch(() => {});
+                setFuelModalVisible(false);
+            }
+        } catch (error) {
+            console.error('[Ads] Failed to show rewarded ad for refuel:', error);
+        } finally {
+            setIsWatchingAd(false);
+        }
+    };
 
     const formatCountdown = (secs: number) => {
         const m = Math.floor(secs / 60);
@@ -128,6 +146,26 @@ export function GameStatsHeader() {
                                 <Text className="text-white font-bold text-sm">
                                     ⛽ Practice Mistakes to Refill
                                 </Text>
+                            </TouchableOpacity>
+                        )}
+
+                        {/* Action 1b: Watch Video Ad to Refill */}
+                        {!isPremium && gameState.fuel < gameState.maxFuel && (
+                            <TouchableOpacity
+                                onPress={handleWatchAdToRefuel}
+                                disabled={isWatchingAd}
+                                className="w-full bg-emerald-600 py-3.5 rounded-2xl items-center mb-3 shadow-md shadow-emerald-500/30 flex-row justify-center"
+                            >
+                                {isWatchingAd ? (
+                                    <ActivityIndicator color="white" size="small" />
+                                ) : (
+                                    <>
+                                        <PlayCircle size={18} color="white" style={{ marginRight: 6 }} />
+                                        <Text className="text-white font-bold text-sm">
+                                            Watch Ad to Refill All Tanks
+                                        </Text>
+                                    </>
+                                )}
                             </TouchableOpacity>
                         )}
 

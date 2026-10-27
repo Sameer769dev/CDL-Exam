@@ -28,6 +28,7 @@ import { useTheme } from '../../src/context/ThemeContext';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { Platform } from 'react-native';
 import { getAvatarSource } from '../../src/utils/avatars';
+import { openAdInspector, showPrivacyOptions } from '../../src/utils/ads';
 
 export default function SettingsScreen() {
     const router = useRouter();
@@ -448,7 +449,7 @@ export default function SettingsScreen() {
 
                             <TouchableOpacity
                                 onPress={() => Linking.openURL('https://cdlprep2025.vercel.app/terms.html')}
-                                className="p-5 flex-row items-center justify-between active:bg-slate-50 dark:active:bg-slate-700"
+                                className="p-5 flex-row items-center justify-between border-b border-slate-100 dark:border-slate-700 active:bg-slate-50 dark:active:bg-slate-700"
                             >
                                 <View className="flex-row items-center flex-1">
                                     <View className="bg-slate-100 dark:bg-slate-700 w-12 h-12 rounded-2xl items-center justify-center mr-4">
@@ -457,6 +458,31 @@ export default function SettingsScreen() {
                                     <Text className="text-slate-900 dark:text-white font-semibold text-base">
                                         Terms of Service
                                     </Text>
+                                </View>
+                                <ChevronRight size={20} color={isDark ? '#94a3b8' : '#64748b'} strokeWidth={2.5} />
+                            </TouchableOpacity>
+
+                            <TouchableOpacity
+                                onPress={async () => {
+                                    const opened = await showPrivacyOptions();
+                                    if (!opened) {
+                                        Alert.alert('Consent Notice', 'Privacy and consent choices are either up to date or not required in your jurisdiction.');
+                                    }
+                                }}
+                                className="p-5 flex-row items-center justify-between active:bg-slate-50 dark:active:bg-slate-700"
+                            >
+                                <View className="flex-row items-center flex-1">
+                                    <View className="bg-slate-100 dark:bg-slate-700 w-12 h-12 rounded-2xl items-center justify-center mr-4">
+                                        <Shield size={24} color={isDark ? '#94a3b8' : '#64748b'} strokeWidth={2.5} />
+                                    </View>
+                                    <View className="flex-1">
+                                        <Text className="text-slate-900 dark:text-white font-semibold text-base">
+                                            Ad Privacy & Consent Choices
+                                        </Text>
+                                        <Text className="text-slate-500 dark:text-slate-400 text-xs mt-0.5">
+                                            Review GDPR & personalized ad settings
+                                        </Text>
+                                    </View>
                                 </View>
                                 <ChevronRight size={20} color={isDark ? '#94a3b8' : '#64748b'} strokeWidth={2.5} />
                             </TouchableOpacity>
@@ -496,6 +522,26 @@ export default function SettingsScreen() {
                                     <Text className="text-slate-900 dark:text-white font-semibold text-base">
                                         Clear App Data
                                     </Text>
+                                </View>
+                                <ChevronRight size={20} color={isDark ? '#94a3b8' : '#64748b'} strokeWidth={2.5} />
+                            </TouchableOpacity>
+
+                            <TouchableOpacity
+                                onPress={() => openAdInspector()}
+                                className="p-5 flex-row items-center justify-between border-b border-slate-100 dark:border-slate-700 active:bg-slate-50 dark:active:bg-slate-700"
+                            >
+                                <View className="flex-row items-center flex-1">
+                                    <View className="bg-blue-100 dark:bg-blue-900/30 w-12 h-12 rounded-2xl items-center justify-center mr-4">
+                                        <Smartphone size={24} color="#3b82f6" strokeWidth={2.5} />
+                                    </View>
+                                    <View className="flex-1">
+                                        <Text className="text-slate-900 dark:text-white font-semibold text-base">
+                                            Mediation Ad Inspector
+                                        </Text>
+                                        <Text className="text-slate-500 dark:text-slate-400 text-xs mt-0.5">
+                                            Live test AdMob, Meta & Unity adapters
+                                        </Text>
+                                    </View>
                                 </View>
                                 <ChevronRight size={20} color={isDark ? '#94a3b8' : '#64748b'} strokeWidth={2.5} />
                             </TouchableOpacity>

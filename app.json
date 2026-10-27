@@ -52,7 +52,8 @@
         {
           "android": {
             "extraMavenRepos": [
-              "../../node_modules/react-native/android"
+              "../../node_modules/react-native/android",
+              "https://unity-ads.s3.amazonaws.com/maven"
             ],
             "unstable_networkInspector": true,
             "packagingOptions": {
@@ -62,7 +63,8 @@
                 "lib/armeabi-v7a/libc++_shared.so",
                 "lib/arm64-v8a/libc++_shared.so"
               ]
-            }
+            },
+            "extraProguardRules": "-keep class com.facebook.ads.** { *; }\n-dontwarn com.facebook.ads.**\n-keep class com.google.ads.mediation.facebook.** { *; }\n-keep class com.unity3d.ads.** { *; }\n-keep class com.unity3d.services.** { *; }\n-dontwarn com.unity3d.services.**\n-keep class com.google.ads.mediation.unity.** { *; }"
           }
         }
       ],

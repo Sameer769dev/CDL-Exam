@@ -1,173 +1,105 @@
-# Ad Unit IDs - Test vs Production
+# Ad Implementation & Mediation Guide (AdMob + Meta + Unity)
 
-## ✅ Current Configuration: TEST MODE
+## 1. Overview & Setup
 
-Your app is now using **Google's official test ad unit IDs** for safe testing.
+The app uses **Google Mobile Ads (AdMob)** as the primary mediation hub, orchestrating ads across:
+1. **Google AdMob Network**
+2. **Meta Audience Network (Facebook Ads)** (via Google Mediation Adapter)
+3. **Unity Ads** (via Google Mediation Adapter)
 
-### Test Ad Unit IDs (Currently Active)
-
-| Ad Format | Android Test ID | iOS Test ID |
-|-----------|----------------|-------------|
-| **Banner** | `ca-app-pub-3940256099942544/6300978111` | `ca-app-pub-3940256099942544/2934735716` |
-| **Interstitial** | `ca-app-pub-3940256099942544/1033173712` | `ca-app-pub-3940256099942544/4411468910` |
-| **Rewarded Video** | `ca-app-pub-3940256099942544/5224354917` | `ca-app-pub-3940256099942544/1712485313` |
-
-### Your Production Ad Unit IDs (Saved for Reference)
-
-| Ad Format | Production ID |
-|-----------|---------------|
-| **Banner** | `ca-app-pub-5397047296907599/3691898228` |
-| **Interstitial** | `ca-app-pub-5397047296907599/5343164894` |
-| **Rewarded** | `ca-app-pub-5397047296907599/2717001554` |
+By integrating Meta and Unity through AdMob mediation, you get real-time bidding and waterfall optimization: Google, Meta, and Unity compete simultaneously for every ad slot (Banner, Interstitial, Rewarded), maximizing your eCPM and fill rate without needing separate React UI components.
 
 ---
 
-## Why Use Test Ad Unit IDs?
+## 2. Configured IDs & Credentials
 
-✅ **Safe Testing** - Won't affect your production ad metrics  
-✅ **No Policy Violations** - Clicking your own ads won't get you banned  
-✅ **Faster Loading** - Test ads load quickly for development  
-✅ **Always Available** - Test ads always fill, no matter your location  
-✅ **Labeled Clearly** - Test ads show "Test Ad" label
+| Network | Parameter / ID | Value |
+|---|---|---|
+| **Google AdMob** | App ID | `ca-app-pub-5397047296907599~7797119607` |
+| **Google AdMob** | Publisher ID | `pub-5397047296907599` |
+| **Meta Audience Network** | Publisher / Business ID | `1609288446392552` |
+| **Unity Ads** | Game / Organization ID | `151360580` |
 
----
+### Production Ad Units:
+- **Banner Ad**: `ca-app-pub-5397047296907599/3691898228`
+- **Interstitial Ad**: `ca-app-pub-5397047296907599/5343164894`
+- **Rewarded Ad**: `ca-app-pub-5397047296907599/2717001554`
 
-## What You'll See
-
-When using test ad unit IDs, you'll see:
-- Ads with "Test Ad" label
-- Sample ad content from Google
-- Ads that load reliably every time
-- No real advertisers or campaigns
-
----
-
-## When to Switch Back to Production IDs
-
-Switch back to production IDs when:
-- ✅ Testing is complete
-- ✅ App is ready for production release
-- ✅ Uploading to Google Play Store
-- ✅ Ready for real users
+> [!NOTE]
+> In debug/development mode (`__DEV__`), the app automatically switches to Google test ad unit IDs (`TestIds.BANNER`, `TestIds.INTERSTITIAL`, `TestIds.REWARDED`) to protect against account strikes. In release builds (`assembleRelease`), production IDs are automatically used.
 
 ---
 
-## How to Switch to Production IDs
+## 3. Mediation Architecture & Native Integration
 
-### Option 1: Manual Edit
-
-Edit [`src/utils/ads.ts`](file:///c:/Users/dhana/Desktop/CDL%20Exam/src/utils/ads.ts) and replace test IDs with production IDs:
-
-```typescript
-const AD_UNITS = {
-    BANNER: Platform.select({
-        android: 'ca-app-pub-5397047296907599/3691898228', // Your production ID
-        ios: 'ca-app-pub-5397047296907599/3691898228',
-        default: 'ca-app-pub-5397047296907599/3691898228',
-    }),
-    INTERSTITIAL: Platform.select({
-        android: 'ca-app-pub-5397047296907599/5343164894', // Your production ID
-        ios: 'ca-app-pub-5397047296907599/5343164894',
-        default: 'ca-app-pub-5397047296907599/5343164894',
-    }),
-    REWARDED: Platform.select({
-        android: 'ca-app-pub-5397047296907599/2717001554', // Your production ID
-        ios: 'ca-app-pub-5397047296907599/2717001554',
-        default: 'ca-app-pub-5397047296907599/2717001554',
-    }),
-};
+### Android Dependencies ([`android/app/build.gradle`](file:///c:/Users/dhana/Desktop/CDL-Exam/android/app/build.gradle))
+```groovy
+// Google AdMob Mediation Adapters
+implementation 'com.google.ads.mediation:facebook:6.19.0.1'
+implementation 'com.google.ads.mediation:unity:4.13.2.0'
 ```
 
-### Option 2: Environment-Based Configuration (Recommended)
+### Maven Repositories ([`android/build.gradle`](file:///c:/Users/dhana/Desktop/CDL-Exam/android/build.gradle) and [`app.json`](file:///c:/Users/dhana/Desktop/CDL-Exam/app.json))
+- Unity Ads Maven: `https://unity-ads.s3.amazonaws.com/maven`
 
-For better control, you could add environment-based switching:
+### ProGuard Rules ([`android/app/proguard-rules.pro`](file:///c:/Users/dhana/Desktop/CDL-Exam/android/app/proguard-rules.pro) and [`app.json`](file:///c:/Users/dhana/Desktop/CDL-Exam/app.json))
+- Meta Audience Network:
+  ```proguard
+  -keep class com.facebook.ads.** { *; }
+  -dontwarn com.facebook.ads.**
+  -keep class com.google.ads.mediation.facebook.** { *; }
+  ```
+- Unity Ads:
+  ```proguard
+  -keep class com.unity3d.ads.** { *; }
+  -keep class com.unity3d.services.** { *; }
+  -dontwarn com.unity3d.services.**
+  -keep class com.google.ads.mediation.unity.** { *; }
+  ```
 
-```typescript
-const IS_TESTING = __DEV__; // Automatically use test IDs in development
+---
 
-const PRODUCTION_IDS = {
-    BANNER: 'ca-app-pub-5397047296907599/3691898228',
-    INTERSTITIAL: 'ca-app-pub-5397047296907599/5343164894',
-    REWARDED: 'ca-app-pub-5397047296907599/2717001554',
-};
+## 4. `app-ads.txt` Compliance
 
-const TEST_IDS = {
-    BANNER: 'ca-app-pub-3940256099942544/6300978111',
-    INTERSTITIAL: 'ca-app-pub-3940256099942544/1033173712',
-    REWARDED: 'ca-app-pub-3940256099942544/5224354917',
-};
-
-const AD_UNITS = {
-    BANNER: Platform.select({
-        android: IS_TESTING ? TEST_IDS.BANNER : PRODUCTION_IDS.BANNER,
-        ios: IS_TESTING ? TEST_IDS.BANNER : PRODUCTION_IDS.BANNER,
-        default: IS_TESTING ? TEST_IDS.BANNER : PRODUCTION_IDS.BANNER,
-    }),
-    // ... same for INTERSTITIAL and REWARDED
-};
+Located at [`website/app-ads.txt`](file:///c:/Users/dhana/Desktop/CDL-Exam/website/app-ads.txt):
+```text
+google.com, pub-5397047296907599, DIRECT, f08c47fec0942fa0
+facebook.com, 1609288446392552, RESELLER, c3e2032a64c10ebf
+unityads.unity3d.com, 151360580, DIRECT, 3591daeb562137bc
 ```
 
 ---
 
-## Testing Checklist
+## 5. Where Ads Are Implemented
 
-With test ad unit IDs active, verify:
+1. **Banner Ads**:
+   - Component: [`src/components/BannerAd.native.tsx`](file:///c:/Users/dhana/Desktop/CDL-Exam/src/components/BannerAd.native.tsx)
+   - Home Dashboard: Bottom of [`app/(tabs)/index.tsx`](file:///c:/Users/dhana/Desktop/CDL-Exam/app/(tabs)/index.tsx)
+   - Exam & Practice Results: Bottom of [`app/results.tsx`](file:///c:/Users/dhana/Desktop/CDL-Exam/app/results.tsx)
+   - Feature: Collapses to 0 height if loading fails (no blank gaps), never rendered for Pro/Premium users.
 
-- [ ] Banner ads display on home screen
-- [ ] Banner ads show "Test Ad" label
-- [ ] Interstitial ads load and display
-- [ ] Rewarded video ads play
-- [ ] Ads don't show for premium users
-- [ ] Ad frequency capping works (2 min cooldown for interstitials)
+2. **Interstitial Ads**:
+   - Implementation: [`src/utils/ads.native.ts`](file:///c:/Users/dhana/Desktop/CDL-Exam/src/utils/ads.native.ts)
+   - Trigger: Displayed after quiz/exam completion in [`app/results.tsx`](file:///c:/Users/dhana/Desktop/CDL-Exam/app/results.tsx).
+   - Frequency Capping: Minimum 2-minute cooldown (`INTERSTITIAL_COOLDOWN_MS = 120_000`) between interstitials.
+   - Protection: Completely skipped if user has active Pro/Premium subscription.
 
----
+3. **Rewarded Video Ads**:
+   - Mistake Bank: Unlock mistakes practice for free by watching a rewarded video in [`app/mistake-bank.tsx`](file:///c:/Users/dhana/Desktop/CDL-Exam/app/mistake-bank.tsx).
+   - Highway Fuel Refill: Refill all 5 diesel fuel tanks in [`src/components/highway/GameStatsHeader.tsx`](file:///c:/Users/dhana/Desktop/CDL-Exam/src/components/highway/GameStatsHeader.tsx) by watching a rewarded ad.
 
-## Important Notes
-
-> [!WARNING]
-> **Never release to production with test ad unit IDs!**
-> - You won't earn any revenue
-> - Ads will show "Test Ad" label to real users
-> - Violates AdMob policies
-
-> [!IMPORTANT]
-> **Before uploading to Play Store:**
-> 1. Switch back to production ad unit IDs
-> 2. Rebuild the APK/AAB
-> 3. Test one more time to ensure production ads load
-> 4. Upload to Play Store
+4. **GDPR / UMP Consent & Privacy**:
+   - Initialized at startup in [`src/utils/ads.native.ts`](file:///c:/Users/dhana/Desktop/CDL-Exam/src/utils/ads.native.ts) before any ad requests.
+   - User re-consent option available in Settings: [`app/(tabs)/settings.tsx`](file:///c:/Users/dhana/Desktop/CDL-Exam/app/(tabs)/settings.tsx).
 
 ---
 
-## Current File Location
+## 6. How to Test & Verify (Mediation Ad Inspector)
 
-The ad configuration is in:
-[`src/utils/ads.ts`](file:///c:/Users/dhana/Desktop/CDL%20Exam/src/utils/ads.ts)
-
-Your production IDs are saved as comments in the file for easy reference.
-
----
-
-## Next Steps
-
-1. ✅ Test ad unit IDs are now active
-2. ⏳ Rebuild the APK to test with new ad IDs
-3. ⏳ Verify ads display correctly
-4. ⏳ Switch back to production IDs before release
-
----
-
-## Rebuild Command
-
-To rebuild with the new test ad unit IDs:
-
-```bash
-.\build-release.bat
-```
-
-Or rebuild from scratch:
-```bash
-npx expo prebuild --clean
-cd android
-.\gradlew.bat assembleRelease
-```
+1. Open the app on an Android device or emulator.
+2. Navigate to **Settings** (`app/(tabs)/settings.tsx`).
+3. Under the **Other** section, tap **Mediation Ad Inspector**.
+4. The Google Mobile Ads Ad Inspector overlay will appear on screen:
+   - You can see each ad unit (Banner, Interstitial, Rewarded).
+   - You can see **AdMob**, **Meta Audience Network**, and **Unity Ads** adapters.
+   - You can initiate a test request to Meta or Unity to verify live ad fills and bidding.

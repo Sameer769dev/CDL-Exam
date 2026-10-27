@@ -123,9 +123,16 @@ export const initAds = async (): Promise<boolean> => {
             return false;
         }
 
-        // Step 2: Initialize the Mobile Ads SDK.
-        await mobileAds().initialize();
+        // Step 2: Initialize the Mobile Ads SDK with mediation adapters (Google, Meta, Unity).
+        const adapterStatuses = await mobileAds().initialize();
         isAdInitialized = true;
+
+        if (adapterStatuses) {
+            console.log('[Ads] Mobile Ads SDK initialized with mediation adapters:');
+            Object.entries(adapterStatuses).forEach(([name, status]) => {
+                console.log(`[Ads] • Adapter "${name}": state=${status.state}, description=${status.description}`);
+            });
+        }
 
         // Step 3: Preload both ad formats so they are ready on first need.
         loadInterstitialAd();
@@ -208,22 +215,16 @@ export const showInterstitialAd = async (isPremium: boolean = false): Promise<bo
         return false;
     }
 
-    if (!interstitialAd) {
-        console.warn('[Ads] Interstitial ad not loaded — requesting load');
+    if (!interstitialAd || !interstitialAd.loaded) {
+        console.warn('[Ads] Interstitial ad not ready yet — requesting load');
         loadInterstitialAd();
         return false;
     }
 
     try {
-        if (interstitialAd.loaded) {
-            lastInterstitialTime = now;
-            await interstitialAd.show();
-            return true;
-        } else {
-            console.warn('[Ads] Interstitial ad not ready yet');
-            loadInterstitialAd();
-            return false;
-        }
+        lastInterstitialTime = now;
+        await interstitialAd.show();
+        return true;
     } catch (error) {
         console.error('[Ads] Error showing interstitial ad:', error);
         loadInterstitialAd();
@@ -251,10 +252,6 @@ export const loadRewardedAd = () => {
             // Rewarded ad is preloaded and ready.
         });
 
-        rewardedAd.addAdEventListener(RewardedAdEventType.EARNED_REWARD, () => {
-            // Reward granted — handled per-show in showRewardedAd().
-        });
-
         rewardedAd.addAdEventListener(AdEventType.ERROR, (error: Error) => {
             console.error('[Ads] Rewarded ad error:', error);
             rewardedAd = null;
@@ -268,48 +265,101 @@ export const loadRewardedAd = () => {
 
 /**
  * Show a rewarded ad and wait for the reward outcome.
- * Registers fresh listeners per show to avoid listener accumulation.
+ * Registers fresh listeners per show and cleanly unregisters upon completion.
  *
  * @returns true if the user completed the ad and earned the reward.
  */
 export const showRewardedAd = async (): Promise<boolean> => {
-    if (!rewardedAd) {
-        console.warn('[Ads] Rewarded ad not loaded — requesting load');
+    if (!rewardedAd || !rewardedAd.loaded) {
+        console.warn('[Ads] Rewarded ad not ready yet — requesting load');
         loadRewardedAd();
         return false;
     }
 
     try {
-        if (!rewardedAd.loaded) {
-            console.warn('[Ads] Rewarded ad not ready yet');
-            loadRewardedAd();
-            return false;
-        }
-
         return new Promise<boolean>((resolve) => {
             let rewarded = false;
+            let resolved = false;
 
-            const rewardListener = rewardedAd!.addAdEventListener(
+            const cleanup = () => {
+                if (unsubEarned) unsubEarned();
+                if (unsubClosed) unsubClosed();
+                if (unsubError) unsubError();
+            };
+
+            const finish = (result: boolean) => {
+                if (!resolved) {
+                    resolved = true;
+                    cleanup();
+                    loadRewardedAd();
+                    resolve(result);
+                }
+            };
+
+            const unsubEarned = rewardedAd!.addAdEventListener(
                 RewardedAdEventType.EARNED_REWARD,
                 () => {
                     rewarded = true;
                 }
             );
 
-            const closedListener = rewardedAd!.addAdEventListener(
+            const unsubClosed = rewardedAd!.addAdEventListener(
                 AdEventType.CLOSED,
                 () => {
-                    // Preload the next rewarded ad right away.
-                    loadRewardedAd();
-                    resolve(rewarded);
+                    finish(rewarded);
                 }
             );
 
-            rewardedAd!.show();
+            const unsubError = rewardedAd!.addAdEventListener(
+                AdEventType.ERROR,
+                (error) => {
+                    console.error('[Ads] Rewarded ad error during playback:', error);
+                    finish(false);
+                }
+            );
+
+            rewardedAd!.show().catch((error) => {
+                console.error('[Ads] Error presenting rewarded ad:', error);
+                finish(false);
+            });
         });
     } catch (error) {
         console.error('[Ads] Error showing rewarded ad:', error);
         loadRewardedAd();
+        return false;
+    }
+};
+
+// ---------------------------------------------------------------------------
+// Diagnostics & Mediation Inspector
+// ---------------------------------------------------------------------------
+
+/**
+ * Opens Google Mobile Ads Ad Inspector.
+ * Enables live debugging of Meta Audience Network, Unity Ads, and AdMob
+ * mediation waterfall and bidding on device.
+ */
+export const openAdInspector = async (): Promise<void> => {
+    try {
+        await mobileAds().openAdInspector();
+    } catch (error) {
+        console.warn('[Ads] Failed to open Ad Inspector:', error);
+    }
+};
+
+/**
+ * Shows the UMP privacy options form allowing users to update their consent choices.
+ */
+export const showPrivacyOptions = async (): Promise<boolean> => {
+    try {
+        const consentInfo = await AdsConsent.requestInfoUpdate();
+        if (consentInfo.isConsentFormAvailable) {
+            await AdsConsent.showForm();
+            return true;
+        }
+        return false;
+    } catch (error) {
+        console.warn('[Ads] Privacy options form unavailable:', error);
         return false;
     }
 };
