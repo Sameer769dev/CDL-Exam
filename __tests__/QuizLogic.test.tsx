@@ -1,12 +1,28 @@
 import React from 'react';
-import { render, fireEvent, screen } from '@testing-library/react-native';
+import { render, fireEvent } from '@testing-library/react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import QuizScreen from '../app/quiz';
+import { UserProvider } from '../src/context/UserContext';
+import { ThemeProvider } from '../src/context/ThemeContext';
+import { GameProvider } from '../src/context/GameContext';
+
+const renderQuiz = () => render(
+    <ThemeProvider>
+        <UserProvider>
+            <GameProvider>
+                <QuizScreen />
+            </GameProvider>
+        </UserProvider>
+    </ThemeProvider>
+);
 
 // Mock Expo Router
 jest.mock('expo-router', () => ({
     useRouter: () => ({
         replace: jest.fn(),
+        back: jest.fn(),
     }),
+    useLocalSearchParams: () => ({ categoryId: 'air_brakes', mode: 'standard' }),
     Stack: {
         Screen: () => null,
     },
@@ -33,46 +49,59 @@ jest.mock('../src/data/air_brakes_data.json', () => [
 ]);
 
 describe('QuizScreen Logic', () => {
-    it('renders the first question correctly', () => {
-        render(<QuizScreen />);
-        expect(screen.getByText('Test Question 1')).toBeTruthy();
-        expect(screen.getByText('Option A')).toBeTruthy();
-        expect(screen.getByText('Option B')).toBeTruthy();
+    beforeEach(async () => {
+        await AsyncStorage.clear();
+        jest.clearAllMocks();
+        jest.spyOn(Math, 'random').mockReturnValue(0.1);
     });
 
-    it('shows explanation when an answer is selected', () => {
-        render(<QuizScreen />);
+    afterEach(() => {
+        jest.restoreAllMocks();
+    });
+
+    it('renders the first question correctly', async () => {
+        const { findByText, getByText } = renderQuiz();
+        expect(await findByText('Test Question 1')).toBeTruthy();
+        expect(getByText('Option A')).toBeTruthy();
+        expect(getByText('Option B')).toBeTruthy();
+    });
+
+    it('shows explanation when an answer is selected', async () => {
+        const { findByText } = renderQuiz();
 
         // Select an option
-        fireEvent.press(screen.getByText('Option A'));
+        const optionA = await findByText('Option A');
+        fireEvent.press(optionA);
 
         // Explanation should appear
-        expect(screen.getByText('Explanation 1')).toBeTruthy();
+        expect(await findByText('Explanation 1')).toBeTruthy();
     });
 
-    it('shows "Next Question" button after answering', () => {
-        render(<QuizScreen />);
+    it('shows "Continue" button after answering', async () => {
+        const { findByText, queryByText, getByText } = renderQuiz();
 
-        // Before answering, button should not exist (or be hidden logic dependent, usually conditional render)
-        // Based on code: {isAnswered && ...}
-        const nextButtonBefore = screen.queryByText('Next Question');
-        expect(nextButtonBefore).toBeNull();
+        await findByText('Test Question 1');
+        // Before answering, button should not exist
+        const continueBtnBefore = queryByText('Continue');
+        expect(continueBtnBefore).toBeNull();
 
         // Answer
-        fireEvent.press(screen.getByText('Option B'));
+        fireEvent.press(getByText('Option B'));
 
         // Button should appear
-        expect(screen.getByText('Next Question')).toBeTruthy();
+        expect(await findByText('Continue')).toBeTruthy();
     });
 
-    it('advances to the next question when "Next Question" is pressed', () => {
-        render(<QuizScreen />);
+    it('advances to the next question when "Continue" is pressed', async () => {
+        const { findByText, getByText } = renderQuiz();
 
+        await findByText('Test Question 1');
         // Answer Question 1
-        fireEvent.press(screen.getByText('Option B'));
-        fireEvent.press(screen.getByText('Next Question'));
+        fireEvent.press(getByText('Option B'));
+        const nextBtn = await findByText('Continue');
+        fireEvent.press(nextBtn);
 
         // Should now see Question 2
-        expect(screen.getByText('Test Question 2')).toBeTruthy();
+        expect(await findByText('Test Question 2')).toBeTruthy();
     });
 });

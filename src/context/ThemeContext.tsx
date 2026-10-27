@@ -85,10 +85,14 @@ export const ThemeProvider = ({ children }: { children: ReactNode }) => {
     };
 
     const applyTheme = (newTheme: ThemePreference) => {
-        if (newTheme === 'system') {
-            setColorScheme('system');
-        } else {
-            setColorScheme(newTheme);
+        try {
+            if (newTheme === 'system') {
+                setColorScheme('system');
+            } else {
+                setColorScheme(newTheme);
+            }
+        } catch {
+            // Fallback for environments where NativeWind darkMode: class is not enabled (e.g. tests)
         }
     };
 

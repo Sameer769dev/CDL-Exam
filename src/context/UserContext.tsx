@@ -44,9 +44,19 @@ import {
     useExamCredit,
     getQuestionMastery,
     saveQuestionMastery,
+    getLastMonthlyGrantDate,
+    setLastMonthlyGrantDate,
     QuestionMastery
 } from '../utils/storage';
-import { checkPurchaseStatus, purchaseProduct, restorePurchases as restoreBillingPurchases, PRODUCT_IDS, SubscriptionType } from '../utils/billing';
+import {
+    checkPurchaseStatus,
+    purchaseProduct,
+    restorePurchases as restoreBillingPurchases,
+    getPremiumProduct,
+    getAvailableProducts,
+    PRODUCT_IDS,
+    SubscriptionType
+} from '../utils/billing';
 import { setUserPremiumStatus } from '../utils/analytics';
 import { registerForPushNotificationsAsync, scheduleReminders, cancelAllNotifications } from '../utils/notifications';
 
@@ -159,7 +169,7 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
                 getDailyGoal(),
                 getHasCompletedOnboarding(),
                 getExamCredits(),
-                import('../utils/storage').then(m => m.getLastMonthlyGrantDate()),
+                getLastMonthlyGrantDate(),
                 getQuestionMastery()
             ]);
 
@@ -183,7 +193,6 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
 
                 // Grant if never granted or > 30 days ago
                 if (!lastGrant || (now.getTime() - lastGrant.getTime() > 30 * 24 * 60 * 60 * 1000)) {
-                    const { addExamCredit, setLastMonthlyGrantDate } = await import('../utils/storage');
                     await addExamCredit(10); // Grant 10 credits
                     await setLastMonthlyGrantDate(now.toISOString());
                     currentCredits += 10;
@@ -221,14 +230,13 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
     const unlockPremium = async () => {
         try {
             // Get the premium product first
-            const { getPremiumProduct } = await import('../utils/billing');
             const product = await getPremiumProduct();
 
             if (!product) {
                 throw new Error('Premium product not available');
             }
 
-            const initialPremium = await import('../utils/storage').then(m => m.getPremiumStatus());
+            const initialPremium = await getPremiumStatus();
 
             // Purchase premium via Google Play Billing
             const requestSent = await purchaseProduct(product);
@@ -242,7 +250,7 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
                 let attempts = 0;
                 const interval = setInterval(async () => {
                     attempts++;
-                    const currentPremium = await import('../utils/storage').then(m => m.getPremiumStatus());
+                    const currentPremium = await getPremiumStatus();
                     
                     if (currentPremium && !initialPremium) {
                         clearInterval(interval);
@@ -563,7 +571,6 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
 
     const purchaseExamAttempt = async (): Promise<boolean> => {
         try {
-            const { getAvailableProducts } = await import('../utils/billing');
             const products = await getAvailableProducts();
             const product = products.find(p => ((p as any).productId || (p as any).id) === PRODUCT_IDS.EXAM_ATTEMPT);
 
@@ -572,7 +579,7 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
                 return false;
             }
 
-            const initialCredits = await import('../utils/storage').then(m => m.getExamCredits());
+            const initialCredits = await getExamCredits();
 
             const requestSent = await purchaseProduct(product);
             
@@ -585,7 +592,7 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
                 let attempts = 0;
                 const interval = setInterval(async () => {
                     attempts++;
-                    const currentCredits = await import('../utils/storage').then(m => m.getExamCredits());
+                    const currentCredits = await getExamCredits();
                     
                     if (currentCredits > initialCredits) {
                         clearInterval(interval);

@@ -5,12 +5,7 @@ import { ProgressBar } from '../src/components/ProgressBar';
 import { StatCard } from '../src/components/StatCard';
 import { Truck } from 'lucide-react-native';
 
-// Mock Reanimated
-jest.mock('react-native-reanimated', () => {
-    const Reanimated = require('react-native-reanimated/mock');
-    Reanimated.default.call = () => { };
-    return Reanimated;
-});
+
 
 describe('OptionButton', () => {
     it('renders correctly in default state', () => {
